@@ -58,9 +58,9 @@ class IndexInfo extends PureComponent {
   }
 
   initPage = (code, index) => {
-    //webData/getWebStockdaybarDongfang
+    //webData/getStockAllDongfang
     code = code || codeMap[defaultIndex].code;
-    http.get(`${ifMock ? '/mock' : 'webData'}/getWebStockdaybarDongfang`, {
+    http.get(`${ifMock ? '/mock' : 'webData'}/getStockAllDongfang`, {
       code: code,
       days: 200
     }).then((data) => {

@@ -38,7 +38,7 @@ class IndexInfo extends PureComponent {
 
   initPage = () => {
     Promise.all([
-      http.get(`webData/getWebStockdaybarDongfang`, {
+      http.get(`webData/getStockAllDongfang`, {
         code: 'sz399006',
         days: 200
       }).then((data) => {
@@ -49,7 +49,7 @@ class IndexInfo extends PureComponent {
           });
         }
       }),
-      http.get(`webData/getWebStockdaybarDongfang`, {
+      http.get(`webData/getStockAllDongfang`, {
         code: 'sh000016',
         days: 200
       }).then((data) => {
