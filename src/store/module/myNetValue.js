@@ -15,7 +15,7 @@ export const myNetValueActions = {
   queryMyNetValues(query) {
     return (dispatch, getState) => {
       dispatch({type: MY_NET_VALUE_QUERY_MY_NET_VALUES_BEGIN});
-      return http.get('fund/getUserNetValues', query).then((data) => {
+      return http.get('userFund/getUserNetValues', query).then((data) => {
         dispatch({type: MY_NET_VALUE_QUERY_MY_NET_VALUES_SUC, data: data.data});
         return data;
       });

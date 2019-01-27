@@ -65,11 +65,11 @@ class MyNetValue extends PureComponent {
   };
 
   queryMyNetValueAll = () => {
-    return http.get('fund/getUserNetValuesAll').then((data) => {
+    return http.get('userFund/getUserNetValues').then((data) => {
       if (data.success) {
         let list = data.data.list
         this.setState({
-          netValueAll: list
+          netValueAll: list.reverse()
         })
         // this.myIncomeRateInfo = {
         //   // 当月收益率
@@ -128,7 +128,7 @@ class MyNetValue extends PureComponent {
   };
   // 删除基金
   tableDeleteHandler = (netValueDate) => {
-    http.get('fund/deleteUserNetValue', {net_value_date: netValueDate}).then((data) => {
+    http.get('userFund/deleteUserNetValue', {net_value_date: netValueDate}).then((data) => {
       if (data.success) {
         message.success('删除成功');
       } else {
@@ -161,7 +161,7 @@ class MyNetValue extends PureComponent {
   };
 
   addMyNetValue = (data) => {
-    return http.post('fund/addUserNetValue', data).then((data) => {
+    return http.post('userFund/addUserNetValue', data).then((data) => {
       if (data.success) {
         this.initPage();
       }
@@ -170,7 +170,7 @@ class MyNetValue extends PureComponent {
   };
 
   updateMyNetValue = (data) => {
-    return http.post('fund/updateUserNetValue', data).then((data) => {
+    return http.post('userFund/updateUserNetValue', data).then((data) => {
       if (data.success) {
         this.initPage();
       }

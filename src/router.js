@@ -7,9 +7,6 @@ import UserActive from 'Bundle-loader?lazy!localRoutes/Active'
 import Dashboard from 'Bundle-loader?lazy!localRoutes/Dashboard'
 import MyFund from 'Bundle-loader?lazy!localRoutes/MyFund'
 import Fund from 'Bundle-loader?lazy!localRoutes/Fund'
-import Strategy from 'Bundle-loader?lazy!localRoutes/Strategy'
-import FocusFund from 'Bundle-loader?lazy!localRoutes/FocusFund'
-import LowRateFund from 'Bundle-loader?lazy!localRoutes/LowRateFund'
 import Schedule from 'Bundle-loader?lazy!localRoutes/Schedule'
 import MyNetValue from 'Bundle-loader?lazy!localRoutes/MyNetValue'
 import MyAsset from 'Bundle-loader?lazy!localRoutes/MyAsset'
@@ -71,21 +68,6 @@ export const baseRoutes = [
     name: 'Fund',
     path: '/fund',
     component: getComponent(Fund)
-  },
-  {
-    name: 'Strategy',
-    path: '/strategy',
-    component: getComponent(Strategy)
-  },
-  {
-    name: 'FocusFund',
-    path: '/focusFund',
-    component: getComponent(FocusFund)
-  },
-  {
-    name: 'LowRateFund',
-    path: '/lowRateFund',
-    component: getComponent(LowRateFund)
   },
   {
     name: 'Schedule',
