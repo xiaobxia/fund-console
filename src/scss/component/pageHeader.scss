@@ -1,0 +1,32 @@
+.page-header {
+  padding: 16px 24px 0 24px;
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  .ant-breadcrumb{
+    &:last-child{
+      margin-bottom: 16px;
+    }
+  }
+  .page-header-content {
+    position: relative;
+    margin: 10px 0;
+  }
+  .page-header-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .85);
+  }
+  .page-header-title-side {
+    position: absolute;
+    top: 0;
+    height: 100%;
+  }
+  .info-item {
+    margin-right: 20px;
+  }
+  p{
+    margin: 0;
+  }
+}
