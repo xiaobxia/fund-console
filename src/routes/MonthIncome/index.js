@@ -35,12 +35,12 @@ class Index extends PureComponent {
     let xData = [];
     let yData = [];
     list.forEach(function (item) {
-      xData.unshift(item['x']);
-      yData.unshift(item['y']);
+      xData.unshift(item['yearMonth']);
+      yData.unshift(item['rate']);
     });
     return {
       title: {
-        text: '变化',
+        text: '月收益率',
         left: 'center',
         textStyle: {
           color: 'rgba(0, 0, 0, 0.85)',
@@ -64,12 +64,9 @@ class Index extends PureComponent {
       },
       series: [
         {
-          name: '幅度',
+          name: '我的',
           data: yData,
-          type: 'line',
-          lineStyle: {
-            color: '#1890ff'
-          }
+          type: 'bar'
         }
       ]
     };
