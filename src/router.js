@@ -200,6 +200,10 @@ export const menusInfos = [
       {
         pathname: '/myNetValue',
         title: '我的净值'
+      },
+      {
+        pathname: '/monthIncome',
+        title: '月收益率'
       }
     ]
   }

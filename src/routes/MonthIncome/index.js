@@ -15,7 +15,11 @@ class Index extends PureComponent {
   }
 
   state = {
-    my: []
+    my: [],
+    shangzheng: [],
+    chuangye: [],
+    hushen: [],
+    wulin: []
   };
   componentWillMount() {
     this.initPage();
@@ -28,12 +32,56 @@ class Index extends PureComponent {
         })
       }
     })
+    http.get('stock/getStockPriceMonthRate', {
+      code: 'sh000001',
+      start: '2018-03-09'
+    }).then((data) => {
+      if (data.success) {
+        this.setState({
+          shangzheng: data.data.list
+        })
+      }
+    })
+    http.get('stock/getStockPriceMonthRate', {
+      code: 'sz399006',
+      start: '2018-03-09'
+    }).then((data) => {
+      if (data.success) {
+        this.setState({
+          chuangye: data.data.list
+        })
+      }
+    })
+    http.get('stock/getStockPriceMonthRate', {
+      code: 'sh000300',
+      start: '2018-03-09'
+    }).then((data) => {
+      if (data.success) {
+        this.setState({
+          hushen: data.data.list
+        })
+      }
+    })
+    http.get('stock/getStockPriceMonthRate', {
+      code: 'sh000016',
+      start: '2018-03-09'
+    }).then((data) => {
+      if (data.success) {
+        this.setState({
+          wulin: data.data.list
+        })
+      }
+    })
   }
   getRecentNetValueOption = () => {
     let list = this.state.my
     // list.reverse()
     let xData = [];
     let yData = [];
+    let yDataShangzheng = []
+    let yDataChuangye = []
+    let yDataHushen = []
+    let yDataWulin = []
     list.forEach(function (item) {
       xData.unshift(item['yearMonth']);
       yData.unshift(item['rate']);
