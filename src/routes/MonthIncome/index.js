@@ -34,41 +34,41 @@ class Index extends PureComponent {
     })
     http.get('stock/getStockPriceMonthRate', {
       code: 'sh000001',
-      start: '2018-03-09'
+      start: '20180309'
     }).then((data) => {
       if (data.success) {
         this.setState({
-          shangzheng: data.data.list
+          shangzheng: data.data
         })
       }
     })
     http.get('stock/getStockPriceMonthRate', {
       code: 'sz399006',
-      start: '2018-03-09'
+      start: '20180309'
     }).then((data) => {
       if (data.success) {
         this.setState({
-          chuangye: data.data.list
+          chuangye: data.data
         })
       }
     })
     http.get('stock/getStockPriceMonthRate', {
       code: 'sh000300',
-      start: '2018-03-09'
+      start: '20180309'
     }).then((data) => {
       if (data.success) {
         this.setState({
-          hushen: data.data.list
+          hushen: data.data
         })
       }
     })
     http.get('stock/getStockPriceMonthRate', {
       code: 'sh000016',
-      start: '2018-03-09'
+      start: '20180309'
     }).then((data) => {
       if (data.success) {
         this.setState({
-          wulin: data.data.list
+          wulin: data.data
         })
       }
     })
@@ -82,18 +82,35 @@ class Index extends PureComponent {
     let yDataChuangye = []
     let yDataHushen = []
     let yDataWulin = []
-    list.forEach(function (item) {
-      xData.unshift(item['yearMonth']);
-      yData.unshift(item['rate']);
+    let shangzheng = this.state.shangzheng
+    let chuangye = this.state.chuangye
+    let hushen = this.state.hushen
+    let wulin = this.state.wulin
+    if (list.length && shangzheng.length && chuangye.length && hushen.length && wulin.length) {
+    } else {
+      return {}
+    }
+    console.log(list)
+    console.log(list.map)
+    list.map((item, index) => {
+      xData.push(item['yearMonth']);
+      yData.push(item['rate']);
+      yDataShangzheng.push(shangzheng[index]['rate'])
+      yDataChuangye.push(chuangye[index]['rate'])
+      yDataHushen.push(hushen[index]['rate'])
+      yDataWulin.push(wulin[index]['rate'])
     });
     return {
-      title: {
-        text: '月收益率',
-        left: 'center',
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.85)',
-          fontWeight: '500'
-        }
+      // title: {
+      //   text: '月收益率',
+      //   left: 'center',
+      //   textStyle: {
+      //     color: 'rgba(0, 0, 0, 0.85)',
+      //     fontWeight: '500'
+      //   }
+      // },
+      legend: {
+        data: ['我的', '上证', '创业', '沪深', '50']
       },
       tooltip: {
         trigger: 'axis',
@@ -114,6 +131,26 @@ class Index extends PureComponent {
         {
           name: '我的',
           data: yData,
+          type: 'bar'
+        },
+        {
+          name: '上证',
+          data: yDataShangzheng,
+          type: 'bar'
+        },
+        {
+          name: '创业',
+          data: yDataChuangye,
+          type: 'bar'
+        },
+        {
+          name: '沪深',
+          data: yDataHushen,
+          type: 'bar'
+        },
+        {
+          name: '50',
+          data: yDataWulin,
           type: 'bar'
         }
       ]
