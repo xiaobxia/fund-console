@@ -90,8 +90,6 @@ class Index extends PureComponent {
     } else {
       return {}
     }
-    console.log(list)
-    console.log(list.map)
     list.map((item, index) => {
       xData.push(item['yearMonth']);
       yData.push(item['rate']);
