@@ -154,57 +154,15 @@ Util.prototype = {
   ifSellChuangye: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
-    if (ifMatch(today, {
-      ifSessionDown: false,
-      ifSessionDownHigh: false,
-      ifSessionUpClose: false,
-      ifSessionUpCloseHigh: false,
-      ifSessionUp: false,
-      ifSessionUpHigh: false,
-      ifSessionDownClose: true,
-      ifSessionDownCloseHigh: false
-    })) {
-      if (ifMatch(lastDay, {
-        ifSessionDown: true,
-        ifSessionUpClose: false,
-        ifSessionUp: false,
-        ifSessionDownClose: true
-      })) {
-        return {
-          flag: true,
-          text: 'sell-0-0'
-        }
-      }
-      if (ifMatch(lastDay, {
-        ifSessionDown: false,
-        ifSessionUpClose: false,
-        ifSessionUp: false,
-        ifSessionDownClose: false
-      })) {
-        return {
-          flag: true,
-          text: 'sell-0-1'
-        }
-      }
-      if (ifMatch(lastDay, {
-        ifSessionDown: false,
-        ifSessionUpClose: false,
-        ifSessionUp: true,
-        ifSessionDownClose: false
-      })) {
-        return {
-          flag: true,
-          text: 'sell-0-2'
-        }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionDownHigh': false, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-0-0'
       }
     }
     if (ifMatch(today, {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUpCloseHigh': true, 'ifSessionUp': true, 'ifSessionUpHigh': true, 'ifSessionDownClose': false, 'ifSessionDownCloseHigh': false, 'ifHighPreCloseDown': false, 'ifHighPreCloseDownHigh': false})) {
-      if (ifMatch(lastDay, {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': false, 'ifSessionDownCloseHigh': false, 'ifHighPreCloseDown': false, 'ifHighPreCloseDownHigh': false})) {
-        return false
-      }
-      if (ifMatch(lastDay, {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': true, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true, 'ifHighPreCloseDown': false, 'ifHighPreCloseDownHigh': false})) {
-        return false
-      }
       return {
         flag: true,
         text: 'sell-1-0'
