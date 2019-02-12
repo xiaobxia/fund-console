@@ -6913,6 +6913,7 @@ const codeMap = {
   'jungong': {
     code: 'sz399959',
     name: '军工',
+    attach: 'chuangye',
     threshold: 0.93,
     wave: 0.9716906474820142,
     rate: 0.8817687074829932,
@@ -6924,6 +6925,7 @@ const codeMap = {
   'yiyao': {
     code: 'sh000037',
     name: '医药',
+    attach: 'chuangye',
     threshold: 0.94,
     rate: 0.9339416058394158,
     wave: 0.9391726618705037,
@@ -6959,6 +6961,7 @@ const codeMap = {
   'jisuanji': {
     code: 'sz399363',
     name: '计算机',
+    attach: 'chuangye',
     threshold: 1.04,
     rate: 1.0100719424460431,
     wave: 1.06308,
@@ -6972,6 +6975,7 @@ const codeMap = {
   'baijiu': {
     code: 'sz399997',
     name: '白酒',
+    attach: 'wulin',
     threshold: 1.21,
     rate: 1.07016,
     wave: 1.3559459459459462,
@@ -6985,6 +6989,7 @@ const codeMap = {
   'xinxi': {
     code: 'sh000993',
     name: '信息',
+    attach: 'chuangye',
     threshold: 1.03,
     rate: 1.0703999999999998,
     wave: 0.9838741721854306,
@@ -6998,6 +7003,7 @@ const codeMap = {
   'xiaofei': {
     code: 'sh000990',
     name: '消费',
+    attach: 'wulin',
     threshold: 0.98,
     rate: 0.9984756097560976,
     wave: 0.9562179487179483,
@@ -7009,6 +7015,7 @@ const codeMap = {
   'baoxian': {
     code: 'sz399809',
     name: '保险',
+    attach: 'wulin',
     threshold: 1,
     wave: 1.022290322580645,
     rate: 0.9797972972972975,
@@ -7033,6 +7040,7 @@ const codeMap = {
   'chuanmei': {
     code: 'sz399971',
     name: '传媒',
+    attach: 'chuangye',
     threshold: 0.86,
     rate: 0.8374025974025976,
     wave: 0.8754518072289161,
@@ -7044,6 +7052,7 @@ const codeMap = {
   'dianzi': {
     code: 'sz399811',
     name: '电子',
+    attach: 'chuangye',
     threshold: 0.9,
     rate: 0.8832450331125826,
     wave: 0.9248263888888891,
@@ -7056,6 +7065,7 @@ const codeMap = {
   'yiliao': {
     code: 'sz399989',
     name: '医疗',
+    attach: 'chuangye',
     threshold: 0.97,
     wave: 1.0519615384615388,
     rate: 0.8889999999999998,
@@ -7069,6 +7079,7 @@ const codeMap = {
   'shengwu': {
     code: 'sz399441',
     name: '生物',
+    attach: 'chuangye',
     threshold: 0.89,
     rate: 0.8235460992907802,
     wave: 0.9630645161290321,
@@ -7116,6 +7127,7 @@ const codeMap = {
   'yinhang': {
     code: 'sz399986',
     name: '银行',
+    attach: 'wulin',
     threshold: 0.7,
     rate: 0.6845000000000002,
     wave: 0.7059375,
@@ -7128,6 +7140,7 @@ const codeMap = {
   'dichan': {
     code: 'sz399393',
     name: '地产',
+    attach: 'wulin',
     threshold: 0.94,
     rate: 0.9072847682119207,
     wave: 0.9646258503401361,
