@@ -246,13 +246,25 @@ class MyNetValue extends PureComponent {
         {
           name: '净值',
           type: 'value',
-          scale: true
+          scale: true,
+          splitLine: {
+            lineStyle: {
+              type: 'dotted',
+              color: '#FFAA7F'
+            }
+          }
         },
         {
           name: '仓位',
           type: 'value',
           min: 0,
-          max: 120
+          max: 120,
+          splitLine: {
+            lineStyle: {
+              type: 'dotted',
+              color: '#8BC7FF'
+            }
+          }
         }
       ],
       series: [
