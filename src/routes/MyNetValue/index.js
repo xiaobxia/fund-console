@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import DocumentTitle from 'react-document-title';
-import {Input, Upload, message, Button, Icon, Row, Col} from 'antd';
+import {Input, Upload, message, Button, Icon, Row, Col, Radio} from 'antd';
 import {myNetValueActions} from 'localStore/actions'
 import qs from 'qs'
 import http from 'localUtil/httpUtil';
@@ -17,6 +17,12 @@ import {getOpenKeyAndMainPath} from '../../router'
 import MyNetValueList from './myNetValueList'
 import AddModal from './addModal'
 import ReactEcharts from 'echarts-for-react';
+
+import dateUtil from 'localUtil/dateUtil'
+import arrayUtil from 'localUtil/arrayUtil'
+
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 
 class MyNetValue extends PureComponent {
@@ -29,7 +35,8 @@ class MyNetValue extends PureComponent {
     addModal: false,
     modalType: 'add',
     record: {},
-    netValueAll: []
+    netValueAll: [],
+    nowType: '全部'
   };
 
   componentWillMount() {
@@ -184,6 +191,10 @@ class MyNetValue extends PureComponent {
     this.queryMyNetValuesWithUpdateQuery(data);
   };
 
+  onTimeChange = (e) => {
+    this.setState({nowType: e.target.value});
+  };
+
   getNetValueOption = () => {
     const {netValueAll} = this.state;
     if (!(netValueAll.length > 1)) {
@@ -191,15 +202,29 @@ class MyNetValue extends PureComponent {
     }
     let xData = [];
     let yData = [];
+    let yData11 = []
     const baseMy = netValueAll[0]['net_value']
-    netValueAll.forEach(function (item, index) {
+
+    let myList = arrayUtil.copy(netValueAll)
+    // 近一年数据
+    let startIndex = 0
+    if (this.state.nowType === '本月') {
+      startIndex = dateUtil.findSameRangeStartNetValueIndex(myList, 'month')
+    } else if (this.state.nowType === '本年') {
+      startIndex = dateUtil.findSameRangeStartNetValueIndex(myList, 'year')
+    } else if (this.state.nowType === '进一年') {
+      startIndex = netValueAll.length > 250 ? (netValueAll.length) - 250 : 0
+    }
+    myList = myList.slice(startIndex)
+    myList.forEach(function (item, index) {
       xData.push(item.net_value_date);
       // yData.push(numberUtil.keepTwoDecimals(((item['net_value'] - baseMy) / baseMy) * 100));
       yData.push(item['net_value']);
+      yData11.push(item['position'] || 0)
     });
     return {
       title: {
-        text: '我的收益率',
+        text: '我的净值',
         left: 'center',
         textStyle: {
           color: 'rgba(0, 0, 0, 0.85)',
@@ -217,17 +242,35 @@ class MyNetValue extends PureComponent {
         type: 'category',
         data: xData
       },
-      yAxis: {
-        type: 'value',
-        scale: true
-      },
+      yAxis: [
+        {
+          name: '净值',
+          type: 'value',
+          scale: true
+        },
+        {
+          name: '仓位',
+          type: 'value',
+          min: 0,
+          max: 150
+        }
+      ],
       series: [
         {
-          name: '幅度',
+          name: '净值',
           data: yData,
           type: 'line',
           smooth: false,
           symbol: 'none',
+          lineStyle: {
+            color: '#f50'
+          }
+        },
+        {
+          name: '仓位',
+          data: yData11,
+          type: 'bar',
+          yAxisIndex: 1,
           lineStyle: {
             color: '#f50'
           }
@@ -264,6 +307,12 @@ class MyNetValue extends PureComponent {
               <Col span={8}>
               </Col>
               <Col span={8}>
+                <RadioGroup onChange={this.onTimeChange} defaultValue="全部">
+                  <RadioButton value="全部">全部</RadioButton>
+                  <RadioButton value="本年">本年</RadioButton>
+                  <RadioButton value="本月">本月</RadioButton>
+                  <RadioButton value="近一年">近一年</RadioButton>
+                </RadioGroup>
               </Col>
               <Col span={8} style={{textAlign: 'right'}}>
                 <Button.Group>
