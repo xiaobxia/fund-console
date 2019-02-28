@@ -260,6 +260,7 @@ class MyNetValue extends PureComponent {
           name: '仓位',
           type: 'value',
           min: 0,
+          interval: 10,
           max: 120,
           splitLine: {
             lineStyle: {
