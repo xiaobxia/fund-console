@@ -213,7 +213,9 @@ class MyNetValue extends PureComponent {
     } else if (this.state.nowType === '本年') {
       startIndex = dateUtil.findSameRangeStartNetValueIndex(myList, 'year')
     } else if (this.state.nowType === '进一年') {
-      startIndex = netValueAll.length > 250 ? (netValueAll.length) - 250 : 0
+      startIndex = myList.length > 250 ? (myList.length) - 250 : 0
+    } else if (this.state.nowType === '近半年') {
+      startIndex = myList.length > 126 ? (myList.length) - 126 : 0
     }
     myList = myList.slice(startIndex)
     myList.forEach(function (item, index) {
@@ -324,6 +326,7 @@ class MyNetValue extends PureComponent {
                   <RadioButton value="本年">本年</RadioButton>
                   <RadioButton value="本月">本月</RadioButton>
                   <RadioButton value="近一年">近一年</RadioButton>
+                  <RadioButton value="近半年">近半年</RadioButton>
                 </RadioGroup>
               </Col>
               <Col span={8} style={{textAlign: 'right'}}>
