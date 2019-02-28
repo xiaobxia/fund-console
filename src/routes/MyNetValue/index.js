@@ -252,7 +252,7 @@ class MyNetValue extends PureComponent {
           name: '仓位',
           type: 'value',
           min: 0,
-          max: 150
+          max: 120
         }
       ],
       series: [
@@ -271,8 +271,8 @@ class MyNetValue extends PureComponent {
           data: yData11,
           type: 'bar',
           yAxisIndex: 1,
-          lineStyle: {
-            color: '#f50'
+          itemStyle: {
+            color: '#1890ff'
           }
         }
       ]
