@@ -329,7 +329,7 @@ class MyNetValue extends PureComponent {
                   <RadioButton value="本年">本年</RadioButton>
                   <RadioButton value="本月">本月</RadioButton>
                   <RadioButton value="近一年">近一年</RadioButton>
-                  <RadioButton value="近3月">近3月</RadioButton>
+                  <RadioButton value="近三月">近三月</RadioButton>
                   <RadioButton value="近半年">近半年</RadioButton>
                 </RadioGroup>
               </Col>
