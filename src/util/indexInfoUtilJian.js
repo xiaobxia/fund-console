@@ -594,7 +594,15 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-8-0'
+        text: 'sell-9-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-10-0'
       }
     }
     return false
@@ -1189,6 +1197,14 @@ Util.prototype = {
         text: 'sell-7-0'
       }
     }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-8-0'
+      }
+    }
     return false
   },
   ifBuyMeitan: function (record, oneDayRecord) {
@@ -1472,6 +1488,22 @@ Util.prototype = {
         text: 'sell-12-0'
       }
     }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-13-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-14-0'
+      }
+    }
     return false
   },
   ifBuyYouse: function (record, oneDayRecord) {
@@ -1695,7 +1727,23 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-11-0'
+        text: 'sell-12-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-13-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-14-0'
       }
     }
     return false
@@ -2786,6 +2834,14 @@ Util.prototype = {
         text: 'sell-12-0'
       }
     }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-13-0'
+      }
+    }
     return false
   },
   ifBuyBaoxian: function (record, oneDayRecord) {
@@ -3040,6 +3096,14 @@ Util.prototype = {
       return {
         flag: true,
         text: 'sell-13-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-14-0'
       }
     }
     return false
@@ -3523,6 +3587,14 @@ Util.prototype = {
         text: 'sell-10-0'
       }
     }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-11-0'
+      }
+    }
     return false
   },
   ifBuyDianzi: function (record, oneDayRecord) {
@@ -3751,6 +3823,14 @@ Util.prototype = {
       return {
         flag: true,
         text: 'sell-9-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-10-0'
       }
     }
     return false
@@ -4592,6 +4672,22 @@ Util.prototype = {
         text: 'sell-10-0'
       }
     }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-11-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': true, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-12-0'
+      }
+    }
     return false
   },
   ifBuyWubai: function (record, oneDayRecord) {
@@ -4787,6 +4883,22 @@ Util.prototype = {
       return {
         flag: true,
         text: 'sell-8-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-9-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-10-0'
       }
     }
     return false
@@ -5000,6 +5112,14 @@ Util.prototype = {
       return {
         flag: true,
         text: 'sell-8-0'
+      }
+    }
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-9-0'
       }
     }
     return false
