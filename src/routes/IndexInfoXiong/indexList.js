@@ -12,7 +12,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const fnMap = indexInfoUtil.fnMap;
 const InfoUtil = indexInfoUtil.Util;
 
-const functionName = 'ifBuyYiqian'
+const functionName = 'ifBuySanbai'
 let hide = 'sell'
 
 const isDev = process.env.NODE_ENV !== 'production'
@@ -52,13 +52,18 @@ class IndexList extends PureComponent {
     const infoConfig = {threshold, rate, wave};
     const recentNetValue = this.props.dataSource;
     const infoUtil = new InfoUtil(infoConfig)
-    const recentNetValue2 = getAverageList(recentNetValue, 8)
+    const recentNetValue2 = getAverageList(recentNetValue, 20)
+    const recentNetValue3 = getAverageList(recentNetValue, 30)
     let xData = [];
     let yData = [];
     let yData2 = [];
+    let yData3 = [];
     let points = [];
     recentNetValue2.forEach((item) => {
       yData2.push(item);
+    })
+    recentNetValue3.forEach((item) => {
+      yData3.push(item);
     })
     recentNetValue.forEach((item, index) => {
       xData.unshift(item['date']);
@@ -137,7 +142,17 @@ class IndexList extends PureComponent {
         //   data: yData2,
         //   type: 'line',
         //   lineStyle: {
-        //     color: '#777'
+        //     color: '#a80'
+        //   },
+        //   smooth: false,
+        //   symbol: 'none'
+        // },
+        // {
+        //   name: '均线2',
+        //   data: yData3,
+        //   type: 'line',
+        //   lineStyle: {
+        //     color: '#000'
         //   },
         //   smooth: false,
         //   symbol: 'none'
