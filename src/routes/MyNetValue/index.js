@@ -224,7 +224,8 @@ class MyNetValue extends PureComponent {
       xData.push(item.net_value_date);
       // yData.push(numberUtil.keepTwoDecimals(((item['net_value'] - baseMy) / baseMy) * 100));
       yData.push(item['net_value']);
-      yData11.push(item['position'] || 0)
+      // 移动一个位置
+      yData11.push((myList[index + 1] && myList[index + 1]['position']) || 0)
     });
     return {
       title: {
