@@ -16,19 +16,19 @@ const ifCdn = process.env.NODE_ENV === 'production' && config.build.ifCdn;
 
 var spinner = ora('building for production...')
 spinner.start()
-if (ifCdn) {
-  cdn.getCdnFileList().then((fileList) => {
-    if (!fileList.length) {
-      console.log('no file');
-      return;
-    }
-    cdn.deleteCdnFile(fileList.map((item) => {
-      return item.key;
-    })).then(() => {
-      console.log('all delete')
-    });
-  });
-}
+// if (ifCdn) {
+//   cdn.getCdnFileList().then((fileList) => {
+//     if (!fileList.length) {
+//       console.log('no file');
+//       return;
+//     }
+//     cdn.deleteCdnFile(fileList.map((item) => {
+//       return item.key;
+//     })).then(() => {
+//       console.log('all delete')
+//     });
+//   });
+// }
 //TODO 只适合单页应用，因为它不删html，只删static
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err

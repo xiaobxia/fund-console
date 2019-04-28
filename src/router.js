@@ -17,6 +17,7 @@ import FixedInvestment from 'Bundle-loader?lazy!localRoutes/FixedInvestment'
 import ChangeMarket from 'Bundle-loader?lazy!localRoutes/ChangeMarket'
 import Chart from 'Bundle-loader?lazy!localRoutes/Chart'
 import MonthIncome from 'Bundle-loader?lazy!localRoutes/MonthIncome'
+import PlatformFixedInvestment from 'Bundle-loader?lazy!localRoutes/PlatformFixedInvestment'
 
 //router4就得以这种方式懒加载
 //其实model不需要按需加载，因为本来就不应该太大，应该由组件自己维护状态
@@ -119,6 +120,11 @@ export const baseRoutes = [
     name: 'MonthIncome',
     path: '/monthIncome',
     component: getComponent(MonthIncome)
+  },
+  {
+    name: 'PlatformFixedInvestment',
+    path: '/platformFixedInvestment',
+    component: getComponent(PlatformFixedInvestment)
   }
 ];
 
@@ -204,6 +210,17 @@ export const menusInfos = [
       {
         pathname: '/monthIncome',
         title: '月收益率'
+      }
+    ]
+  },
+  {
+    key: 'platform',
+    title: '平台',
+    icon: 'pay-circle',
+    children: [
+      {
+        pathname: '/platformFixedInvestment',
+        title: '平台定投'
       }
     ]
   }
