@@ -30,7 +30,7 @@ for (let key in codeMap) {
 
 const defaultIndex = 'yiqian'
 const ifMock = false
-const ifLockData = false
+const ifLockData = true
 
 
 
