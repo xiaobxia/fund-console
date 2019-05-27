@@ -28,7 +28,11 @@ class IndexList extends PureComponent {
     let xData = [];
     let yData = [];
     let points = [];
-    let count = 0
+    let allCloseF = 0
+    let countF = 0
+    let step = 0
+    let allCloseS = 0
+    let countS = 0
     recentNetValue.forEach((item, index) => {
       xData.unshift(item['date']);
       yData.unshift(item['close']);
@@ -47,10 +51,32 @@ class IndexList extends PureComponent {
             show: false
           }
         })
-        count++
+        allCloseF += item['close']
+        countF++
+      }
+      if (step !== 7) {
+        step++
+      } else {
+        points.push({
+          coord: [item['date'], item['close']],
+          itemStyle: {
+            normal: {
+              color: 'black'
+            }
+          },
+          label: {
+            show: false
+          }
+        })
+        allCloseS += item['close']
+        countS++
+        step = 0
       }
     });
-    console.log(`点数:${count}`)
+    console.log(`策略点数:${countF}`)
+    console.log(`策略成本:${allCloseF / countF}`)
+    console.log(`定时点数:${countS}`)
+    console.log(`定时成本:${allCloseS / countS}`)
     return {
       title: {
         text: this.props.indexName + '净值变化',
