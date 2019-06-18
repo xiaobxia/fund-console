@@ -12,7 +12,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const fnMap = indexInfoUtil.fnMap;
 const InfoUtil = indexInfoUtil.Util;
 
-const functionName = 'ifBuySanbai'
+const functionName = 'ifBuyYiqian'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -54,7 +54,7 @@ class IndexList extends PureComponent {
         allCloseF += item['close']
         countF++
       }
-      if (step !== 7) {
+      if (step !== 9) {
         step++
       } else {
         points.push({
