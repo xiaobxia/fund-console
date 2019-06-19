@@ -28,7 +28,7 @@ for (let key in codeMap) {
   })
 }
 
-const defaultIndex = 'yiqian'
+const defaultIndex = 'sanbai'
 const ifMock = false
 const ifLockData = true
 
@@ -61,7 +61,7 @@ class IndexInfo extends PureComponent {
     code = code || codeMap[defaultIndex].code;
     http.get(`${ifMock ? '/mock' : 'webData'}/getStockAllDongfang`, {
       code: code,
-      days: 500
+      days: 250
     }).then((data) => {
       if (data.success) {
         const list = data.data.list;

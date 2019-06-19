@@ -130,7 +130,7 @@ class IndexList extends PureComponent {
             coord: [item['date'], item['close']],
             itemStyle: {
               normal: {
-                color: 'red'
+                color: 'black'
               }
             },
             label: {
@@ -142,21 +142,6 @@ class IndexList extends PureComponent {
           fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
           fixFlagCount++
         }
-        // points.push({
-        //   coord: [item['date'], item['close']],
-        //   itemStyle: {
-        //     normal: {
-        //       color: 'black'
-        //     }
-        //   },
-        //   label: {
-        //     show: false
-        //   }
-        // })
-        // buyCount += getBuyRate(closeRate) * 100
-        // fixFlagCloseAll += item['close']
-        // fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
-        // fixFlagCount++
       }
     });
     console.log(`策略点数:${fixFlagCount}`)
