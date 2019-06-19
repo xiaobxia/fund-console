@@ -16,6 +16,40 @@ const functionName = 'ifBuyYiqian'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
+function getBuyRate(rate) {
+  if (rate >= 4 && rate < 8) {
+    return 0.9
+  }
+  if (rate >= 8 && rate < 12) {
+    return 0.8
+  }
+  if (rate >= 12 && rate < 16) {
+    return 0.7
+  }
+  if (rate >= 16 && rate < 20) {
+    return 0.6
+  }
+  if (rate >= 20) {
+    return 0.5
+  }
+  if (rate <= -4 && rate > -8) {
+    return 1.1
+  }
+  if (rate <= -8 && rate > -12) {
+    return 1.2
+  }
+  if (rate <= -12 && rate > -16) {
+    return 1.3
+  }
+  if (rate <= -16 && rate > -20) {
+    return 1.4
+  }
+  if (rate <= -20) {
+    return 1.5
+  }
+  return 1
+}
+
 class IndexList extends PureComponent {
 
   getChartOption = () => {
@@ -28,33 +62,33 @@ class IndexList extends PureComponent {
     let xData = [];
     let yData = [];
     let points = [];
-    let allCloseF = 0
+    let fixFlagCloseAll = 0
+    let fixFlagCount = 0
+    let fixFlagBuyAll = 0
     let countF = 0
     let step = 0
     let allCloseS = 0
     let countS = 0
+    let upKeep = 0
+    let closeAll = 0
+    let closeAllCount = 0
+    let closeAverage = 0
+    let buyCount = 0
+    let nowClose = (recentNetValue[0] && recentNetValue[0]['close']) || 0
+    recentNetValue.forEach((item) => {
+      closeAll += item['close']
+      closeAllCount++
+    })
+    closeAverage = closeAll / closeAllCount
+    console.log(`指数平均:${closeAverage}`)
     recentNetValue.forEach((item, index) => {
       xData.unshift(item['date']);
       yData.unshift(item['close']);
       const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
       const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index + 1];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
-      if (((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
-        points.push({
-          coord: [item['date'], item['close']],
-          itemStyle: {
-            normal: {
-              color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
-            }
-          },
-          label: {
-            show: false
-          }
-        })
-        allCloseF += item['close']
-        countF++
-      }
-      if (step !== 9) {
+      // 按时间定投
+      if (step !== 7) {
         step++
       } else {
         points.push({
@@ -72,11 +106,66 @@ class IndexList extends PureComponent {
         countS++
         step = 0
       }
+      //  && oneDayRecord['netChangeRatio'] < 0
+      let closeRate = numberUtil.countDifferenceRate(item['close'], closeAverage)
+      if (bugFlag.flag === true && bugFlag.text !== 'niu') {
+        points.push({
+          coord: [item['date'], item['close']],
+          itemStyle: {
+            normal: {
+              color: 'red'
+            }
+          },
+          label: {
+            show: false
+          }
+        })
+        buyCount += getBuyRate(closeRate) * 100
+        fixFlagCloseAll += item['close']
+        fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
+        fixFlagCount++
+      } else if (bugFlag.flag === true && bugFlag.text === 'niu' && oneDayRecord['netChangeRatio'] < 0) {
+        if (Math.abs(oneDayRecord['netChangeRatio']) > (rate / 2)) {
+          points.push({
+            coord: [item['date'], item['close']],
+            itemStyle: {
+              normal: {
+                color: 'red'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+          buyCount += getBuyRate(closeRate) * 100
+          fixFlagCloseAll += item['close']
+          fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
+          fixFlagCount++
+        }
+        // points.push({
+        //   coord: [item['date'], item['close']],
+        //   itemStyle: {
+        //     normal: {
+        //       color: 'black'
+        //     }
+        //   },
+        //   label: {
+        //     show: false
+        //   }
+        // })
+        // buyCount += getBuyRate(closeRate) * 100
+        // fixFlagCloseAll += item['close']
+        // fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
+        // fixFlagCount++
+      }
     });
-    console.log(`策略点数:${countF}`)
-    console.log(`策略成本:${allCloseF / countF}`)
+    console.log(`策略点数:${fixFlagCount}`)
+    console.log(`策略成本:${fixFlagCloseAll / fixFlagCount}`)
+    console.log(`策略收益:${numberUtil.countDifferenceRate(nowClose * buyCount, fixFlagBuyAll)}`)
+    console.log(`均值收益:${numberUtil.countDifferenceRate(nowClose, fixFlagCloseAll / fixFlagCount)}`)
     console.log(`定时点数:${countS}`)
     console.log(`定时成本:${allCloseS / countS}`)
+    console.log(`定时均值收益:${numberUtil.countDifferenceRate(nowClose, allCloseS / countS)}`)
     return {
       title: {
         text: this.props.indexName + '净值变化',
