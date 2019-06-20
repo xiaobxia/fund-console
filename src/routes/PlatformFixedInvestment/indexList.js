@@ -88,24 +88,24 @@ class IndexList extends PureComponent {
       const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index + 1];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
       // 按时间定投
-      if (step !== 7) {
-        step++
-      } else {
-        points.push({
-          coord: [item['date'], item['close']],
-          itemStyle: {
-            normal: {
-              color: 'black'
-            }
-          },
-          label: {
-            show: false
-          }
-        })
-        allCloseS += item['close']
-        countS++
-        step = 0
-      }
+      // if (step !== 7) {
+      //   step++
+      // } else {
+      //   points.push({
+      //     coord: [item['date'], item['close']],
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'black'
+      //       }
+      //     },
+      //     label: {
+      //       show: false
+      //     }
+      //   })
+      //   allCloseS += item['close']
+      //   countS++
+      //   step = 0
+      // }
       //  && oneDayRecord['netChangeRatio'] < 0
       let closeRate = numberUtil.countDifferenceRate(item['close'], closeAverage)
       if (bugFlag.flag === true && bugFlag.text !== 'niu') {

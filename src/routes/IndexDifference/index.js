@@ -40,7 +40,7 @@ class IndexInfo extends PureComponent {
     Promise.all([
       http.get(`webData/getStockAllDongfang`, {
         code: 'sz399006',
-        days: 200
+        days: 250
       }).then((data) => {
         if (data.success) {
           const list = data.data.list;
@@ -51,7 +51,7 @@ class IndexInfo extends PureComponent {
       }),
       http.get(`webData/getStockAllDongfang`, {
         code: 'sh000016',
-        days: 200
+        days: 250
       }).then((data) => {
         if (data.success) {
           const list = data.data.list;

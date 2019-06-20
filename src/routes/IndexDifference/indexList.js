@@ -126,7 +126,7 @@ class IndexList extends PureComponent {
           data: yDataWulin,
           type: 'line',
           lineStyle: {
-            color: '#ff125f'
+            color: '#E6A23C'
           },
           smooth: false,
           symbol: 'none',
