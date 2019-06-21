@@ -87,6 +87,7 @@ class IndexList extends PureComponent {
       const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
       const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index + 1];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
+      let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
       // 按时间定投
       // if (step !== 7) {
       //   step++
@@ -108,40 +109,53 @@ class IndexList extends PureComponent {
       // }
       //  && oneDayRecord['netChangeRatio'] < 0
       let closeRate = numberUtil.countDifferenceRate(item['close'], closeAverage)
-      if (bugFlag.flag === true && bugFlag.text !== 'niu') {
+      // if (bugFlag.flag === true && bugFlag.text !== 'niu') {
+      //   points.push({
+      //     coord: [item['date'], item['close']],
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'red'
+      //       }
+      //     },
+      //     label: {
+      //       show: false
+      //     }
+      //   })
+      //   buyCount += getBuyRate(closeRate) * 100
+      //   fixFlagCloseAll += item['close']
+      //   fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
+      //   fixFlagCount++
+      // } else if (bugFlag.flag === true && bugFlag.text === 'niu' && oneDayRecord['netChangeRatio'] < 0) {
+      //   if (Math.abs(oneDayRecord['netChangeRatio']) > (rate / 2)) {
+      //     points.push({
+      //       coord: [item['date'], item['close']],
+      //       itemStyle: {
+      //         normal: {
+      //           color: 'black'
+      //         }
+      //       },
+      //       label: {
+      //         show: false
+      //       }
+      //     })
+      //     buyCount += getBuyRate(closeRate) * 100
+      //     fixFlagCloseAll += item['close']
+      //     fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
+      //     fixFlagCount++
+      //   }
+      // }
+      if (sellFlag.flag === true) {
         points.push({
           coord: [item['date'], item['close']],
           itemStyle: {
             normal: {
-              color: 'red'
+              color: 'green'
             }
           },
           label: {
             show: false
           }
         })
-        buyCount += getBuyRate(closeRate) * 100
-        fixFlagCloseAll += item['close']
-        fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
-        fixFlagCount++
-      } else if (bugFlag.flag === true && bugFlag.text === 'niu' && oneDayRecord['netChangeRatio'] < 0) {
-        if (Math.abs(oneDayRecord['netChangeRatio']) > (rate / 2)) {
-          points.push({
-            coord: [item['date'], item['close']],
-            itemStyle: {
-              normal: {
-                color: 'black'
-              }
-            },
-            label: {
-              show: false
-            }
-          })
-          buyCount += getBuyRate(closeRate) * 100
-          fixFlagCloseAll += item['close']
-          fixFlagBuyAll += item['close'] * getBuyRate(closeRate) * 100
-          fixFlagCount++
-        }
       }
     });
     console.log(`策略点数:${fixFlagCount}`)

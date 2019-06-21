@@ -38,6 +38,8 @@ Util.prototype = {
     flag.ifSessionDownCloseHigh = this.ifSessionDownCloseHigh(record)
     flag.ifHighPreCloseDown = this.ifHighPreCloseDown(record)
     flag.ifHighPreCloseDownHigh = this.ifHighPreCloseDownHigh(record)
+    flag.ifHighPreCloseUp = this.ifHighPreCloseUp(record)
+    flag.ifHighPreCloseUpHigh = this.ifHighPreCloseUpHigh(record)
     return flag
   },
   // 是否高开
@@ -117,6 +119,16 @@ Util.prototype = {
     const rate = this.rate
     return numberUtil.countDifferenceRate(record.high, record.preClose) < -(2 * rate)
   },
+  // 大涨
+  ifHighPreCloseUp: function (record) {
+    const rate = this.rate
+    return numberUtil.countDifferenceRate(record.low, record.preClose) > rate
+  },
+  // 暴涨
+  ifHighPreCloseUpHigh: function (record) {
+    const rate = this.rate
+    return numberUtil.countDifferenceRate(record.low, record.preClose) > (2 * rate)
+  },
   ifBuyChuangye: function (record, oneDayRecord) {
     const today = this.getFlag(record, 2.1)
     // 无抵抗下跌的都要
@@ -153,6 +165,37 @@ Util.prototype = {
       return {
         flag: true,
         text: 'niu'
+      }
+    }
+    return false
+  },
+  ifSellChuangye: function (record, oneDayRecord) {
+    const today = this.getFlag(record, 2.1)
+    // 大涨
+    if (ifMatch(today,
+      {'ifHighPreCloseUpHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-100-0'
+      }
+    }
+    // 涨幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': true, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
       }
     }
     return false
@@ -197,6 +240,37 @@ Util.prototype = {
     }
     return false
   },
+  ifSellWulin: function (record, oneDayRecord) {
+    const today = this.getFlag(record, 2.1)
+    // 大涨
+    if (ifMatch(today,
+      {'ifHighPreCloseUpHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-100-0'
+      }
+    }
+    // 涨幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': true, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    return false
+  },
   ifBuySanbai: function (record, oneDayRecord) {
     const today = this.getFlag(record, 1.9)
     // 无抵抗下跌的都要
@@ -233,6 +307,37 @@ Util.prototype = {
       return {
         flag: true,
         text: 'niu'
+      }
+    }
+    return false
+  },
+  ifSellSanbai: function (record, oneDayRecord) {
+    const today = this.getFlag(record, 1.9)
+    // 大涨
+    if (ifMatch(today,
+      {'ifHighPreCloseUpHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-100-0'
+      }
+    }
+    // 涨幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': true, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
       }
     }
     return false
@@ -277,6 +382,37 @@ Util.prototype = {
     }
     return false
   },
+  ifSellWubai: function (record, oneDayRecord) {
+    const today = this.getFlag(record, 2.3)
+    // 大涨
+    if (ifMatch(today,
+      {'ifHighPreCloseUpHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-100-0'
+      }
+    }
+    // 涨幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': true, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    return false
+  },
   ifBuyYiqian: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     // 无抵抗下跌的都要
@@ -313,6 +449,37 @@ Util.prototype = {
       return {
         flag: true,
         text: 'niu'
+      }
+    }
+    return false
+  },
+  ifSellYiqian: function (record, oneDayRecord) {
+    const today = this.getFlag(record)
+    // 大涨
+    if (ifMatch(today,
+      {'ifHighPreCloseUpHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-100-0'
+      }
+    }
+    // 涨幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': true, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
       }
     }
     return false
@@ -362,10 +529,15 @@ const codeMap = {
 }
 const fnMap = {
   chuangyeBuy: 'ifBuyChuangye',
+  chuangyeSell: 'ifSellChuangye',
   wulinBuy: 'ifBuyWulin',
+  wulinSell: 'ifSellWulin',
   sanbaiBuy: 'ifBuySanbai',
+  sanbaiSell: 'ifSellSanbai',
   wubaiBuy: 'ifBuyWubai',
-  yiqianBuy: 'ifBuyYiqian'
+  wubaiSell: 'ifSellWubai',
+  yiqianBuy: 'ifBuyYiqian',
+  yiqianSell: 'ifSellYiqian'
 }
 
 const FixedInvestment = {
