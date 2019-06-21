@@ -195,7 +195,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-101-0'
+        text: 'xiong'
       }
     }
     return false
@@ -266,7 +266,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-101-0'
+        text: 'xiong'
       }
     }
     return false
@@ -337,7 +337,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-101-0'
+        text: 'xiong'
       }
     }
     return false
@@ -408,7 +408,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-101-0'
+        text: 'xiong'
       }
     }
     return false
@@ -479,7 +479,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-101-0'
+        text: 'xiong'
       }
     }
     return false
