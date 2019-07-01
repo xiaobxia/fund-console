@@ -483,6 +483,77 @@ Util.prototype = {
       }
     }
     return false
+  },
+  ifBuyBaijiu: function (record, oneDayRecord) {
+    const today = this.getFlag(record)
+    // 无抵抗下跌的都要
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 缩量，只适合牛市时使用
+    if (ifMatch(today,
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'niu'
+      }
+    }
+    return false
+  },
+  ifSellBaijiu: function (record, oneDayRecord) {
+    const today = this.getFlag(record)
+    // 大涨
+    if (ifMatch(today,
+      {'ifHighPreCloseUpHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-100-0'
+      }
+    }
+    // 涨幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': true, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'sell-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownCloseHigh': false}
+    )) {
+      return {
+        flag: true,
+        text: 'xiong'
+      }
+    }
+    return false
   }
 }
 
@@ -525,6 +596,13 @@ const codeMap = {
     threshold: 0.83,
     rate: 0.7927516778523488,
     wave: 0.8675304878048783
+  },
+  'baijiu': {
+    code: 'sz399997',
+    name: '白酒',
+    threshold: 1.25,
+    rate: 1.1202272727272722,
+    wave: 1.374864864864865
   }
 }
 const fnMap = {
@@ -537,7 +615,9 @@ const fnMap = {
   wubaiBuy: 'ifBuyWubai',
   wubaiSell: 'ifSellWubai',
   yiqianBuy: 'ifBuyYiqian',
-  yiqianSell: 'ifSellYiqian'
+  yiqianSell: 'ifSellYiqian',
+  baijiuBuy: 'ifBuyBaijiu',
+  baijiuSell: 'ifSellBaijiu'
 }
 
 const FixedInvestment = {
