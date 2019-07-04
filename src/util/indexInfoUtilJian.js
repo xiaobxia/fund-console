@@ -14,32 +14,6 @@ function ifMatch(raw, target) {
   return match
 }
 
-const baseModel = {
-  ifUpOpen: false,
-  ifOpenHigh: false,
-  ifUpClose: false,
-  ifCloseHigh: true,
-  ifSessionDown: true,
-  ifSessionDownHigh: false,
-  ifSessionUpClose: false,
-  ifSessionUpCloseHigh: false,
-  ifSessionUp: false,
-  ifSessionUpHigh: false,
-  ifSessionDownClose: true,
-  ifSessionDownCloseHigh: false
-}
-
-function extend(raw, target) {
-  let obj = {}
-  for (let key in raw) {
-    obj[key] = raw[key]
-  }
-  for (let key in target) {
-    obj[key] = target[key]
-  }
-  return obj
-}
-
 function Util(config) {
   this.threshold = config.threshold
   this.rate = config.rate

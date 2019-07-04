@@ -14,46 +14,6 @@ function ifMatch(raw, target) {
   return match
 }
 
-const buyModel = {
-  //全绿,最有可能翻转的模型
-  one: {
-    ifSessionDown: true,
-    ifSessionDownHigh: true,
-    ifSessionUpClose: false,
-    ifSessionUpCloseHigh: false,
-    ifSessionUp: false,
-    ifSessionUpHigh: false,
-    ifSessionDownClose: true,
-    ifSessionDownCloseHigh: true
-  }
-}
-
-const baseModel = {
-  ifUpOpen: false,
-  ifOpenHigh: false,
-  ifUpClose: false,
-  ifCloseHigh: true,
-  ifSessionDown: true,
-  ifSessionDownHigh: false,
-  ifSessionUpClose: false,
-  ifSessionUpCloseHigh: false,
-  ifSessionUp: false,
-  ifSessionUpHigh: false,
-  ifSessionDownClose: true,
-  ifSessionDownCloseHigh: false
-}
-
-function extend(raw, target) {
-  let obj = {}
-  for (let key in raw) {
-    obj[key] = raw[key]
-  }
-  for (let key in target) {
-    obj[key] = target[key]
-  }
-  return obj
-}
-
 function Util(config) {
   this.threshold = config.threshold
   this.rate = config.rate
@@ -8164,6 +8124,7 @@ const IndexInfoUtilXiong = {
   codeMap,
   fnMap,
   formatData: function (list) {
+    // 把数据集合扁平化
     let listTemp = []
     for (let i = 0; i < list.length; i++) {
       listTemp.push({
