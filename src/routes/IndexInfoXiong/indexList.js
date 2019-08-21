@@ -53,7 +53,8 @@ class IndexList extends PureComponent {
     const infoConfig = {threshold, rate, wave};
     const recentNetValue = this.props.dataSource;
     const infoUtil = new InfoUtil(infoConfig)
-    const recentNetValue2 = getAverageList(recentNetValue, 20)
+    // 均线
+    const recentNetValue2 = getAverageList(recentNetValue, 8)
     const recentNetValue3 = getAverageList(recentNetValue, 30)
     let xData = [];
     let yData = [];
@@ -70,7 +71,11 @@ class IndexList extends PureComponent {
       xData.unshift(item['date']);
       yData.unshift(item['close']);
       const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
-      const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index + 1];
+      const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index];
+      const threeDayRecord = recentNetValue[index + 3];
+      const fourDayRecord = recentNetValue[index + 4];
+      const fiveDayRecord = recentNetValue[index + 5];
+      const sixDayRecord = recentNetValue[index + 6];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
       let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
       if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
@@ -91,6 +96,62 @@ class IndexList extends PureComponent {
           itemStyle: {
             normal: {
               color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
+            }
+          },
+          label: {
+            show: false
+          }
+        })
+      }
+      if (
+        (threeDayRecord && threeDayRecord.netChangeRatio < 0) &&
+        twoDayRecord.netChangeRatio < 0 &&
+        oneDayRecord.netChangeRatio < 0 &&
+        item.netChangeRatio < 0
+      ) {
+        if ((
+          threeDayRecord.netChangeRatio +
+          twoDayRecord.netChangeRatio +
+          oneDayRecord.netChangeRatio +
+          item.netChangeRatio
+        ) < -3) {
+          points.push({
+            coord: [item['date'], item['close'] + 50],
+            itemStyle: {
+              normal: {
+                color: 'red'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          points.push({
+            coord: [item['date'], item['close'] + 50],
+            itemStyle: {
+              normal: {
+                color: 'orange'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        }
+      }
+      if (
+        (fourDayRecord && fourDayRecord.netChangeRatio < 0) &&
+        (threeDayRecord && threeDayRecord.netChangeRatio < 0) &&
+        twoDayRecord.netChangeRatio < 0 &&
+        oneDayRecord.netChangeRatio < 0 &&
+        item.netChangeRatio < 0
+      ) {
+        points.push({
+          coord: [item['date'], item['close'] + 50],
+          itemStyle: {
+            normal: {
+              color: 'black'
             }
           },
           label: {
