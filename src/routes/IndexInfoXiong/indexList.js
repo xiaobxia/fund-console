@@ -104,48 +104,49 @@ class IndexList extends PureComponent {
         })
       }
       if (
-        (threeDayRecord && threeDayRecord.netChangeRatio < 0) &&
-        twoDayRecord.netChangeRatio < 0 &&
-        oneDayRecord.netChangeRatio < 0 &&
-        item.netChangeRatio < 0
+        (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
+        twoDayRecord.netChangeRatio > 0 &&
+        oneDayRecord.netChangeRatio > 0 &&
+        item.netChangeRatio > 0
       ) {
-        if ((
-          threeDayRecord.netChangeRatio +
-          twoDayRecord.netChangeRatio +
-          oneDayRecord.netChangeRatio +
-          item.netChangeRatio
-        ) < -3) {
-          points.push({
-            coord: [item['date'], item['close'] + 50],
-            itemStyle: {
-              normal: {
-                color: 'red'
-              }
-            },
-            label: {
-              show: false
+        points.push({
+          coord: [item['date'], item['close'] + 50],
+          itemStyle: {
+            normal: {
+              color: 'red'
             }
-          })
-        } else {
-          points.push({
-            coord: [item['date'], item['close'] + 50],
-            itemStyle: {
-              normal: {
-                color: 'orange'
-              }
-            },
-            label: {
-              show: false
-            }
-          })
-        }
+          },
+          label: {
+            show: false
+          }
+        })
+        // if ((
+        //   threeDayRecord.netChangeRatio +
+        //   twoDayRecord.netChangeRatio +
+        //   oneDayRecord.netChangeRatio +
+        //   item.netChangeRatio
+        // ) < -3) {
+        //
+        // } else {
+        //   points.push({
+        //     coord: [item['date'], item['close'] + 50],
+        //     itemStyle: {
+        //       normal: {
+        //         color: 'orange'
+        //       }
+        //     },
+        //     label: {
+        //       show: false
+        //     }
+        //   })
+        // }
       }
       if (
-        (fourDayRecord && fourDayRecord.netChangeRatio < 0) &&
-        (threeDayRecord && threeDayRecord.netChangeRatio < 0) &&
-        twoDayRecord.netChangeRatio < 0 &&
-        oneDayRecord.netChangeRatio < 0 &&
-        item.netChangeRatio < 0
+        (fourDayRecord && fourDayRecord.netChangeRatio > 0) &&
+        (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
+        twoDayRecord.netChangeRatio > 0 &&
+        oneDayRecord.netChangeRatio > 0 &&
+        item.netChangeRatio > 0
       ) {
         points.push({
           coord: [item['date'], item['close'] + 50],
