@@ -104,12 +104,14 @@ class IndexList extends PureComponent {
         })
       }
       if (
+        (fourDayRecord && fourDayRecord.netChangeRatio > 0) &&
+        (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
         twoDayRecord.netChangeRatio > 0 &&
         oneDayRecord.netChangeRatio > 0 &&
         item.netChangeRatio > 0
       ) {
         points.push({
-          coord: [item['date'], item['close'] + 50],
+          coord: [item['date'], item['close'] - (item['close'] / 40)],
           itemStyle: {
             normal: {
               color: 'rgb(237,80,7)'
@@ -126,7 +128,7 @@ class IndexList extends PureComponent {
         item.netChangeRatio < 0
       ) {
         points.push({
-          coord: [item['date'], item['close'] + 50],
+          coord: [item['date'], item['close'] - (item['close'] / 40)],
           itemStyle: {
             normal: {
               color: 'black'
