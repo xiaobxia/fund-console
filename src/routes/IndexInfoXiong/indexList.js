@@ -103,25 +103,25 @@ class IndexList extends PureComponent {
           }
         })
       }
-      if (
-        (fourDayRecord && fourDayRecord.netChangeRatio > 0) &&
-        (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
-        twoDayRecord.netChangeRatio > 0 &&
-        oneDayRecord.netChangeRatio > 0 &&
-        item.netChangeRatio > 0
-      ) {
-        points.push({
-          coord: [item['date'], item['close'] - (item['close'] / 40)],
-          itemStyle: {
-            normal: {
-              color: 'rgb(237,80,7)'
-            }
-          },
-          label: {
-            show: false
-          }
-        })
-      }
+      // if (
+      //   (fourDayRecord && fourDayRecord.netChangeRatio > 0) &&
+      //   (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
+      //   twoDayRecord.netChangeRatio > 0 &&
+      //   oneDayRecord.netChangeRatio > 0 &&
+      //   item.netChangeRatio > 0
+      // ) {
+      //   points.push({
+      //     coord: [item['date'], item['close'] - (item['close'] / 40)],
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'rgb(136,72,152)'
+      //       }
+      //     },
+      //     label: {
+      //       show: false
+      //     }
+      //   })
+      // }
       if (
         twoDayRecord.netChangeRatio < 0 &&
         oneDayRecord.netChangeRatio < 0 &&
