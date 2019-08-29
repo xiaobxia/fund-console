@@ -485,7 +485,7 @@ Util.prototype = {
     return false
   },
   ifBuyBaijiu: function (record, oneDayRecord) {
-    const today = this.getFlag(record)
+    const today = this.getFlag(record, 1.5)
     // 无抵抗下跌的都要
     if (ifMatch(today,
       {'ifHighPreCloseDown': true}
