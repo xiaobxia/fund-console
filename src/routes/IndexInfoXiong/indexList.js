@@ -12,8 +12,8 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const fnMap = indexInfoUtil.fnMap;
 const InfoUtil = indexInfoUtil.Util;
 
-const functionName = 'ifSellBaoxian'
-let hide = 'buy'
+const functionName = 'ifBuySanbai'
+let hide = 'sell'
 let showLow = true
 
 const isDev = process.env.NODE_ENV !== 'production'
@@ -122,23 +122,23 @@ class IndexList extends PureComponent {
       //     }
       //   })
       // }
-      if (
-        twoDayRecord.netChangeRatio < 0 &&
-        oneDayRecord.netChangeRatio < 0 &&
-        item.netChangeRatio < 0
-      ) {
-        points.push({
-          coord: [item['date'], item['close'] - (item['close'] / 40)],
-          itemStyle: {
-            normal: {
-              color: 'black'
-            }
-          },
-          label: {
-            show: false
-          }
-        })
-      }
+      // if (
+      //   twoDayRecord.netChangeRatio < 0 &&
+      //   oneDayRecord.netChangeRatio < 0 &&
+      //   item.netChangeRatio < 0
+      // ) {
+      //   points.push({
+      //     coord: [item['date'], item['close'] - (item['close'] / 40)],
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'black'
+      //       }
+      //     },
+      //     label: {
+      //       show: false
+      //     }
+      //   })
+      // }
     });
     return {
       title: {
