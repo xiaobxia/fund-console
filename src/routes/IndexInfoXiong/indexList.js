@@ -55,7 +55,7 @@ class IndexList extends PureComponent {
     const infoUtil = new InfoUtil(infoConfig)
     // 均线
     const recentNetValue2 = getAverageList(recentNetValue, 8)
-    const recentNetValue3 = getAverageList(recentNetValue, 30)
+    const recentNetValue3 = getAverageList(recentNetValue, 20)
     let xData = [];
     let yData = [];
     let yData2 = [];
@@ -103,6 +103,75 @@ class IndexList extends PureComponent {
           }
         })
       }
+      // if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+      //   if (item.netChangeRatio < 0) {
+      //     let count = 0
+      //     if (oneDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (twoDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (threeDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (fourDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (fiveDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (count < 2) {
+      //       points.push({
+      //         coord: [item['date'], item['close'] - (item['close'] / 40)],
+      //         itemStyle: {
+      //           normal: {
+      //             color: 'rgb(136,72,152)'
+      //           }
+      //         },
+      //         label: {
+      //           show: false
+      //         }
+      //       })
+      //     }
+      //   }
+      // }
+      // if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
+      //   if (item.netChangeRatio < 0) {
+      //     let count = 0
+      //     if (oneDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (twoDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (threeDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (fourDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (fiveDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (sixDayRecord.netChangeRatio > 0) {
+      //       count++
+      //     }
+      //     if (count < 2) {
+      //       points.push({
+      //         coord: [item['date'], item['close'] - (item['close'] / 40)],
+      //         itemStyle: {
+      //           normal: {
+      //             color: 'black'
+      //           }
+      //         },
+      //         label: {
+      //           show: false
+      //         }
+      //       })
+      //     }
+      //   }
+      // }
       // if (
       //   (fourDayRecord && fourDayRecord.netChangeRatio > 0) &&
       //   (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
