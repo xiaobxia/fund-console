@@ -247,7 +247,7 @@ class IndexList extends PureComponent {
             symbol: 'circle',
             symbolSize: 6
           }
-        }
+        },
         // {
         //   name: '均线',
         //   data: yData2,
@@ -258,16 +258,16 @@ class IndexList extends PureComponent {
         //   smooth: false,
         //   symbol: 'none'
         // },
-        // {
-        //   name: '均线2',
-        //   data: yData3,
-        //   type: 'line',
-        //   lineStyle: {
-        //     color: '#000'
-        //   },
-        //   smooth: false,
-        //   symbol: 'none'
-        // }
+        {
+          name: '均线2',
+          data: yData3,
+          type: 'line',
+          lineStyle: {
+            color: 'rgb(132, 7, 189)'
+          },
+          smooth: false,
+          symbol: 'none'
+        }
       ]
     };
   };
