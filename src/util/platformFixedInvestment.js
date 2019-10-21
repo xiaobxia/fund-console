@@ -158,15 +158,6 @@ Util.prototype = {
         text: 'buy-101-0'
       }
     }
-    // 缩量，只适合牛市时使用
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
-    )) {
-      return {
-        flag: true,
-        text: 'niu'
-      }
-    }
     return false
   },
   ifSellChuangye: function (record, oneDayRecord) {
@@ -227,15 +218,6 @@ Util.prototype = {
       return {
         flag: true,
         text: 'buy-101-0'
-      }
-    }
-    // 缩量，只适合牛市时使用
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
-    )) {
-      return {
-        flag: true,
-        text: 'niu'
       }
     }
     return false
@@ -300,15 +282,6 @@ Util.prototype = {
         text: 'buy-101-0'
       }
     }
-    // 缩量，只适合牛市时使用
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
-    )) {
-      return {
-        flag: true,
-        text: 'niu'
-      }
-    }
     return false
   },
   ifSellSanbai: function (record, oneDayRecord) {
@@ -369,15 +342,6 @@ Util.prototype = {
       return {
         flag: true,
         text: 'buy-101-0'
-      }
-    }
-    // 缩量，只适合牛市时使用
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
-    )) {
-      return {
-        flag: true,
-        text: 'niu'
       }
     }
     return false
@@ -442,15 +406,6 @@ Util.prototype = {
         text: 'buy-101-0'
       }
     }
-    // 缩量，只适合牛市时使用
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
-    )) {
-      return {
-        flag: true,
-        text: 'niu'
-      }
-    }
     return false
   },
   ifSellYiqian: function (record, oneDayRecord) {
@@ -511,15 +466,6 @@ Util.prototype = {
       return {
         flag: true,
         text: 'buy-101-0'
-      }
-    }
-    // 缩量，只适合牛市时使用
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false}
-    )) {
-      return {
-        flag: true,
-        text: 'niu'
       }
     }
     return false
