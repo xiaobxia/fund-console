@@ -12,8 +12,8 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const fnMap = indexInfoUtil.fnMap;
 const InfoUtil = indexInfoUtil.Util;
 
-const functionName = 'ifBuySanbai'
-let hide = 'sell'
+const functionName = 'ifSellShipin'
+let hide = 'buy'
 let showLow = true
 
 const isDev = process.env.NODE_ENV !== 'production'
@@ -103,141 +103,143 @@ class IndexList extends PureComponent {
           }
         })
       }
-      if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-        if (item.netChangeRatio < 0 && fiveDayRecord.netChangeRatio < 0) {
-          let count = 0
-          if (oneDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (twoDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (threeDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fourDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fiveDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (count < 3) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: 'rgb(136,72,152)'
+      if (!isDev) {
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+          if (item.netChangeRatio < 0 && fiveDayRecord.netChangeRatio < 0) {
+            let count = 0
+            if (oneDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (twoDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (threeDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fourDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fiveDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (count < 3) {
+              points.push({
+                coord: [item['date'], item['close'] - (item['close'] / 40)],
+                itemStyle: {
+                  normal: {
+                    color: 'rgb(136,72,152)'
+                  }
+                },
+                label: {
+                  show: false
                 }
-              },
-              label: {
-                show: false
-              }
-            })
+              })
+            }
           }
         }
-      }
-      if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
-        if (item.netChangeRatio < 0 && sixDayRecord.netChangeRatio < 0) {
-          let count = 0
-          if (oneDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (twoDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (threeDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fourDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fiveDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (sixDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (count < 3) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: 'black'
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
+          if (item.netChangeRatio < 0 && sixDayRecord.netChangeRatio < 0) {
+            let count = 0
+            if (oneDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (twoDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (threeDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fourDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fiveDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (sixDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (count < 3) {
+              points.push({
+                coord: [item['date'], item['close'] - (item['close'] / 40)],
+                itemStyle: {
+                  normal: {
+                    color: 'black'
+                  }
+                },
+                label: {
+                  show: false
                 }
-              },
-              label: {
-                show: false
-              }
-            })
+              })
+            }
           }
         }
-      }
-      if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-        if (item.netChangeRatio < 0) {
-          let count = 0
-          if (oneDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (twoDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (threeDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fourDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fiveDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (count < 2) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: 'rgb(136,72,152)'
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+          if (item.netChangeRatio < 0) {
+            let count = 0
+            if (oneDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (twoDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (threeDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fourDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fiveDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (count < 2) {
+              points.push({
+                coord: [item['date'], item['close'] - (item['close'] / 40)],
+                itemStyle: {
+                  normal: {
+                    color: 'rgb(136,72,152)'
+                  }
+                },
+                label: {
+                  show: false
                 }
-              },
-              label: {
-                show: false
-              }
-            })
+              })
+            }
           }
         }
-      }
-      if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
-        if (item.netChangeRatio < 0) {
-          let count = 0
-          if (oneDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (twoDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (threeDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fourDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (fiveDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (sixDayRecord.netChangeRatio > 0) {
-            count++
-          }
-          if (count < 2) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: 'black'
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
+          if (item.netChangeRatio < 0) {
+            let count = 0
+            if (oneDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (twoDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (threeDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fourDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (fiveDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (sixDayRecord.netChangeRatio > 0) {
+              count++
+            }
+            if (count < 2) {
+              points.push({
+                coord: [item['date'], item['close'] - (item['close'] / 40)],
+                itemStyle: {
+                  normal: {
+                    color: 'black'
+                  }
+                },
+                label: {
+                  show: false
                 }
-              },
-              label: {
-                show: false
-              }
-            })
+              })
+            }
           }
         }
       }
