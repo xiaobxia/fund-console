@@ -108,7 +108,7 @@ class IndexList extends PureComponent {
           })
         }
       }
-      if (isDev) {
+      if (!isDev) {
         // 跌3天
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
           if (
@@ -229,6 +229,27 @@ class IndexList extends PureComponent {
               itemStyle: {
                 normal: {
                   color: 'black'
+                }
+              },
+              label: {
+                show: false
+              }
+            })
+          }
+        }
+        // 涨4
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+          if (
+            item.netChangeRatio > 0 &&
+            oneDayRecord.netChangeRatio > 0 &&
+            twoDayRecord.netChangeRatio > 0 &&
+            threeDayRecord.netChangeRatio > 0
+          ) {
+            points.push({
+              coord: [item['date'], item['close'] + (item['close'] / 40)],
+              itemStyle: {
+                normal: {
+                  color: 'rgb(120,200,60)'
                 }
               },
               label: {
