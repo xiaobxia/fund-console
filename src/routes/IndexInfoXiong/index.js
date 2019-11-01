@@ -28,7 +28,7 @@ for (let key in codeMap) {
   })
 }
 
-const defaultIndex = 'shipin'
+const defaultIndex = 'sanbai'
 const ifMock = false
 const ifLockData = true
 
@@ -44,6 +44,7 @@ class IndexInfo extends PureComponent {
     threshold: 0,
     rate: 0,
     wave: 0,
+    average: 0,
     nowType: defaultIndex
   };
 
@@ -73,7 +74,8 @@ class IndexInfo extends PureComponent {
           this.setState({
             threshold: codeMap[index || defaultIndex].threshold,
             rate: codeMap[index || defaultIndex].rate,
-            wave: codeMap[index || defaultIndex].wave
+            wave: codeMap[index || defaultIndex].wave,
+            average: codeMap[index || defaultIndex].average
           });
         } else {
           this.setState(formatData(list));
@@ -120,6 +122,7 @@ class IndexInfo extends PureComponent {
               threshold={this.state.threshold}
               rate={this.state.rate}
               wave={this.state.wave}
+              average={this.state.average}
             />
           </div>
         </div>

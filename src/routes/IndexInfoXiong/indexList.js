@@ -12,7 +12,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const fnMap = indexInfoUtil.fnMap;
 const InfoUtil = indexInfoUtil.Util;
 
-const functionName = 'ifSellShipin'
+const functionName = 'ifSellChuangye'
 let hide = 'buy'
 let showLow = true
 
@@ -50,6 +50,7 @@ class IndexList extends PureComponent {
     const threshold = this.props.threshold;
     const rate = this.props.rate;
     const wave = this.props.wave;
+    const average = this.props.average;
     const infoConfig = {threshold, rate, wave};
     const recentNetValue = this.props.dataSource;
     const infoUtil = new InfoUtil(infoConfig)
@@ -76,34 +77,59 @@ class IndexList extends PureComponent {
       const fourDayRecord = recentNetValue[index + 4];
       const fiveDayRecord = recentNetValue[index + 5];
       const sixDayRecord = recentNetValue[index + 6];
+      const sevenDayRecord = recentNetValue[index + 7];
+      const eightDayRecord = recentNetValue[index + 8];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
       let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
-      if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
-        points.push({
-          coord: [item['date'], item['close']],
-          itemStyle: {
-            normal: {
-              color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
+      if (isDev) {
+        if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
+          points.push({
+            coord: [item['date'], item['close']],
+            itemStyle: {
+              normal: {
+                color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
+              }
+            },
+            label: {
+              show: false
             }
-          },
-          label: {
-            show: false
-          }
-        })
-      } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
-        points.push({
-          coord: [item['date'], item['close']],
-          itemStyle: {
-            normal: {
-              color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
+          })
+        } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
+          points.push({
+            coord: [item['date'], item['close']],
+            itemStyle: {
+              normal: {
+                color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
+              }
+            },
+            label: {
+              show: false
             }
-          },
-          label: {
-            show: false
-          }
-        })
+          })
+        }
       }
-      if (!isDev) {
+      if (isDev) {
+        // 跌3天
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+          if (
+            item.netChangeRatio < 0 &&
+            oneDayRecord.netChangeRatio < 0 &&
+            twoDayRecord.netChangeRatio < 0
+          ) {
+            points.push({
+              coord: [item['date'], item['close'] - (item['close'] / 40)],
+              itemStyle: {
+                normal: {
+                  color: '#ffb5b5'
+                }
+              },
+              label: {
+                show: false
+              }
+            })
+          }
+        }
+        // 6跌5
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
           if (item.netChangeRatio < 0 && fiveDayRecord.netChangeRatio < 0) {
             let count = 0
@@ -119,15 +145,12 @@ class IndexList extends PureComponent {
             if (fourDayRecord.netChangeRatio > 0) {
               count++
             }
-            if (fiveDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 3) {
+            if (count < 2) {
               points.push({
                 coord: [item['date'], item['close'] - (item['close'] / 40)],
                 itemStyle: {
                   normal: {
-                    color: 'rgb(136,72,152)'
+                    color: '#e6caff'
                   }
                 },
                 label: {
@@ -137,6 +160,7 @@ class IndexList extends PureComponent {
             }
           }
         }
+        // 7跌6
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
           if (item.netChangeRatio < 0 && sixDayRecord.netChangeRatio < 0) {
             let count = 0
@@ -155,15 +179,12 @@ class IndexList extends PureComponent {
             if (fiveDayRecord.netChangeRatio > 0) {
               count++
             }
-            if (sixDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 3) {
+            if (count < 2) {
               points.push({
                 coord: [item['date'], item['close'] - (item['close'] / 40)],
                 itemStyle: {
                   normal: {
-                    color: 'black'
+                    color: '#8600ff'
                   }
                 },
                 label: {
@@ -173,113 +194,62 @@ class IndexList extends PureComponent {
             }
           }
         }
+        // 跌4天
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (item.netChangeRatio < 0) {
-            let count = 0
-            if (oneDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (twoDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (threeDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fourDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fiveDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 2) {
-              points.push({
-                coord: [item['date'], item['close'] - (item['close'] / 40)],
-                itemStyle: {
-                  normal: {
-                    color: 'rgb(136,72,152)'
-                  }
-                },
-                label: {
-                  show: false
+          if (
+            item.netChangeRatio < 0 &&
+            oneDayRecord.netChangeRatio < 0 &&
+            twoDayRecord.netChangeRatio < 0 &&
+            threeDayRecord.netChangeRatio < 0
+          ) {
+            points.push({
+              coord: [item['date'], item['close'] - (item['close'] / 40)],
+              itemStyle: {
+                normal: {
+                  color: '#ff0000'
                 }
-              })
-            }
+              },
+              label: {
+                show: false
+              }
+            })
           }
         }
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
-          if (item.netChangeRatio < 0) {
-            let count = 0
-            if (oneDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (twoDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (threeDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fourDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fiveDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (sixDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 2) {
-              points.push({
-                coord: [item['date'], item['close'] - (item['close'] / 40)],
-                itemStyle: {
-                  normal: {
-                    color: 'black'
-                  }
-                },
-                label: {
-                  show: false
+        // 跌5天
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+          if (
+            item.netChangeRatio < 0 &&
+            oneDayRecord.netChangeRatio < 0 &&
+            twoDayRecord.netChangeRatio < 0 &&
+            threeDayRecord.netChangeRatio < 0 &&
+            fourDayRecord.netChangeRatio < 0
+          ) {
+            points.push({
+              coord: [item['date'], item['close'] - (item['close'] / 40)],
+              itemStyle: {
+                normal: {
+                  color: 'black'
                 }
-              })
-            }
+              },
+              label: {
+                show: false
+              }
+            })
           }
         }
       }
-      // if (
-      //   (fourDayRecord && fourDayRecord.netChangeRatio > 0) &&
-      //   (threeDayRecord && threeDayRecord.netChangeRatio > 0) &&
-      //   twoDayRecord.netChangeRatio > 0 &&
-      //   oneDayRecord.netChangeRatio > 0 &&
-      //   item.netChangeRatio > 0
-      // ) {
-      //   points.push({
-      //     coord: [item['date'], item['close'] - (item['close'] / 40)],
-      //     itemStyle: {
-      //       normal: {
-      //         color: 'rgb(136,72,152)'
-      //       }
-      //     },
-      //     label: {
-      //       show: false
-      //     }
-      //   })
-      // }
-      // if (
-      //   twoDayRecord.netChangeRatio < 0 &&
-      //   oneDayRecord.netChangeRatio < 0 &&
-      //   item.netChangeRatio < 0
-      // ) {
-      //   points.push({
-      //     coord: [item['date'], item['close'] - (item['close'] / 40)],
-      //     itemStyle: {
-      //       normal: {
-      //         color: 'black'
-      //       }
-      //     },
-      //     label: {
-      //       show: false
-      //     }
-      //   })
-      // }
     });
+    // 20天线差值
+    let yData4 = []
+    yData.forEach((item, index) => {
+      let rate = numberUtil.countDifferenceRate(item, yData3[index])
+      yData4.push({
+        value: rate,
+        itemStyle: {
+          color: rate >= average ? 'rgb(208, 153, 183)' : (rate >= 0 ? 'rgb(112, 220, 240)' : 'rgb(254, 255, 153)')
+        }
+      });
+    })
     return {
       title: {
         text: '净值变化',
@@ -299,10 +269,17 @@ class IndexList extends PureComponent {
         type: 'category',
         data: xData
       },
-      yAxis: {
-        type: 'value',
-        scale: true
-      },
+      yAxis: [
+        {
+          type: 'value',
+          name: '点数',
+          scale: true
+        },
+        {
+          type: 'value',
+          name: '差值'
+        }
+      ],
       series: [
         {
           name: '净值',
@@ -338,6 +315,12 @@ class IndexList extends PureComponent {
           },
           smooth: false,
           symbol: 'none'
+        },
+        {
+          name: '差值',
+          data: yData4,
+          yAxisIndex: 1,
+          type: 'bar'
         }
       ]
     };
