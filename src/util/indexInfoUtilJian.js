@@ -2590,122 +2590,31 @@ Util.prototype = {
     }
     return false
   },
-  ifBuyXiaofei: function (record, oneDayRecord) {
+  ifBuyShipin: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
     )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': true, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': true, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': false, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
       return {
         flag: true,
         text: 'buy-0-0'
       }
     }
     if (ifMatch(today,
-      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': true, 'ifSessionDownClose': true}
+      {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
     )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
       return {
         flag: true,
         text: 'buy-1-0'
       }
     }
     if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
+      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
     )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': false, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
       return {
         flag: true,
         text: 'buy-2-0'
-      }
-    }
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': false, 'ifSessionDownClose': false}
-    )) {
-      return {
-        flag: true,
-        text: 'buy-3-0'
-      }
-    }
-    if (ifMatch(today,
-      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': true, 'ifSessionDownClose': true}
-    )) {
-      return {
-        flag: true,
-        text: 'buy-4-0'
-      }
-    }
-    if (ifMatch(today,
-      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
-    )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
-      )) {
-        return {
-          flag: true,
-          text: 'buy-5-0'
-        }
-      }
-    }
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': false}
-    )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
-      return {
-        flag: true,
-        text: 'buy-6-0'
       }
     }
     if (ifMatch(today,
@@ -2713,12 +2622,12 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'buy-7-0'
+        text: 'buy-3-0'
       }
     }
     return false
   },
-  ifSellXiaofei: function (record, oneDayRecord) {
+  ifSellShipin: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
@@ -2732,21 +2641,6 @@ Util.prototype = {
     if (ifMatch(today,
       {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
     )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': false, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': true, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
       return {
         flag: true,
         text: 'sell-1-0'
@@ -2755,21 +2649,6 @@ Util.prototype = {
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
     )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
-      if (ifMatch(lastDay,
-        {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': false, 'ifSessionDownClose': false}
-      )) {
-        return false
-      }
       return {
         flag: true,
         text: 'sell-2-0'
@@ -2784,32 +2663,11 @@ Util.prototype = {
       }
     }
     if (ifMatch(today,
-      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
-    )) {
-      if (ifMatch(lastDay,
-        {'ifUpOpen': true, 'ifOpenHigh': true, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
-      )) {
-        return false
-      }
-      return {
-        flag: true,
-        text: 'sell-4-0'
-      }
-    }
-    if (ifMatch(today,
       {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': false, 'ifSessionDownClose': false}
     )) {
       return {
         flag: true,
-        text: 'sell-5-0'
-      }
-    }
-    if (ifMatch(today,
-      {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
-    )) {
-      return {
-        flag: true,
-        text: 'sell-6-0'
+        text: 'sell-4-0'
       }
     }
     if (ifMatch(today,
@@ -2817,15 +2675,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-8-0'
-      }
-    }
-    if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': false, 'ifSessionDown': false, 'ifSessionUpClose': false, 'ifSessionUp': true, 'ifSessionDownClose': false}
-    )) {
-      return {
-        flag: true,
-        text: 'sell-9-0'
+        text: 'sell-5-0'
       }
     }
     if (ifMatch(today,
@@ -2833,7 +2683,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-10-0'
+        text: 'sell-6-0'
       }
     }
     if (ifMatch(today,
@@ -2841,7 +2691,7 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-11-0'
+        text: 'sell-7-0'
       }
     }
     if (ifMatch(today,
@@ -2849,15 +2699,15 @@ Util.prototype = {
     )) {
       return {
         flag: true,
-        text: 'sell-12-0'
+        text: 'sell-8-0'
       }
     }
     if (ifMatch(today,
-      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': false, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': true}
+      {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': true, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionUpClose': true, 'ifSessionUp': true, 'ifSessionDownClose': false}
     )) {
       return {
         flag: true,
-        text: 'sell-13-0'
+        text: 'sell-9-0'
       }
     }
     return false
@@ -7209,13 +7059,13 @@ const codeMap = {
     downDay: 136,
     stable: true
   },
-  'xiaofei': {
-    code: 'sh000990',
-    name: '消费',
+  'shipin': {
+    code: 'sz399396',
+    name: '食品',
     attach: 'wulin',
-    threshold: 0.97,
-    rate: 0.9892814371257483,
-    wave: 0.9413607594936705,
+    threshold: 0.85,
+    rate: 0.7876623376623377,
+    wave: 0.9127884615384618,
     up: 144.33,
     upDay: 124,
     down: -165.08,
@@ -7441,8 +7291,8 @@ const fnMap = {
   jisuanjiSell: 'ifSellJisuanji',
   xinxiBuy: 'ifBuyXinxi',
   xinxiSell: 'ifSellXinxi',
-  xiaofeiBuy: 'ifBuyXiaofei',
-  xiaofeiSell: 'ifSellXiaofei',
+  shipinBuy: 'ifBuyShipin',
+  shipinSell: 'ifSellShipin',
   baoxianBuy: 'ifBuyBaoxian',
   baoxianSell: 'ifSellBaoxian',
   wulinBuy: 'ifBuyWulin',
@@ -7542,9 +7392,9 @@ const indexInfoUtilJian = {
     // console.log(xData)
     // console.log(count)
     // console.log(count2)
-    // console.log('wave:  ' + a)
-    // console.log('rate:  ' + c)
-    // console.log(threshold)
+    console.log('wave:  ' + a)
+    console.log('rate:  ' + c)
+    console.log(threshold)
     return {list: listTemp, threshold: threshold, rate: c, wave: a}
   }
 }
