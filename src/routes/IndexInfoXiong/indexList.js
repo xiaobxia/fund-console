@@ -108,7 +108,8 @@ class IndexList extends PureComponent {
           })
         }
       }
-      if (isDev) {
+      let open = true
+      if (open) {
         // 跌3天
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
           if (
