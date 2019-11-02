@@ -108,7 +108,7 @@ class IndexList extends PureComponent {
           })
         }
       }
-      if (!isDev) {
+      if (isDev) {
         // 跌3天
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
           if (
@@ -237,6 +237,26 @@ class IndexList extends PureComponent {
             })
           }
         }
+        //涨3
+        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
+          if (
+            item.netChangeRatio > 0 &&
+            oneDayRecord.netChangeRatio > 0 &&
+            twoDayRecord.netChangeRatio > 0
+          ) {
+            points.push({
+              coord: [item['date'], item['close'] + (item['close'] / 40)],
+              itemStyle: {
+                normal: {
+                  color: '#bbffbb'
+                }
+              },
+              label: {
+                show: false
+              }
+            })
+          }
+        }
         // 涨4
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
           if (
@@ -249,7 +269,7 @@ class IndexList extends PureComponent {
               coord: [item['date'], item['close'] + (item['close'] / 40)],
               itemStyle: {
                 normal: {
-                  color: 'rgb(120,200,60)'
+                  color: '#00a600'
                 }
               },
               label: {
