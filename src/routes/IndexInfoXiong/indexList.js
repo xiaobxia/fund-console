@@ -44,6 +44,37 @@ function getAverage (netValue, day, index) {
   return numberUtil.keepTwoDecimals(count / (index + 1 - start))
 }
 
+function ifNoSell(averageList) {
+  let last = averageList[averageList.length - 1]
+  let lastTwo = averageList[averageList.length - 2]
+  if (last > 0) {
+    let max = 0
+    let maxIndex = 0
+    for (let i = 0; i < (averageList.length - 2); i++) {
+      let now = averageList[i]
+      if (now > max) {
+        max = now
+        maxIndex = i
+      }
+    }
+    if (max <= 0) {
+      if (lastTwo > 0) {
+        return true
+      }
+      return false
+    } else {
+      for (let j = maxIndex; j < averageList.length; j++) {
+        let now = averageList[j]
+        if (now < (max * 0.5)) {
+          return false
+        }
+      }
+      return true
+    }
+  }
+  return false
+}
+
 class IndexList extends PureComponent {
 
   getChartOption = () => {
@@ -52,10 +83,12 @@ class IndexList extends PureComponent {
     const wave = this.props.wave;
     const average = this.props.average;
     const infoConfig = {threshold, rate, wave};
-    const recentNetValue = this.props.dataSource;
+    let recentNetValue = this.props.dataSource;
+    // recentNetValue = recentNetValue.slice(150)
+    // console.log(recentNetValue)
     const infoUtil = new InfoUtil(infoConfig)
     // 均线
-    const recentNetValue2 = getAverageList(recentNetValue, 8)
+    const recentNetValue2 = getAverageList(recentNetValue, 60)
     const recentNetValue3 = getAverageList(recentNetValue, 20)
     let xData = [];
     let yData = [];
@@ -284,11 +317,26 @@ class IndexList extends PureComponent {
     // 20天线差值
     let yData4 = []
     yData.forEach((item, index) => {
+      const day = 5
+      let averageList = []
+      if (index >= day) {
+        for (let i = day; i >= 0; i--) {
+          let nowIndex = index - i
+          averageList.push(numberUtil.countDifferenceRate(yData[nowIndex], yData3[nowIndex]))
+        }
+      }
+      let noSell = ifNoSell(averageList)
       let rate = numberUtil.countDifferenceRate(item, yData3[index])
+      // yData4.push({
+      //   value: rate,
+      //   itemStyle: {
+      //     color: rate >= average ? 'rgb(208, 153, 183)' : (rate >= 0 ? 'rgb(112, 220, 240)' : 'rgb(254, 255, 153)')
+      //   }
+      // });
       yData4.push({
         value: rate,
         itemStyle: {
-          color: rate >= average ? 'rgb(208, 153, 183)' : (rate >= 0 ? 'rgb(112, 220, 240)' : 'rgb(254, 255, 153)')
+          color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
         }
       });
     })
@@ -300,6 +348,10 @@ class IndexList extends PureComponent {
           color: 'rgba(0, 0, 0, 0.85)',
           fontWeight: '500'
         }
+      },
+      grid: {
+        left: '5%',
+        right: '5%'
       },
       tooltip: {
         trigger: 'axis',
@@ -348,16 +400,26 @@ class IndexList extends PureComponent {
         //   smooth: false,
         //   symbol: 'none'
         // },
-        {
-          name: '均线2',
-          data: yData3,
-          type: 'line',
-          lineStyle: {
-            color: 'rgb(132, 7, 189)'
-          },
-          smooth: false,
-          symbol: 'none'
-        },
+        // {
+        //   name: '均线2',
+        //   data: yData3,
+        //   type: 'line',
+        //   lineStyle: {
+        //     color: 'rgb(132, 7, 189)'
+        //   },
+        //   smooth: false,
+        //   symbol: 'none'
+        // },
+        // {
+        //   name: '均线3',
+        //   data: yData2,
+        //   type: 'line',
+        //   lineStyle: {
+        //     color: 'rgb(255, 130, 255)'
+        //   },
+        //   smooth: false,
+        //   symbol: 'none'
+        // },
         {
           name: '差值',
           data: yData4,
@@ -607,7 +669,7 @@ class IndexList extends PureComponent {
         <ReactEcharts
           option={this.getChartOption(dataSource)}
           notMerge={true}
-          style={{height: '300px'}}
+          style={{height: '500px'}}
           lazyUpdate={true}
           theme={'theme_name'}
         />

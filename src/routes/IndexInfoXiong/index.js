@@ -63,7 +63,7 @@ class IndexInfo extends PureComponent {
     code = code || codeMap[defaultIndex].code;
     http.get(`${ifMock ? '/mock' : 'webData'}/getStockAllDongfang`, {
       code: code,
-      days: 200
+      days: 300
     }).then((data) => {
       if (data.success) {
         const list = data.data.list;
