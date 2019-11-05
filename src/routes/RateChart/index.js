@@ -40,9 +40,6 @@ class IndexInfo extends PureComponent {
 
   state = {
     list: [],
-    threshold: 0,
-    rate: 0,
-    wave: 0,
     nowType: defaultIndex
   };
 
@@ -61,7 +58,7 @@ class IndexInfo extends PureComponent {
     code = code || codeMap[defaultIndex].code;
     http.get(`${ifMock ? '/mock' : 'webData'}/getStockAllDongfang`, {
       code: code,
-      days: 200
+      days: 300
     }).then((data) => {
       if (data.success) {
         const list = data.data.list;
@@ -105,9 +102,6 @@ class IndexInfo extends PureComponent {
             <IndexList
               dataSource={this.state.list}
               nowType={this.state.nowType}
-              threshold={this.state.threshold}
-              rate={this.state.rate}
-              wave={this.state.wave}
             />
           </div>
         </div>

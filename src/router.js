@@ -14,7 +14,7 @@ import IndexInfoXiong from 'Bundle-loader?lazy!localRoutes/IndexInfoXiong'
 import IndexInfoJian from 'Bundle-loader?lazy!localRoutes/IndexInfoJian'
 import IndexDifference from 'Bundle-loader?lazy!localRoutes/IndexDifference'
 import FixedInvestment from 'Bundle-loader?lazy!localRoutes/FixedInvestment'
-import ChangeMarket from 'Bundle-loader?lazy!localRoutes/ChangeMarket'
+import RateChart from 'Bundle-loader?lazy!localRoutes/RateChart'
 import Chart from 'Bundle-loader?lazy!localRoutes/Chart'
 import MonthIncome from 'Bundle-loader?lazy!localRoutes/MonthIncome'
 import PlatformFixedInvestment from 'Bundle-loader?lazy!localRoutes/PlatformFixedInvestment'
@@ -102,9 +102,9 @@ export const baseRoutes = [
     component: getComponent(IndexInfoJian)
   },
   {
-    name: 'ChangeMarket',
-    path: '/changeMarket',
-    component: getComponent(ChangeMarket)
+    name: 'RateChart',
+    path: '/rateChart',
+    component: getComponent(RateChart)
   },
   {
     name: 'Chart',
@@ -165,8 +165,8 @@ export const menusInfos = [
         title: '指数差分析'
       },
       {
-        pathname: '/changeMarket',
-        title: '变盘策略'
+        pathname: '/rateChart',
+        title: '幅值图'
       },
       {
         pathname: '/fixedInvestment',
