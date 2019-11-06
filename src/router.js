@@ -170,7 +170,7 @@ export const menusInfos = [
       },
       {
         pathname: '/fixedInvestment',
-        title: '定投策略'
+        title: '均线图'
       }
     ]
   },

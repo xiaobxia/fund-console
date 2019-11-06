@@ -23,7 +23,7 @@ class IndexList extends PureComponent {
       yData.unshift({
         value: netChangeRatio,
         itemStyle: {
-          color: netChangeRatio < -4 ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
+          color: netChangeRatio > 0 ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
         }
       });
     });
@@ -78,12 +78,79 @@ class IndexList extends PureComponent {
     };
   };
 
+  getChartOptionD = () => {
+    const recentNetValue = this.props.dataSource;
+    let xData = [];
+    let yData = [];
+    let xCount = [];
+    for (let j = -7; j < 7; j = j + 0.1) {
+      xCount.push({
+        number: j.toFixed(1),
+        count: 0
+      });
+    }
+    recentNetValue.forEach((item, index) => {
+      const netChangeRatio = item['netChangeRatio']
+      for (let i = 0; i < xCount.length; i++) {
+        if (xCount[i].number < netChangeRatio && (xCount[i + 1] && xCount[i + 1].number > netChangeRatio)) {
+          xCount[i].count ++
+          break
+        }
+      }
+    });
+    for (let i = 0; i < xCount.length; i++) {
+      xData.push(xCount[i].number)
+      yData.push(xCount[i].count)
+    }
+    return {
+      title: {
+        text: '幅值分布',
+        left: 'center',
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontWeight: '500'
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: xData
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: '计数',
+          scale: true
+        }
+      ],
+      series: [
+        {
+          name: '计数',
+          data: yData,
+          type: 'bar'
+        }
+      ]
+    };
+  };
+
   render() {
     const {dataSource} = this.props;
     return (
       <div>
         <ReactEcharts
           option={this.getChartOption(dataSource)}
+          notMerge={true}
+          style={{height: '300px'}}
+          lazyUpdate={true}
+          theme={'theme_name'}
+        />
+        <ReactEcharts
+          option={this.getChartOptionD(dataSource)}
           notMerge={true}
           style={{height: '300px'}}
           lazyUpdate={true}

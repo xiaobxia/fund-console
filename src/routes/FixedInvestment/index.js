@@ -9,7 +9,7 @@ import DocumentTitle from 'react-document-title';
 import {Input, Upload, message, Button, Icon, Row, Col, Radio} from 'antd';
 import http from 'localUtil/httpUtil';
 import numberUtil from 'localUtil/numberUtil';
-import indexInfoUtil from 'localUtil/fixedInvestment';
+import indexInfoUtil from 'localUtil/indexInfoUtilXiong';
 import {consoleRender} from 'localUtil/consoleLog'
 import PageHeader from 'localComponent/PageHeader'
 import {getOpenKeyAndMainPath} from '../../router'
@@ -28,9 +28,9 @@ for (let key in codeMap) {
   })
 }
 
-const defaultIndex = 'wulin'
+const defaultIndex = 'sanbai'
 const ifMock = false
-const ifLockData = false
+const ifLockData = true
 
 
 
@@ -44,6 +44,7 @@ class IndexInfo extends PureComponent {
     threshold: 0,
     rate: 0,
     wave: 0,
+    average: 0,
     nowType: defaultIndex
   };
 
@@ -62,7 +63,7 @@ class IndexInfo extends PureComponent {
     code = code || codeMap[defaultIndex].code;
     http.get(`${ifMock ? '/mock' : 'webData'}/getStockAllDongfang`, {
       code: code,
-      days: 200
+      days: 600
     }).then((data) => {
       if (data.success) {
         const list = data.data.list;
@@ -73,7 +74,8 @@ class IndexInfo extends PureComponent {
           this.setState({
             threshold: codeMap[index || defaultIndex].threshold,
             rate: codeMap[index || defaultIndex].rate,
-            wave: codeMap[index || defaultIndex].wave
+            wave: codeMap[index || defaultIndex].wave,
+            average: codeMap[index || defaultIndex].average
           });
         } else {
           this.setState(formatData(list));
@@ -120,6 +122,7 @@ class IndexInfo extends PureComponent {
               threshold={this.state.threshold}
               rate={this.state.rate}
               wave={this.state.wave}
+              average={this.state.average}
             />
           </div>
         </div>
