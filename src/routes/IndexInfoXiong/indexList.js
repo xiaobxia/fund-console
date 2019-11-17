@@ -75,6 +75,26 @@ function ifNoSell(averageList) {
   return false
 }
 
+function ifUpAll (closeList, now) {
+  for (let i = 0; i < closeList.length; i++) {
+    if (closeList[i] > now) {
+      return false
+    }
+  }
+  return true
+}
+
+function ifDownAll (closeList, now) {
+  console.log(closeList)
+  for (let i = 0; i < closeList.length; i++) {
+    if (closeList[i] < now) {
+      return false
+    }
+  }
+  return true
+}
+
+
 class IndexList extends PureComponent {
 
   getChartOption = () => {
@@ -102,6 +122,36 @@ class IndexList extends PureComponent {
       yData3.push(item);
     })
     recentNetValue.forEach((item, index) => {
+      // let closeList = []
+      // for (let i = 1; i < 21; i++) {
+      //   closeList.push(recentNetValue[index + i] && recentNetValue[index + i]['close'])
+      // }
+      // if (ifUpAll(closeList, item['close'])) {
+      //   points.push({
+      //     coord: [item['date'], item['close']],
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'red'
+      //       }
+      //     },
+      //     label: {
+      //       show: false
+      //     }
+      //   })
+      // }
+      // if (ifDownAll(closeList, item['close'])) {
+      //   points.push({
+      //     coord: [item['date'], item['close']],
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'green'
+      //       }
+      //     },
+      //     label: {
+      //       show: false
+      //     }
+      //   })
+      // }
       xData.unshift(item['date']);
       yData.unshift(item['close']);
       const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
@@ -114,33 +164,33 @@ class IndexList extends PureComponent {
       const eightDayRecord = recentNetValue[index + 8];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
       let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
-      if (isDev) {
-        if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
-          points.push({
-            coord: [item['date'], item['close']],
-            itemStyle: {
-              normal: {
-                color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
-              }
-            },
-            label: {
-              show: false
-            }
-          })
-        } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
-          points.push({
-            coord: [item['date'], item['close']],
-            itemStyle: {
-              normal: {
-                color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
-              }
-            },
-            label: {
-              show: false
-            }
-          })
-        }
-      }
+      // if (isDev) {
+      //   if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
+      //     points.push({
+      //       coord: [item['date'], item['close']],
+      //       itemStyle: {
+      //         normal: {
+      //           color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
+      //         }
+      //       },
+      //       label: {
+      //         show: false
+      //       }
+      //     })
+      //   } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
+      //     points.push({
+      //       coord: [item['date'], item['close']],
+      //       itemStyle: {
+      //         normal: {
+      //           color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
+      //         }
+      //       },
+      //       label: {
+      //         show: false
+      //       }
+      //     })
+      //   }
+      // }
       let open = true
       if (open) {
         // 跌3天
