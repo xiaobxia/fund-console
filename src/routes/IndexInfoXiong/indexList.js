@@ -365,6 +365,7 @@ class IndexList extends PureComponent {
       }
     });
     // 20天线差值
+    let inList = []
     let yData4 = []
     yData.forEach((item, index) => {
       const day = 5
@@ -389,7 +390,53 @@ class IndexList extends PureComponent {
           color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
         }
       });
+      if (noSell) {
+        inList.push(index)
+      }
     })
+
+    // let yData5 = []
+    // recentNetValue.forEach((item, index) => {
+    //   let now = 0
+    //   let last = 0
+    //   let diff = 0
+    //   let day = 7
+    //   if (index + day < recentNetValue.length) {
+    //     // 近的在前
+    //     for (let i = index; i < (day + index); i++) {
+    //       now += parseFloat(recentNetValue[i].close)
+    //     }
+    //     for (let j = (1 + index); j < ((day + 1) + index); j++) {
+    //       last += parseFloat(recentNetValue[j].close)
+    //     }
+    //     diff = numberUtil.countDifferenceRate(now / day, last / day)
+    //   } else {
+    //     diff = 0
+    //   }
+    //   yData5.unshift({
+    //     value: diff,
+    //     itemStyle: {
+    //       color: diff >= 0.2 ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
+    //     }
+    //   });
+    //   let ind = recentNetValue.length - 1 - index
+    //   if (!(diff >= 0.2)) {
+    //     if (inList.indexOf(ind) !== -1) {
+    //       points.push({
+    //         coord: [xData[ind], yData[ind]],
+    //         itemStyle: {
+    //           normal: {
+    //             color: 'green'
+    //           }
+    //         },
+    //         label: {
+    //           show: false
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
+
     return {
       title: {
         text: '净值变化',

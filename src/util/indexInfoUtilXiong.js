@@ -27,6 +27,7 @@ Util.prototype = {
     flag.ifOpenHigh = this.ifOpenHigh(record)
     flag.ifUpClose = this.ifUpClose(record)
     flag.ifCloseHigh = this.ifCloseHigh(record)
+    flag.ifCloseHigh2 = this.ifCloseHigh2(record)
     flag.ifSessionDown = this.ifSessionDown(record)
     flag.ifSessionDownHigh = this.ifSessionDownHigh(record)
     flag.ifSessionUpClose = this.ifSessionUpClose(record)
@@ -60,6 +61,11 @@ Util.prototype = {
   ifCloseHigh: function (record) {
     const rate = this.rate
     return Math.abs(record.netChangeRatio) >= rate
+  },
+  ifCloseHigh2: function (record) {
+    const rate = this.rate
+    // return Math.abs(record.netChangeRatio) >= 2.25 * rate && Math.abs(record.netChangeRatio) <= 2.5 * rate
+    return Math.abs(record.netChangeRatio) >= (2 * rate)
   },
   // 盘中下跌
   ifSessionDown: function (record) {
