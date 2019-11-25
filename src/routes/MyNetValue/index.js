@@ -36,6 +36,7 @@ class MyNetValue extends PureComponent {
     modalType: 'add',
     record: {},
     netValueAll: [],
+    sanbai: [],
     nowType: '全部'
   };
 
@@ -55,7 +56,7 @@ class MyNetValue extends PureComponent {
     query.pageSize = query.pageSize || 10;
     this.queryMyNetValues(query);
     this.queryMyNetValueAll();
-    console.log(query)
+    this.querySanbai();
   };
 
   getTitle() {
@@ -69,6 +70,20 @@ class MyNetValue extends PureComponent {
       query = qs.parse(search.slice(1));
     }
     return query;
+  };
+
+  querySanbai = () => {
+    return http.get('stock/getStockPriceKline', {
+      code: 'sh000300',
+      start: '20180309'
+    }).then((data) => {
+      if (data.success) {
+        let list = data.data
+        this.setState({
+          sanbai: list
+        })
+      }
+    })
   };
 
   queryMyNetValueAll = () => {
@@ -196,14 +211,19 @@ class MyNetValue extends PureComponent {
   };
 
   getNetValueOption = () => {
-    const {netValueAll} = this.state;
+    const {netValueAll, sanbai} = this.state;
     if (!(netValueAll.length > 1)) {
+      return {};
+    }
+    if (!(sanbai.length > 1)) {
       return {};
     }
     let xData = [];
     let yData = [];
     let yData11 = []
+    let yData2 = [];
     const baseMy = netValueAll[0]['net_value']
+    const baseSanbai = sanbai[0]['close']
 
     let myList = arrayUtil.copy(netValueAll)
     // 近一年数据
@@ -226,6 +246,9 @@ class MyNetValue extends PureComponent {
       yData.push(item['net_value']);
       // 移动一个位置
       yData11.push((myList[index + 1] && myList[index + 1]['position']) || 0)
+    });
+    sanbai.forEach(function (item, index) {
+      yData2.push((item.close / baseSanbai).toFixed(4))
     });
     return {
       title: {
@@ -282,6 +305,16 @@ class MyNetValue extends PureComponent {
           symbol: 'none',
           lineStyle: {
             color: '#f50'
+          }
+        },
+        {
+          name: '300',
+          data: yData2,
+          type: 'line',
+          smooth: false,
+          symbol: 'none',
+          lineStyle: {
+            color: '#E6A23C'
           }
         },
         {
