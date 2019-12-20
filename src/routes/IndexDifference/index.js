@@ -9,10 +9,29 @@ import DocumentTitle from 'react-document-title';
 import {Input, Upload, message, Button, Icon, Row, Col, Radio} from 'antd';
 import http from 'localUtil/httpUtil';
 import numberUtil from 'localUtil/numberUtil';
+import indexInfoUtil from 'localUtil/indexInfoUtilXiong';
 import {consoleRender} from 'localUtil/consoleLog'
 import PageHeader from 'localComponent/PageHeader'
 import {getOpenKeyAndMainPath} from '../../router'
 import IndexList from './indexList'
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+
+const codeMap = indexInfoUtil.codeMap;
+const formatData = indexInfoUtil.formatData;
+let codeList = [];
+for (let key in codeMap) {
+  codeList.push({
+    code: codeMap[key].code,
+    key: key,
+    name: codeMap[key].name
+  })
+}
+
+const defaultIndex = 'sanbai'
+const ifMock = false
+const ifLockData = true
+
 
 
 class IndexInfo extends PureComponent {
@@ -21,9 +40,12 @@ class IndexInfo extends PureComponent {
   }
 
   state = {
-    chuangye: [],
-    wulin: [],
-    list: []
+    list: [],
+    threshold: 0,
+    rate: 0,
+    wave: 0,
+    average: 0,
+    nowType: defaultIndex
   };
 
   componentWillMount() {
@@ -36,50 +58,45 @@ class IndexInfo extends PureComponent {
   componentWillUnmount() {
   }
 
-  initPage = () => {
-    Promise.all([
-      http.get(`webData/getStockAllDongfang`, {
-        code: 'sz399006',
-        days: 250
-      }).then((data) => {
-        if (data.success) {
-          const list = data.data.list;
+  initPage = (code, index) => {
+    //webData/getStockAllDongfang
+    code = code || codeMap[defaultIndex].code;
+    http.get(`${ifMock ? '/mock' : 'webData'}/getStockAllDongfang`, {
+      code: code,
+      days: 600
+    }).then((data) => {
+      if (data.success) {
+        const list = data.data.list;
+        if (ifLockData) {
           this.setState({
-            chuangye: list
+            list: formatData(list).list
           });
-        }
-      }),
-      http.get(`webData/getStockAllDongfang`, {
-        code: 'sh000016',
-        days: 250
-      }).then((data) => {
-        if (data.success) {
-          const list = data.data.list;
           this.setState({
-            wulin: list
+            threshold: codeMap[index || defaultIndex].threshold,
+            rate: codeMap[index || defaultIndex].rate,
+            wave: codeMap[index || defaultIndex].wave,
+            average: codeMap[index || defaultIndex].average
           });
+        } else {
+          this.setState(formatData(list));
         }
-      })
-    ]).then(() => {
-      const wulin = this.state.wulin;
-      const chuangye = this.state.chuangye;
-      let temp = [];
-      for (let i = 0; i < wulin.length; i++) {
-        temp.push({
-          date: wulin[i].date,
-          wulin: wulin[i].kline.netChangeRatio,
-          chuangye: chuangye[i].kline.netChangeRatio
-        })
       }
-      this.setState({
-        list: temp
-      });
     })
   };
 
   getTitle() {
     return getOpenKeyAndMainPath(this.props.location.pathname).title;
   }
+
+  onChange=(e) => {
+    let code = {};
+    for (let key in codeMap) {
+      code[key] = codeMap[key].code
+    }
+    this.setState({nowType: e.target.value});
+    this.initPage(code[e.target.value], e.target.value);
+    console.log(e.target.value)
+  };
 
   render() {
     consoleRender('IndexInfo render');
@@ -88,14 +105,24 @@ class IndexInfo extends PureComponent {
       <DocumentTitle title={title}>
         <div className="module-my-fund route-modules">
           <PageHeader routeTitle={title}>
+            <Row className="page-header-content">
+            <RadioGroup onChange={this.onChange} defaultValue={defaultIndex}>
+              {codeList.map((item) => {
+                return <RadioButton key={item.key} value={item.key}>{item.name}</RadioButton>
+              })}
+            </RadioGroup>
+            </Row>
           </PageHeader>
           <div className="content-card-wrap">
             <h3 className="blue-text">
             </h3>
             <IndexList
               dataSource={this.state.list}
-              chuangye={this.state.chuangye}
-              wulin={this.state.wulin}
+              nowType={this.state.nowType}
+              threshold={this.state.threshold}
+              rate={this.state.rate}
+              wave={this.state.wave}
+              average={this.state.average}
             />
           </div>
         </div>

@@ -162,7 +162,7 @@ export const menusInfos = [
       },
       {
         pathname: '/indexDifference',
-        title: '指数差分析'
+        title: '20日线'
       },
       {
         pathname: '/rateChart',
@@ -170,7 +170,7 @@ export const menusInfos = [
       },
       {
         pathname: '/fixedInvestment',
-        title: '均线图'
+        title: '半年线'
       }
     ]
   },
