@@ -41,7 +41,7 @@ class Fund extends PureComponent {
     const query = this.getSearch();
     //初始化页面
     query.current = query.current || 1;
-    query.pageSize = query.pageSize || 10;
+    query.pageSize = query.pageSize || 40;
     this.queryFunds(query);
     console.log(query)
   };
@@ -63,6 +63,16 @@ class Fund extends PureComponent {
     const {fundActions} = this.props;
     fundActions.queryFunds(query).then((data) => {
       //无数据
+      let temp = []
+      data.data.list.forEach((item) => {
+        if (item.theme) {
+          temp.push({
+            code: item.code,
+            theme: item.theme
+          })
+        }
+      })
+      console.log(JSON.stringify(temp))
       if (data.data.list.length === 0) {
         const query = this.getSearch();
         const current = parseInt(query.current, 10);
@@ -135,7 +145,7 @@ class Fund extends PureComponent {
 
   searchHandler = (data) => {
     data.current = 1;
-    data.pageSize = 10;
+    data.pageSize = 40;
     this.queryFundsWithUpdateQuery(data);
   };
 
