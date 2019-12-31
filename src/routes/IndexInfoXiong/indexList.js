@@ -16,7 +16,7 @@ const functionName = 'ifSellChuangye'
 let hide = 'buy'
 let showLow = true
 
-const isDev = process.env.NODE_ENV !== 'production'
+let isDev = process.env.NODE_ENV !== 'production'
 
 if (!isDev) {
   hide = false
@@ -164,34 +164,35 @@ class IndexList extends PureComponent {
       const eightDayRecord = recentNetValue[index + 8];
       let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
       let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
-      // if (isDev) {
-      //   if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
-      //     points.push({
-      //       coord: [item['date'], item['close']],
-      //       itemStyle: {
-      //         normal: {
-      //           color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
-      //         }
-      //       },
-      //       label: {
-      //         show: false
-      //       }
-      //     })
-      //   } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
-      //     points.push({
-      //       coord: [item['date'], item['close']],
-      //       itemStyle: {
-      //         normal: {
-      //           color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
-      //         }
-      //       },
-      //       label: {
-      //         show: false
-      //       }
-      //     })
-      //   }
-      // }
-      let open = true
+      isDev = true
+      if (isDev) {
+        if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
+          points.push({
+            coord: [item['date'], item['close']],
+            itemStyle: {
+              normal: {
+                color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
+          points.push({
+            coord: [item['date'], item['close']],
+            itemStyle: {
+              normal: {
+                color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        }
+      }
+      let open = false
       if (open) {
         // 跌3天
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {

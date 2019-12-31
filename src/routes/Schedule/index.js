@@ -89,19 +89,6 @@ class Schedule extends PureComponent {
       <DocumentTitle title={title}>
         <div className="module-my-fund route-modules">
           <PageHeader routeTitle={title}>
-            <Row className="page-header-content">
-              <Col span={8}>
-              </Col>
-              <Col span={8}>
-              </Col>
-              <Col span={8} style={{textAlign: 'right'}}>
-                <Button.Group>
-                  <Button onClick={this.openModalHandler}>
-                    添加任务
-                  </Button>
-                </Button.Group>
-              </Col>
-            </Row>
           </PageHeader>
           <div className="content-card-wrap">
             <List
@@ -112,7 +99,7 @@ class Schedule extends PureComponent {
                   <span>{item.describe}</span>
                   <span style={{marginLeft: 50}}>
                     <Switch
-                      checked={item.open}
+                      checked={item.open === 'open'}
                       onChange={this.onChangeHandler(item.name)}
                     />
                   </span>

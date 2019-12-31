@@ -111,27 +111,6 @@ class FundList extends PureComponent {
               className={isUp ? 'red-text' : isEqual ? '' : 'green-text'}>{`${rate}%`}</span>
           );
         }
-      },
-      {
-        title: '操作',
-        width: 180,
-        fixed: 'right',
-        render: (record) => {
-          return (
-            <div>
-              <Popconfirm
-                title="确认删除此基金?"
-                onConfirm={() => {
-                  this.deleteHandler(record.code)
-                }}
-                okText="确定"
-                cancelText="取消"
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </div>
-          );
-        }
       }
     ];
     const {dataSource, tableLoading} = this.props;

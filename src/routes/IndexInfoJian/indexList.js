@@ -15,7 +15,7 @@ const InfoUtil = indexInfoUtil.Util;
 const functionName = 'ifBuyShipin'
 let hide = 'sell'
 
-const isDev = process.env.NODE_ENV !== 'production'
+let isDev = process.env.NODE_ENV !== 'production'
 if (!isDev) {
   hide = false
 }

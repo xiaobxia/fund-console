@@ -12,10 +12,8 @@ import MyNetValue from 'Bundle-loader?lazy!localRoutes/MyNetValue'
 import MyAsset from 'Bundle-loader?lazy!localRoutes/MyAsset'
 import IndexInfoXiong from 'Bundle-loader?lazy!localRoutes/IndexInfoXiong'
 import IndexInfoJian from 'Bundle-loader?lazy!localRoutes/IndexInfoJian'
-import IndexDifference from 'Bundle-loader?lazy!localRoutes/IndexDifference'
-import FixedInvestment from 'Bundle-loader?lazy!localRoutes/FixedInvestment'
-import RateChart from 'Bundle-loader?lazy!localRoutes/RateChart'
-import Chart from 'Bundle-loader?lazy!localRoutes/Chart'
+import MonthLine from 'Bundle-loader?lazy!localRoutes/MonthLine'
+import HalfYearLine from 'Bundle-loader?lazy!localRoutes/HalfYearLine'
 import MonthIncome from 'Bundle-loader?lazy!localRoutes/MonthIncome'
 import PlatformFixedInvestment from 'Bundle-loader?lazy!localRoutes/PlatformFixedInvestment'
 
@@ -92,9 +90,9 @@ export const baseRoutes = [
     component: getComponent(IndexInfoXiong)
   },
   {
-    name: 'IndexDifference',
-    path: '/indexDifference',
-    component: getComponent(IndexDifference)
+    name: 'MonthLine',
+    path: '/monthLine',
+    component: getComponent(MonthLine)
   },
   {
     name: 'IndexInfoJian',
@@ -102,19 +100,9 @@ export const baseRoutes = [
     component: getComponent(IndexInfoJian)
   },
   {
-    name: 'RateChart',
-    path: '/rateChart',
-    component: getComponent(RateChart)
-  },
-  {
-    name: 'Chart',
-    path: '/chart',
-    component: getComponent(Chart)
-  },
-  {
-    name: 'FixedInvestment',
-    path: '/fixedInvestment',
-    component: getComponent(FixedInvestment)
+    name: 'HalfYearLine',
+    path: '/halfYearLine',
+    component: getComponent(HalfYearLine)
   },
   {
     name: 'MonthIncome',
@@ -142,12 +130,6 @@ export const menusInfos = [
     icon: 'schedule'
   },
   {
-    key: 'chart',
-    pathname: '/chart',
-    title: '图表测试',
-    icon: 'chart'
-  },
-  {
     key: 'index',
     title: '指数',
     icon: 'line-chart',
@@ -161,15 +143,11 @@ export const menusInfos = [
         title: '指数分析-简'
       },
       {
-        pathname: '/indexDifference',
+        pathname: '/monthLine',
         title: '20日线'
       },
       {
-        pathname: '/rateChart',
-        title: '幅值图'
-      },
-      {
-        pathname: '/fixedInvestment',
+        pathname: '/halfYearLine',
         title: '半年线'
       }
     ]
@@ -187,10 +165,10 @@ export const menusInfos = [
         pathname: '/myFund',
         title: '基金持仓'
       },
-      {
-        pathname: '/fund',
-        title: '基金库'
-      },
+      // {
+      //   pathname: '/fund',
+      //   title: '基金库'
+      // },
       // {
       //   title: '策略',
       //   pathname: '/strategy'

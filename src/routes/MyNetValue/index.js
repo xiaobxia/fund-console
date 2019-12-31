@@ -87,7 +87,7 @@ class MyNetValue extends PureComponent {
   };
 
   queryMyNetValueAll = () => {
-    return http.get('userFund/getUserNetValues').then((data) => {
+    return http.get('userFund/getUserNetValueAll').then((data) => {
       if (data.success) {
         let list = data.data.list
         this.setState({

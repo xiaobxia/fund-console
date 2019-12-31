@@ -106,15 +106,6 @@ class MyFund extends PureComponent {
       <DocumentTitle title={title}>
         <div className="module-my-fund route-modules">
           <PageHeader routeTitle={title}>
-            <Row className="page-header-content">
-              <Col span={8} style={{textAlign: 'left'}}>
-                <Button.Group>
-                  <Button onClick={this.openModalHandler}>
-                    添加基金
-                  </Button>
-                </Button.Group>
-              </Col>
-            </Row>
           </PageHeader>
           <div className="content-card-wrap">
             <FundList
