@@ -296,8 +296,31 @@ class IndexList extends PureComponent {
           averageList.push(numberUtil.countDifferenceRate(yData[nowIndex], yData3[nowIndex]))
         }
       }
+      // console.log(averageList)
       let noSell = ifNoSell(averageList)
       let rate = numberUtil.countDifferenceRate(item, yData3[index])
+      // 移动均线策略
+      let now = 0
+      let last = 0
+      let c = true
+      // 近的在前
+      for (let i = 0; i < 7; i++) {
+        if (yData[index - i]) {
+          now += parseFloat(yData[index - i])
+        }
+      }
+      for (let j = 1; j < 8; j++) {
+        if (yData[index - j]) {
+          last += parseFloat(yData[index - j])
+        }
+      }
+      const diff = numberUtil.countDifferenceRate(now / 7, last / 7)
+      console.log(now)
+      console.log(last)
+      console.log(diff)
+      if (diff < 0.2) {
+        c = false
+      }
       // yData4.push({
       //   value: rate,
       //   itemStyle: {
@@ -307,7 +330,7 @@ class IndexList extends PureComponent {
       yData4.push({
         value: rate,
         itemStyle: {
-          color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
+          color: noSell ? (c ? 'rgb(208, 153, 183)' : 'rgb(0, 0, 0)') : 'rgb(112, 220, 240)'
         }
       });
     })
