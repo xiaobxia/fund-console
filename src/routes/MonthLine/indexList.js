@@ -88,16 +88,16 @@ class IndexList extends PureComponent {
     // console.log(recentNetValue)
     const infoUtil = new InfoUtil(infoConfig)
     // 均线
-    // const recentNetValue2 = getAverageList(recentNetValue, 120)
+    const recentNetValue2 = getAverageList(recentNetValue, 120)
     const recentNetValue3 = getAverageList(recentNetValue, 20)
     let xData = [];
     let yData = [];
     let yData2 = [];
     let yData3 = [];
     let points = [];
-    // recentNetValue2.forEach((item) => {
-    //   yData2.push(item);
-    // })
+    recentNetValue2.forEach((item) => {
+      yData2.push(item);
+    })
     recentNetValue3.forEach((item) => {
       yData3.push(item);
     })
@@ -384,16 +384,16 @@ class IndexList extends PureComponent {
             symbolSize: 6
           }
         },
-        // {
-        //   name: '均线',
-        //   data: yData2,
-        //   type: 'line',
-        //   lineStyle: {
-        //     color: '#a80'
-        //   },
-        //   smooth: false,
-        //   symbol: 'none'
-        // },
+        {
+          name: '均线',
+          data: yData2,
+          type: 'line',
+          lineStyle: {
+            color: '#a80'
+          },
+          smooth: false,
+          symbol: 'none'
+        },
         {
           name: '均线2',
           data: yData3,
