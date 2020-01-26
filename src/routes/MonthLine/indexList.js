@@ -47,9 +47,11 @@ function getAverage (netValue, day, index) {
 function ifNoSell(averageList) {
   let last = averageList[averageList.length - 1]
   let lastTwo = averageList[averageList.length - 2]
+  // 首先今天它得在线上
   if (last > 0) {
     let max = 0
     let maxIndex = 0
+    // 找出近期最大的
     for (let i = 0; i < (averageList.length - 2); i++) {
       let now = averageList[i]
       if (now > max) {
@@ -57,12 +59,21 @@ function ifNoSell(averageList) {
         maxIndex = i
       }
     }
+    // 最大的也在线下
     if (max <= 0) {
+      // 倒数第二个在线上
       if (lastTwo > 0) {
         return true
       }
+      // 刚到线上的第一个不要
       return false
     } else {
+      // 得把倒数第二个也加进来
+      if (lastTwo > max) {
+        max = lastTwo
+        maxIndex = averageList.length - 2
+      }
+      // 和最大的对比
       for (let j = maxIndex; j < averageList.length; j++) {
         let now = averageList[j]
         if (now < (max * 0.5)) {
@@ -114,6 +125,19 @@ class IndexList extends PureComponent {
       const eightDayRecord = recentNetValue[index + 8];
       let open = true
       if (open) {
+        // if (item['netChangeRatio'] < -3) {
+        //   points.push({
+        //     coord: [item['date'], item['close'] + (item['close'] / 20)],
+        //     itemStyle: {
+        //       normal: {
+        //         color: '#a91fe4'
+        //       }
+        //     },
+        //     label: {
+        //       show: false
+        //     }
+        //   })
+        // }
         // 跌3天
         if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
           if (
@@ -315,9 +339,6 @@ class IndexList extends PureComponent {
         }
       }
       const diff = numberUtil.countDifferenceRate(now / 7, last / 7)
-      console.log(now)
-      console.log(last)
-      console.log(diff)
       if (diff < 0.2) {
         c = false
       }

@@ -47,9 +47,11 @@ function getAverage (netValue, day, index) {
 function ifNoSell(averageList) {
   let last = averageList[averageList.length - 1]
   let lastTwo = averageList[averageList.length - 2]
+  // 首先今天它得在线上
   if (last > 0) {
     let max = 0
     let maxIndex = 0
+    // 找出近期最大的
     for (let i = 0; i < (averageList.length - 2); i++) {
       let now = averageList[i]
       if (now > max) {
@@ -57,12 +59,21 @@ function ifNoSell(averageList) {
         maxIndex = i
       }
     }
+    // 最大的也在线下
     if (max <= 0) {
+      // 倒数第二个在线上
       if (lastTwo > 0) {
         return true
       }
+      // 刚到线上的第一个不要
       return false
     } else {
+      // 得把倒数第二个也加进来
+      if (lastTwo > max) {
+        max = lastTwo
+        maxIndex = averageList.length - 2
+      }
+      // 和最大的对比
       for (let j = maxIndex; j < averageList.length; j++) {
         let now = averageList[j]
         if (now < (max * 0.5)) {
@@ -379,18 +390,37 @@ class IndexList extends PureComponent {
       }
       let noSell = ifNoSell(averageList)
       let rate = numberUtil.countDifferenceRate(item, yData3[index])
-      // yData4.push({
-      //   value: rate,
-      //   itemStyle: {
-      //     color: rate >= average ? 'rgb(208, 153, 183)' : (rate >= 0 ? 'rgb(112, 220, 240)' : 'rgb(254, 255, 153)')
-      //   }
-      // });
+      // 移动均线策略
+      let now = 0
+      let last = 0
+      let c = true
+      // 近的在前
+      for (let i = 0; i < 7; i++) {
+        if (yData[index - i]) {
+          now += parseFloat(yData[index - i])
+        }
+      }
+      for (let j = 1; j < 8; j++) {
+        if (yData[index - j]) {
+          last += parseFloat(yData[index - j])
+        }
+      }
+      const diff = numberUtil.countDifferenceRate(now / 7, last / 7)
+      if (diff < 0.2) {
+        c = false
+      }
       yData4.push({
         value: rate,
         itemStyle: {
-          color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
+          color: noSell ? (c ? 'rgb(208, 153, 183)' : 'rgb(0, 0, 0)') : 'rgb(112, 220, 240)'
         }
       });
+      // yData4.push({
+      //   value: rate,
+      //   itemStyle: {
+      //     color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
+      //   }
+      // });
       if (noSell) {
         inList.push(index)
       }
