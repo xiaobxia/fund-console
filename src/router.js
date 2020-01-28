@@ -14,6 +14,7 @@ import IndexInfoXiong from 'Bundle-loader?lazy!localRoutes/IndexInfoXiong'
 import IndexInfoJian from 'Bundle-loader?lazy!localRoutes/IndexInfoJian'
 import MonthLine from 'Bundle-loader?lazy!localRoutes/MonthLine'
 import HalfYearLine from 'Bundle-loader?lazy!localRoutes/HalfYearLine'
+import QuarterLine from 'Bundle-loader?lazy!localRoutes/QuarterLine'
 import MonthIncome from 'Bundle-loader?lazy!localRoutes/MonthIncome'
 import PlatformFixedInvestment from 'Bundle-loader?lazy!localRoutes/PlatformFixedInvestment'
 
@@ -105,6 +106,11 @@ export const baseRoutes = [
     component: getComponent(HalfYearLine)
   },
   {
+    name: 'QuarterLine',
+    path: '/quarterLine',
+    component: getComponent(QuarterLine)
+  },
+  {
     name: 'MonthIncome',
     path: '/monthIncome',
     component: getComponent(MonthIncome)
@@ -149,6 +155,10 @@ export const menusInfos = [
       {
         pathname: '/halfYearLine',
         title: '半年线'
+      },
+      {
+        pathname: '/quarterLine',
+        title: '年线'
       }
     ]
   },
