@@ -21,18 +21,18 @@ const codeMap = indexInfoUtil.codeMap;
 const formatData = indexInfoUtil.formatData;
 let codeList = [];
 for (let key in codeMap) {
-  codeList.push({
-    code: codeMap[key].code,
-    key: key,
-    name: codeMap[key].name
-  })
+  if (codeMap[key].mix) {
+    codeList.push({
+      code: codeMap[key].code,
+      key: key,
+      name: codeMap[key].name
+    })
+  }
 }
 
 const defaultIndex = 'sanbai'
 const ifMock = false
 const ifLockData = true
-
-
 
 class IndexInfo extends PureComponent {
   constructor(props) {

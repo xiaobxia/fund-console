@@ -4,8 +4,9 @@
 import React, {PureComponent} from 'react'
 import {Table, Button, Divider, Popconfirm} from 'antd';
 import {Link} from 'react-router-dom'
-import numberUtil from 'localUtil/numberUtil';
+import stockAnalysisUtil from 'localUtil/stockAnalysisUtil';
 import indexInfoUtil from 'localUtil/indexInfoUtilXiong';
+import numberUtil from 'localUtil/numberUtil';
 import ReactEcharts from 'echarts-for-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
@@ -44,49 +45,19 @@ function getAverage (netValue, day, index) {
   return numberUtil.keepTwoDecimals(count / (index + 1 - start))
 }
 
-function ifNoSell(averageList) {
-  let last = averageList[averageList.length - 1]
-  let lastTwo = averageList[averageList.length - 2]
-  if (last > 0) {
-    let max = 0
-    let maxIndex = 0
-    for (let i = 0; i < (averageList.length - 2); i++) {
-      let now = averageList[i]
-      if (now > max) {
-        max = now
-        maxIndex = i
-      }
-    }
-    if (max <= 0) {
-      if (lastTwo > 0) {
-        return true
-      }
-      return false
-    } else {
-      for (let j = maxIndex; j < averageList.length; j++) {
-        let now = averageList[j]
-        if (now < (max * 0.5)) {
-          return false
-        }
-      }
-      return true
-    }
+function getNetChangeRatioList (list, index) {
+  const newList = []
+  for (let i = 0; i < 10; i++) {
+    newList.push(list[index + i])
   }
-  return false
+  return newList
 }
 
 class IndexList extends PureComponent {
 
   getChartOption = () => {
-    const threshold = this.props.threshold;
-    const rate = this.props.rate;
-    const wave = this.props.wave;
-    const average = this.props.average;
-    const infoConfig = {threshold, rate, wave};
+    const indexRate = this.props.rate;
     let recentNetValue = this.props.dataSource;
-    // recentNetValue = recentNetValue.slice(150)
-    // console.log(recentNetValue)
-    const infoUtil = new InfoUtil(infoConfig)
     // 均线
     const recentNetValue2 = getAverageList(recentNetValue, 250)
     const recentNetValue3 = getAverageList(recentNetValue, 120)
@@ -95,6 +66,7 @@ class IndexList extends PureComponent {
     let yData2 = [];
     let yData3 = [];
     let points = [];
+    let netChangeRatioAll = []
     recentNetValue2.forEach((item) => {
       yData2.push(item);
     })
@@ -104,188 +76,9 @@ class IndexList extends PureComponent {
     recentNetValue.forEach((item, index) => {
       xData.unshift(item['date']);
       yData.unshift(item['close']);
-      const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
-      const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index];
-      const threeDayRecord = recentNetValue[index + 3];
-      const fourDayRecord = recentNetValue[index + 4];
-      const fiveDayRecord = recentNetValue[index + 5];
-      const sixDayRecord = recentNetValue[index + 6];
-      const sevenDayRecord = recentNetValue[index + 7];
-      const eightDayRecord = recentNetValue[index + 8];
-      let open = true
-      if (open) {
-        // 跌3天
-        // if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-        //   if (
-        //     item.netChangeRatio < 0 &&
-        //     oneDayRecord.netChangeRatio < 0 &&
-        //     twoDayRecord.netChangeRatio < 0
-        //   ) {
-        //     points.push({
-        //       coord: [item['date'], item['close'] - (item['close'] / 40)],
-        //       itemStyle: {
-        //         normal: {
-        //           color: '#ffb5b5'
-        //         }
-        //       },
-        //       label: {
-        //         show: false
-        //       }
-        //     })
-        //   }
-        // }
-        // 6跌5
-        // if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-        //   if (item.netChangeRatio < 0 && fiveDayRecord.netChangeRatio < 0) {
-        //     let count = 0
-        //     if (oneDayRecord.netChangeRatio > 0) {
-        //       count++
-        //     }
-        //     if (twoDayRecord.netChangeRatio > 0) {
-        //       count++
-        //     }
-        //     if (threeDayRecord.netChangeRatio > 0) {
-        //       count++
-        //     }
-        //     if (fourDayRecord.netChangeRatio > 0) {
-        //       count++
-        //     }
-        //     if (count < 2) {
-        //       points.push({
-        //         coord: [item['date'], item['close'] - (item['close'] / 40)],
-        //         itemStyle: {
-        //           normal: {
-        //             color: '#e6caff'
-        //           }
-        //         },
-        //         label: {
-        //           show: false
-        //         }
-        //       })
-        //     }
-        //   }
-        // }
-        // 7跌6
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
-          if (item.netChangeRatio < 0 && sixDayRecord.netChangeRatio < 0) {
-            let count = 0
-            if (oneDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (twoDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (threeDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fourDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fiveDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 2) {
-              points.push({
-                coord: [item['date'], item['close'] - (item['close'] / 40)],
-                itemStyle: {
-                  normal: {
-                    color: '#8600ff'
-                  }
-                },
-                label: {
-                  show: false
-                }
-              })
-            }
-          }
-        }
-        // 跌4天
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio < 0 &&
-            oneDayRecord.netChangeRatio < 0 &&
-            twoDayRecord.netChangeRatio < 0 &&
-            threeDayRecord.netChangeRatio < 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: '#ff0000'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-        // 跌5天
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio < 0 &&
-            oneDayRecord.netChangeRatio < 0 &&
-            twoDayRecord.netChangeRatio < 0 &&
-            threeDayRecord.netChangeRatio < 0 &&
-            fourDayRecord.netChangeRatio < 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: 'black'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-        // //涨3
-        // if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-        //   if (
-        //     item.netChangeRatio > 0 &&
-        //     oneDayRecord.netChangeRatio > 0 &&
-        //     twoDayRecord.netChangeRatio > 0
-        //   ) {
-        //     points.push({
-        //       coord: [item['date'], item['close'] + (item['close'] / 40)],
-        //       itemStyle: {
-        //         normal: {
-        //           color: '#bbffbb'
-        //         }
-        //       },
-        //       label: {
-        //         show: false
-        //       }
-        //     })
-        //   }
-        // }
-        // // 涨4
-        // if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-        //   if (
-        //     item.netChangeRatio > 0 &&
-        //     oneDayRecord.netChangeRatio > 0 &&
-        //     twoDayRecord.netChangeRatio > 0 &&
-        //     threeDayRecord.netChangeRatio > 0
-        //   ) {
-        //     points.push({
-        //       coord: [item['date'], item['close'] + (item['close'] / 40)],
-        //       itemStyle: {
-        //         normal: {
-        //           color: '#00a600'
-        //         }
-        //       },
-        //       label: {
-        //         show: false
-        //       }
-        //     })
-        //   }
-        // }
-      }
+      netChangeRatioAll.push(item.netChangeRatio)
     });
-    // 20天线差值
+    // 线差值
     let yData4 = []
     yData.forEach((item, index) => {
       const day = 5
@@ -296,20 +89,161 @@ class IndexList extends PureComponent {
           averageList.push(numberUtil.countDifferenceRate(yData[nowIndex], yData2[nowIndex]))
         }
       }
-      let noSell = ifNoSell(averageList)
       let rate = numberUtil.countDifferenceRate(item, yData2[index])
-      // yData4.push({
-      //   value: rate,
-      //   itemStyle: {
-      //     color: rate >= average ? 'rgb(208, 153, 183)' : (rate >= 0 ? 'rgb(112, 220, 240)' : 'rgb(254, 255, 153)')
-      //   }
-      // });
       yData4.push({
         value: rate,
         itemStyle: {
-          color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
+          color: rate >= 0 ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
         }
       });
+    })
+    let allLength = netChangeRatioAll.length
+    // 画点
+    netChangeRatioAll.forEach((item, index) => {
+      // 最后几个不要
+      if (allLength - 10 <= index) {
+        return false
+      }
+      let show = true
+      const nowKline = recentNetValue[index]
+      const netChangeRatioList = getNetChangeRatioList(netChangeRatioAll, index)
+      let threeDay = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
+      if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: '#ff0000'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 6, 5).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: '#ff0000'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 4, 4).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: '#ff0000'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 5, 5).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: 'black'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 7, 6).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: 'black'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 8, 7).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: 'black'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 8, 6).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: 'black'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 9, 7).flag) {
+        if (show) {
+          points.push({
+            coord: [nowKline['date'], nowKline['close'] - (nowKline['close'] / 40)],
+            itemStyle: {
+              normal: {
+                color: 'black'
+              }
+            },
+            label: {
+              show: false
+            }
+          })
+        } else {
+          return false
+        }
+      }
     })
     return {
       title: {

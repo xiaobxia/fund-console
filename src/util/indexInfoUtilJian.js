@@ -7190,6 +7190,7 @@ const codeMap = {
     fixLine: -19,
     reduceLine: 5,
     downTrendLine: -3.3,
+    mix: true,
     average: 3
   },
   'chuanmei': {
