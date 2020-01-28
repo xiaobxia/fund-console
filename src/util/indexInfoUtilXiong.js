@@ -325,6 +325,33 @@ Util.prototype = {
   ifBuyChuangye: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    // 无抵抗下跌的都要
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': true, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
@@ -553,6 +580,32 @@ Util.prototype = {
   ifBuyGangtie: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true, 'ifHighPreCloseDown': false, 'ifHighPreCloseDownHigh': false}
     )) {
@@ -983,6 +1036,32 @@ Util.prototype = {
   ifBuyJungong: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true, 'ifHighPreCloseDown': false, 'ifHighPreCloseDownHigh': false}
     )) {
@@ -1445,6 +1524,32 @@ Util.prototype = {
   ifBuyYiyao: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
@@ -1913,6 +2018,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       if (ifMatch(lastDay,
@@ -2366,6 +2497,32 @@ Util.prototype = {
   ifBuyYouse: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': true, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
@@ -2824,6 +2981,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': true, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       return {
@@ -3266,6 +3449,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': false, 'ifSessionDown': true, 'ifSessionDownHigh': false, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': false}
     )) {
       if (ifMatch(lastDay,
@@ -3685,6 +3894,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {ifHighPreCloseDown: true, ifHighPreCloseDownHigh: true}
     )) {
       return {
@@ -3867,6 +4102,32 @@ Util.prototype = {
   ifBuyBaoxian: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
@@ -4253,6 +4514,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       return {
@@ -4559,6 +4846,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {ifHighPreCloseDown: true, ifHighPreCloseDownHigh: true}
     )) {
       return {
@@ -4835,6 +5148,32 @@ Util.prototype = {
   ifBuyDianzi: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
@@ -5187,6 +5526,32 @@ Util.prototype = {
   ifBuyYiliao: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true, 'ifHighPreCloseDown': false}
     )) {
@@ -5631,6 +5996,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       return {
@@ -6058,6 +6449,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': true, 'ifOpenHigh': true, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': true, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       return {
@@ -6342,6 +6759,32 @@ Util.prototype = {
   ifBuyWubai: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {ifHighPreCloseDown: true, ifHighPreCloseDownHigh: true}
     )) {
@@ -6705,6 +7148,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       return {
@@ -7023,6 +7492,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': false}
     )) {
       return {
@@ -7332,6 +7827,32 @@ Util.prototype = {
   ifBuyZhengquan: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
@@ -7654,6 +8175,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {ifHighPreCloseDown: true, ifHighPreCloseDownHigh: true}
     )) {
       return {
@@ -7940,6 +8487,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {ifHighPreCloseDown: true, ifHighPreCloseDownHigh: true}
     )) {
       return {
@@ -8200,6 +8773,32 @@ Util.prototype = {
   ifBuyQiche: function (record, oneDayRecord) {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
+    if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
     if (ifMatch(today,
       {ifHighPreCloseDown: true, ifHighPreCloseDownHigh: true}
     )) {
@@ -8498,6 +9097,32 @@ Util.prototype = {
     const today = this.getFlag(record)
     const lastDay = this.getFlag(oneDayRecord)
     if (ifMatch(today,
+      {'ifHighPreCloseDown': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-100-0'
+      }
+    }
+    // 跌幅两倍波动的就要
+    if (ifMatch(today,
+      {'ifUpClose': false, 'ifCloseHigh2': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    // 下跌
+    if (ifMatch(today,
+      {'ifCloseHigh': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUp': false, 'ifSessionDownCloseHigh': true}
+    )) {
+      return {
+        flag: true,
+        text: 'buy-101-0'
+      }
+    }
+    if (ifMatch(today,
       {'ifUpOpen': false, 'ifOpenHigh': false, 'ifUpClose': false, 'ifCloseHigh': true, 'ifSessionDown': true, 'ifSessionDownHigh': true, 'ifSessionUpClose': false, 'ifSessionUpCloseHigh': false, 'ifSessionUp': false, 'ifSessionUpHigh': false, 'ifSessionDownClose': true, 'ifSessionDownCloseHigh': true}
     )) {
       if (ifMatch(lastDay,
@@ -8785,20 +9410,13 @@ const codeMap = {
   'chuangye': {
     code: 'sz399006',
     name: '创业',
-    threshold: 0.94,
-    wave: 0.9277112676056345,
-    rate: 0.9621341463414633,
+    threshold: 0.9,
+    wave: 0.8641666666666664,
+    rate: 0.9321285714285718,
     fixLine: -19,
     reduceLine: 6,
     downTrendLine: -3.3,
-    average: 3,
-    mix: true,
-    up: 136.55,
-    upDay: 117,
-    down: -165.46,
-    downDay: 148,
-    incomeHighRate: true,
-    noLong: true
+    mix: true
   },
   'yiyao': {
     code: 'sh000037',
@@ -9294,9 +9912,9 @@ const IndexInfoUtilXiong = {
     // console.log(xData)
     // console.log(count)
     // console.log(count2)
-    // console.log('wave:  ' + a)
-    // console.log('rate:  ' + c)
-    // console.log(threshold)
+    console.log('wave:  ' + a)
+    console.log('rate:  ' + c)
+    console.log(threshold)
     return {list: listTemp, threshold: threshold, rate: c, wave: a}
   }
 }

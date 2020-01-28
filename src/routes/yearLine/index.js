@@ -28,11 +28,9 @@ for (let key in codeMap) {
   })
 }
 
-const defaultIndex = 'chuangye'
+const defaultIndex = 'sanbai'
 const ifMock = false
 const ifLockData = true
-
-
 
 class IndexInfo extends PureComponent {
   constructor(props) {

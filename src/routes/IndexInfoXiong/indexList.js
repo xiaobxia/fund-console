@@ -5,6 +5,7 @@ import React, {PureComponent} from 'react'
 import {Table, Button, Divider, Popconfirm} from 'antd';
 import {Link} from 'react-router-dom'
 import numberUtil from 'localUtil/numberUtil';
+import stockAnalysisUtil from 'localUtil/stockAnalysisUtil';
 import indexInfoUtil from 'localUtil/indexInfoUtilXiong';
 import ReactEcharts from 'echarts-for-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
@@ -12,8 +13,8 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const fnMap = indexInfoUtil.fnMap;
 const InfoUtil = indexInfoUtil.Util;
 
-const functionName = 'ifSellChuangye'
-let hide = 'buy'
+const functionName = 'ifBuyChuangye'
+let hide = 'sell'
 let showLow = true
 
 let isDev = process.env.NODE_ENV !== 'production'
@@ -44,46 +45,12 @@ function getAverage (netValue, day, index) {
   return numberUtil.keepTwoDecimals(count / (index + 1 - start))
 }
 
-function ifNoSell(averageList) {
-  let last = averageList[averageList.length - 1]
-  let lastTwo = averageList[averageList.length - 2]
-  // 首先今天它得在线上
-  if (last > 0) {
-    let max = 0
-    let maxIndex = 0
-    // 找出近期最大的
-    for (let i = 0; i < (averageList.length - 2); i++) {
-      let now = averageList[i]
-      if (now > max) {
-        max = now
-        maxIndex = i
-      }
-    }
-    // 最大的也在线下
-    if (max <= 0) {
-      // 倒数第二个在线上
-      if (lastTwo > 0) {
-        return true
-      }
-      // 刚到线上的第一个不要
-      return false
-    } else {
-      // 得把倒数第二个也加进来
-      if (lastTwo > max) {
-        max = lastTwo
-        maxIndex = averageList.length - 2
-      }
-      // 和最大的对比
-      for (let j = maxIndex; j < averageList.length; j++) {
-        let now = averageList[j]
-        if (now < (max * 0.5)) {
-          return false
-        }
-      }
-      return true
-    }
+function getNetChangeRatioList (list, index) {
+  const newList = []
+  for (let i = 0; i < 10; i++) {
+    newList.push(list[index + i])
   }
-  return false
+  return newList
 }
 
 function ifUpAll (closeList, now) {
@@ -105,27 +72,40 @@ function ifDownAll (closeList, now) {
   return true
 }
 
+function addDownPoints(points, item, color) {
+  points.push({
+    coord: [item['date'], item['close']],
+    itemStyle: {
+      normal: {
+        color: color || '#8600ff'
+      }
+    },
+    label: {
+      show: false
+    }
+  })
+}
+
 
 class IndexList extends PureComponent {
 
   getChartOption = () => {
     const threshold = this.props.threshold;
     const rate = this.props.rate;
+    const indexRate = this.props.rate;
     const wave = this.props.wave;
-    const average = this.props.average;
     const infoConfig = {threshold, rate, wave};
     let recentNetValue = this.props.dataSource;
-    // recentNetValue = recentNetValue.slice(150)
-    // console.log(recentNetValue)
     const infoUtil = new InfoUtil(infoConfig)
     // 均线
-    const recentNetValue2 = getAverageList(recentNetValue, 60)
+    const recentNetValue2 = getAverageList(recentNetValue, 120)
     const recentNetValue3 = getAverageList(recentNetValue, 20)
     let xData = [];
     let yData = [];
     let yData2 = [];
     let yData3 = [];
     let points = [];
+    let netChangeRatioAll = []
     recentNetValue2.forEach((item) => {
       yData2.push(item);
     })
@@ -133,248 +113,9 @@ class IndexList extends PureComponent {
       yData3.push(item);
     })
     recentNetValue.forEach((item, index) => {
-      // let closeList = []
-      // for (let i = 1; i < 21; i++) {
-      //   closeList.push(recentNetValue[index + i] && recentNetValue[index + i]['close'])
-      // }
-      // if (ifUpAll(closeList, item['close'])) {
-      //   points.push({
-      //     coord: [item['date'], item['close']],
-      //     itemStyle: {
-      //       normal: {
-      //         color: 'red'
-      //       }
-      //     },
-      //     label: {
-      //       show: false
-      //     }
-      //   })
-      // }
-      // if (ifDownAll(closeList, item['close'])) {
-      //   points.push({
-      //     coord: [item['date'], item['close']],
-      //     itemStyle: {
-      //       normal: {
-      //         color: 'green'
-      //       }
-      //     },
-      //     label: {
-      //       show: false
-      //     }
-      //   })
-      // }
       xData.unshift(item['date']);
       yData.unshift(item['close']);
-      const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
-      const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index];
-      const threeDayRecord = recentNetValue[index + 3];
-      const fourDayRecord = recentNetValue[index + 4];
-      const fiveDayRecord = recentNetValue[index + 5];
-      const sixDayRecord = recentNetValue[index + 6];
-      const sevenDayRecord = recentNetValue[index + 7];
-      const eightDayRecord = recentNetValue[index + 8];
-      let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
-      let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
-      isDev = true
-      if (isDev) {
-        if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
-          points.push({
-            coord: [item['date'], item['close']],
-            itemStyle: {
-              normal: {
-                color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
-              }
-            },
-            label: {
-              show: false
-            }
-          })
-        } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
-          points.push({
-            coord: [item['date'], item['close']],
-            itemStyle: {
-              normal: {
-                color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
-              }
-            },
-            label: {
-              show: false
-            }
-          })
-        }
-      }
-      let open = false
-      if (open) {
-        // 跌3天
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio < 0 &&
-            oneDayRecord.netChangeRatio < 0 &&
-            twoDayRecord.netChangeRatio < 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: '#ffb5b5'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-        // 6跌5
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (item.netChangeRatio < 0 && fiveDayRecord.netChangeRatio < 0) {
-            let count = 0
-            if (oneDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (twoDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (threeDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fourDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 2) {
-              points.push({
-                coord: [item['date'], item['close'] - (item['close'] / 40)],
-                itemStyle: {
-                  normal: {
-                    color: '#e6caff'
-                  }
-                },
-                label: {
-                  show: false
-                }
-              })
-            }
-          }
-        }
-        // 7跌6
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord && sixDayRecord) {
-          if (item.netChangeRatio < 0 && sixDayRecord.netChangeRatio < 0) {
-            let count = 0
-            if (oneDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (twoDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (threeDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fourDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (fiveDayRecord.netChangeRatio > 0) {
-              count++
-            }
-            if (count < 2) {
-              points.push({
-                coord: [item['date'], item['close'] - (item['close'] / 40)],
-                itemStyle: {
-                  normal: {
-                    color: '#8600ff'
-                  }
-                },
-                label: {
-                  show: false
-                }
-              })
-            }
-          }
-        }
-        // 跌4天
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio < 0 &&
-            oneDayRecord.netChangeRatio < 0 &&
-            twoDayRecord.netChangeRatio < 0 &&
-            threeDayRecord.netChangeRatio < 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: '#ff0000'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-        // 跌5天
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio < 0 &&
-            oneDayRecord.netChangeRatio < 0 &&
-            twoDayRecord.netChangeRatio < 0 &&
-            threeDayRecord.netChangeRatio < 0 &&
-            fourDayRecord.netChangeRatio < 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] - (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: 'black'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-        //涨3
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio > 0 &&
-            oneDayRecord.netChangeRatio > 0 &&
-            twoDayRecord.netChangeRatio > 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] + (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: '#bbffbb'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-        // 涨4
-        if (oneDayRecord && twoDayRecord && threeDayRecord && fourDayRecord && fiveDayRecord) {
-          if (
-            item.netChangeRatio > 0 &&
-            oneDayRecord.netChangeRatio > 0 &&
-            twoDayRecord.netChangeRatio > 0 &&
-            threeDayRecord.netChangeRatio > 0
-          ) {
-            points.push({
-              coord: [item['date'], item['close'] + (item['close'] / 40)],
-              itemStyle: {
-                normal: {
-                  color: '#00a600'
-                }
-              },
-              label: {
-                show: false
-              }
-            })
-          }
-        }
-      }
+      netChangeRatioAll.push(item.netChangeRatio)
     });
     // 20天线差值
     let inList = []
@@ -388,7 +129,7 @@ class IndexList extends PureComponent {
           averageList.push(numberUtil.countDifferenceRate(yData[nowIndex], yData3[nowIndex]))
         }
       }
-      let noSell = ifNoSell(averageList)
+      let noSell = stockAnalysisUtil.ifNoSell(averageList)
       let rate = numberUtil.countDifferenceRate(item, yData3[index])
       // 移动均线策略
       let now = 0
@@ -415,16 +156,125 @@ class IndexList extends PureComponent {
           color: noSell ? (c ? 'rgb(208, 153, 183)' : 'rgb(0, 0, 0)') : 'rgb(112, 220, 240)'
         }
       });
-      // yData4.push({
-      //   value: rate,
-      //   itemStyle: {
-      //     color: noSell ? 'rgb(208, 153, 183)' : 'rgb(112, 220, 240)'
-      //   }
-      // });
-      if (noSell) {
+      if (noSell && c) {
         inList.push(index)
       }
     })
+    let downTrendList = []
+    // 120天线差值
+    yData.forEach((item, index) => {
+      const day = 5
+      let averageList = []
+      if (index >= day) {
+        for (let i = day; i >= 0; i--) {
+          let nowIndex = index - i
+          averageList.push(numberUtil.countDifferenceRate(yData[nowIndex], yData2[nowIndex]))
+        }
+      }
+      let rate = numberUtil.countDifferenceRate(item, yData2[index])
+      if (rate <= -3.3) {
+        downTrendList.push(index)
+      }
+    })
+
+    let downInList = []
+    let allLength = netChangeRatioAll.length
+    // 画点
+    netChangeRatioAll.forEach((item, index) => {
+      // 最后几个不要
+      if (allLength - 10 <= index) {
+        return false
+      }
+      const netChangeRatioList = getNetChangeRatioList(netChangeRatioAll, index)
+      let twoDay = stockAnalysisUtil.countDown(netChangeRatioList, 2, 2)
+      let threeDay = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 9, 7).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 8, 6).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 8, 7).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 7, 6).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 5, 5).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 4, 4).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (stockAnalysisUtil.countDown(netChangeRatioList, 6, 5).flag) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index])
+        return false
+      }
+      if (twoDay.flag && twoDay.rate < -(3 * indexRate)) {
+        downInList.push(index)
+        addDownPoints(points, recentNetValue[index], 'black')
+        return false
+      }
+    })
+
+    recentNetValue.forEach((item, index) => {
+      // 大小反的不在重复
+      if (downInList.indexOf(index) !== -1) {
+        return false
+      }
+      const rIndex = allLength - 1 - index
+      const oneDayRecord = recentNetValue[index < recentNetValue.length - 1 ? index + 1 : index];
+      const twoDayRecord = recentNetValue[index < recentNetValue.length - 2 ? index + 2 : index];
+      let bugFlag = infoUtil[fnMap[this.props.nowType + 'Buy']](item, oneDayRecord, twoDayRecord);
+      let sellFlag = infoUtil[fnMap[this.props.nowType + 'Sell']](item, oneDayRecord, twoDayRecord);
+      if (hide !== 'buy' && ((bugFlag === true) || (bugFlag !== false && bugFlag.flag === true))) {
+        // 下降趋势不买
+        if (downTrendList.indexOf(rIndex) !== -1) {
+          return false
+        }
+        points.push({
+          coord: [item['date'], item['close']],
+          itemStyle: {
+            normal: {
+              color: (bugFlag !== false && bugFlag.new === true) ? 'black' : 'red'
+            }
+          },
+          label: {
+            show: false
+          }
+        })
+      } else if (hide !== 'sell' && ((sellFlag === true) || (sellFlag !== false && sellFlag.flag === true))) {
+        points.push({
+          coord: [item['date'], item['close']],
+          itemStyle: {
+            normal: {
+              color: (sellFlag !== false && sellFlag.new === true) ? 'black' : 'green'
+            }
+          },
+          label: {
+            show: false
+          }
+        })
+      }
+    });
 
     // let yData5 = []
     // recentNetValue.forEach((item, index) => {
