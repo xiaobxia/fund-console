@@ -113,6 +113,7 @@ class IndexInfo extends PureComponent {
           </PageHeader>
           <div className="content-card-wrap">
             <h3 className="blue-text">
+              <p>在疯狂过后，只有跌回年线一下，才可以继续交易</p>
             </h3>
             <IndexList
               dataSource={this.state.list}
