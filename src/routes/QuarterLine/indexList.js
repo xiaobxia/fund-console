@@ -60,7 +60,7 @@ class IndexList extends PureComponent {
     let recentNetValue = this.props.dataSource;
     // 均线
     const recentNetValue2 = getAverageList(recentNetValue, 250)
-    const recentNetValue3 = getAverageList(recentNetValue, 120)
+    const recentNetValue3 = getAverageList(recentNetValue, 60)
     let xData = [];
     let yData = [];
     let yData2 = [];
