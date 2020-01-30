@@ -20,6 +20,15 @@ const RadioGroup = Radio.Group;
 const codeMap = indexInfoUtil.codeMap;
 const formatData = indexInfoUtil.formatData;
 let codeList = [];
+codeMap['baijiu'] = {
+  code: 'sz399997',
+  name: '白酒',
+  mix: false,
+  key: 'baijiu',
+  threshold: 1.21,
+  rate: 1.07016,
+  wave: 1.3559459459459462
+}
 for (let key in codeMap) {
   codeList.push({
     code: codeMap[key].code,
@@ -28,7 +37,7 @@ for (let key in codeMap) {
   })
 }
 
-const defaultIndex = 'yiliao'
+const defaultIndex = 'baijiu'
 const ifMock = false
 const ifLockData = true
 
@@ -61,7 +70,7 @@ class IndexInfo extends PureComponent {
     code = code || codeMap[defaultIndex].code;
     http.get(`${ifMock ? '/mock' : 'stock'}/getStockAllDongfang`, {
       code: code,
-      days: 750
+      days: 2000
     }).then((data) => {
       if (data.success) {
         const list = data.data.list;

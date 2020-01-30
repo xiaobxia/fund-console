@@ -20,6 +20,15 @@ const RadioGroup = Radio.Group;
 const codeMap = indexInfoUtil.codeMap;
 const formatData = indexInfoUtil.formatData;
 let codeList = [];
+codeMap['baijiu'] = {
+  code: 'sz399997',
+  name: '白酒',
+  mix: false,
+  key: 'baijiu',
+  threshold: 1.21,
+  rate: 1.07016,
+  wave: 1.3559459459459462
+}
 for (let key in codeMap) {
   codeList.push({
     code: codeMap[key].code,
