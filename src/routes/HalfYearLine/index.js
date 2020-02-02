@@ -27,7 +27,8 @@ codeMap['baijiu'] = {
   key: 'baijiu',
   threshold: 1.21,
   rate: 1.07016,
-  wave: 1.3559459459459462
+  wave: 1.3559459459459462,
+  days: 1200
 }
 for (let key in codeMap) {
   codeList.push({
