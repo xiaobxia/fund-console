@@ -27,7 +27,8 @@ codeMap['baijiu'] = {
   key: 'baijiu',
   threshold: 1.21,
   rate: 1.07016,
-  wave: 1.3559459459459462
+  wave: 1.3559459459459462,
+  days: 1200
 }
 for (let key in codeMap) {
   codeList.push({
@@ -37,7 +38,7 @@ for (let key in codeMap) {
   })
 }
 
-const defaultIndex = 'baijiu'
+const defaultIndex = 'chuangye'
 const ifMock = false
 const ifLockData = true
 
@@ -68,9 +69,10 @@ class IndexInfo extends PureComponent {
   initPage = (code, index) => {
     //webData/getStockAllDongfang
     code = code || codeMap[defaultIndex].code;
+    const days = codeMap[index || defaultIndex].days || 750;
     http.get(`${ifMock ? '/mock' : 'stock'}/getStockAllDongfang`, {
       code: code,
-      days: 2000
+      days
     }).then((data) => {
       if (data.success) {
         const list = data.data.list;
