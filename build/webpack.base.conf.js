@@ -1,19 +1,31 @@
-var path = require('path')
-var utils = require('./utils')
-var config = require('../config')
-var os = require('os');
-var HappyPack = require('happypack');
-var happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
-
+'use strict'
+const path = require('path')
+const utils = require('./utils')
+const config = require('../config')
 const ifCdn = process.env.NODE_ENV === 'production' && config.build.ifCdn;
+const { VueLoaderPlugin } = require('vue-loader')
+const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [resolve('src'), resolve('test')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: !config.dev.showEslintErrorsInOverlay,
+    fix: true
+  }
+})
+
 module.exports = {
+  context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/index.js'
+    app: './src/main.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -23,49 +35,40 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    //对jsx的支持
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src'),
-      //通过module引入
-      'localRoutes': path.resolve(__dirname, '../src/routes'),
-      'localUtil': path.resolve(__dirname, '../src/util'),
-      'localComponent': path.resolve(__dirname, '../src/components'),
-      'localStore': path.resolve(__dirname, '../src/store')
+      '@': resolve('src')
     }
   },
-  plugins: [
-    new HappyPack({
-      id: 'happyBabel',
-      loaders: ['babel-loader'],
-      threadPool: happyThreadPool,
-      verbose: true
-    })
-  ],
   module: {
     rules: [
+      ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
-        //对jsx的支持
-        test: /\.(js|jsx)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter'),
-          //自动修复
-          fix: true
-        }
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueLoaderConfig
       },
-      //babel-loader很慢，要做好优化
       {
         test: /\.js$/,
-        loader: 'happypack/loader?id=happyBabel',
-        include: [resolve('src'), resolve('test')],
-        exclude: /node_modules/
+        loader: 'babel-loader?cacheDirectory',
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('node_modules/webpack-dev-server/client')
+        ]
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        include: [resolve('src/icons')],
+        options: {
+          symbolId: 'icon-[name]'
+        }
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
+        exclude: [resolve('src/icons')],
         options: {
           limit: 10000,
           // name: utils.assetsPath('img/[name].[hash:7].[ext]')
@@ -91,5 +94,18 @@ module.exports = {
         }
       }
     ]
+  },
+  plugins: [new VueLoaderPlugin()],
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
   }
-};
+}
