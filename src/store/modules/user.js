@@ -51,8 +51,7 @@ const user = {
       const username = userInfo.username.trim()
       return Http.postJson('auth/login', {
         account: username,
-        password: md5(userInfo.password),
-        platform: 'pc'
+        password: md5(userInfo.password)
       }).then((data) => {
         window._token = data.data.token
         localStorage.setItem('token', data.data.token)

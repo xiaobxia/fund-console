@@ -9,11 +9,14 @@ for (const key in proxyTable) {
   let row = {
     target: proxyTable[key],
     changeOrigin: true,
+    secure:false,
     pathRewrite: {}
   }
   row.pathRewrite[`^/${key}`] = ''
   newProxyTable[`/${key}/fundServer`] = row
 }
+
+console.log(newProxyTable)
 
 module.exports = {
   dev: {

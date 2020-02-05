@@ -73,6 +73,7 @@ export default {
     }
   },
   created() {
+    // this.$http.postJson('auth/login')
   },
   destroyed() {
   },

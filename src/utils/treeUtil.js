@@ -1,10 +1,10 @@
-function getChildrenKeys(children, key) {
-  let keys = []
+function getChildrenKeys(children, key, keys) {
+  keys = keys || []
   for (let i = 0; i < children.length; i++) {
     const item = children[i]
     keys.push(item[key])
     if (item.children && item.children.length > 0) {
-      keys = keys.concat(getChildrenKeys(item.children, key))
+      getChildrenKeys(item.children, key, keys)
     }
   }
   return keys
