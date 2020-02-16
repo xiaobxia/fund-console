@@ -74,6 +74,35 @@ Vue.prototype.$getPageIndexAfterDelete = function(pageIndex, size, total, delete
     return Math.ceil(res / size)
   }
 }
+function getAverage(netValue, day, index) {
+  let start = index - day + 1
+  start = start < 0 ? 0 : start
+  let count = 0
+  for (let i = index; i >= start; i--) {
+    count += netValue[i]['close']
+  }
+  return numberUtil.keepTwoDecimals(count / (index + 1 - start))
+}
+Vue.prototype.$getAverageList = function(netValue, day) {
+  const list = []
+  const newList = []
+  netValue.forEach((item) => {
+    newList.unshift(item)
+  })
+  newList.forEach((item, index) => {
+    const average = getAverage(newList, day, index)
+    list.push(average)
+  })
+  return list
+}
+
+Vue.prototype.$getNetChangeRatioList = function(list, index) {
+  const newList = []
+  for (let i = 0; i < 10; i++) {
+    newList.push(list[index + i])
+  }
+  return newList
+}
 
 Vue.config.productionTip = false
 

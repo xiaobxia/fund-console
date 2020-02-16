@@ -16,5 +16,14 @@ export default {
       }
     }
     return list
+  },
+  findItem(list, key, value) {
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i]
+      if (item[key] === value) {
+        return item
+      }
+    }
+    return null
   }
 }
