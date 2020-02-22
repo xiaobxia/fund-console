@@ -9,9 +9,6 @@
         >{{ item.name }}</el-radio-button>
       </el-radio-group>
     </div>
-    <el-alert
-      title="在疯狂过后，只有跌回年线一下，才可以继续交易"
-      type="warning"/>
     <div :id="id" :style="{height:'600px',width: '100%'}"/>
   </div>
 </template>
@@ -23,7 +20,7 @@ import stockAnalysisUtil from '@/utils/stockAnalysisUtil'
 import echarts from 'echarts'
 
 export default {
-  name: 'YearLineAll',
+  name: 'QuarterLineAll',
   data() {
     return {
       indexKey: 'chuangye',
@@ -31,7 +28,7 @@ export default {
       dataList: [],
       chart: null,
       indexItem: null,
-      id: 'YearLineAll'
+      id: 'QuarterLineAll'
     }
   },
   computed: {
@@ -91,8 +88,8 @@ export default {
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
-      const recentNetValue2 = this.$getAverageList(recentNetValue, 250)
-      const recentNetValue3 = this.$getAverageList(recentNetValue, 60)
+      const recentNetValue2 = this.$getAverageList(recentNetValue, 60)
+      const recentNetValue3 = this.$getAverageList(recentNetValue, 250)
       const xData = []
       const yData = []
       const yData2 = []
@@ -255,7 +252,7 @@ export default {
             }
           },
           {
-            name: '年线',
+            name: '季度线',
             data: yData2,
             type: 'line',
             lineStyle: {
@@ -265,7 +262,7 @@ export default {
             symbol: 'none'
           },
           {
-            name: '半年线',
+            name: '年线',
             data: yData3,
             type: 'line',
             lineStyle: {

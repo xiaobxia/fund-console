@@ -129,6 +129,30 @@ export const constantRouterMap = [
         meta: { title: '月线', icon: 'fas fa-tachometer-alt', noCache: true }
       }
     ]
+  },
+  {
+    path: '/quarterLine',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/quarterLine/index'),
+        name: 'QuarterLine',
+        meta: { title: '季度线-局部', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/quarterLineAll',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/quarterLineAll/index'),
+        name: 'QuarterLineAll',
+        meta: { title: '季度线', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
   }
 ]
 
