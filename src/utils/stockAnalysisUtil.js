@@ -86,5 +86,47 @@ export default {
     return {
       flag: false
     }
+  },
+  // 计算连跌0.2的三天
+  countLowDown(netChangeRatioList) {
+    if (
+      netChangeRatioList[0] < 0 &&
+      netChangeRatioList[1] < 0
+      // netChangeRatioList[2] < 0
+    ) {
+      if (
+        netChangeRatioList[0] >= -0.2 &&
+        netChangeRatioList[1] >= -0.2
+        // netChangeRatioList[2] >= -0.2
+      ) {
+        return {
+          flag: true
+        }
+      }
+    }
+    return {
+      flag: false
+    }
+  },
+  // 计算连涨0.2的三天
+  countLowUp(netChangeRatioList) {
+    if (
+      netChangeRatioList[0] > 0 &&
+      netChangeRatioList[1] > 0 &&
+      netChangeRatioList[2] > 0
+    ) {
+      if (
+        netChangeRatioList[0] <= 0.2 &&
+        netChangeRatioList[1] <= 0.2 &&
+        netChangeRatioList[2] <= 0.2
+      ) {
+        return {
+          flag: true
+        }
+      }
+    }
+    return {
+      flag: false
+    }
   }
 }
