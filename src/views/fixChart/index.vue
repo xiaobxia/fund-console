@@ -216,13 +216,11 @@ export default {
             return false
           }
         }
-        if (stockAnalysisUtil.countLowDown2(netChangeRatioList).flag) {
-          if (!stockAnalysisUtil.countLowDown(netChangeRatioList).flag) {
-            if (show) {
-              points.push(this.createPoint(date, upValue, 'green'))
-            } else {
-              return false
-            }
+        if (stockAnalysisUtil.countLowDown(netChangeRatioList).flag) {
+          if (show) {
+            points.push(this.createPoint(date, upValue, 'green'))
+          } else {
+            return false
           }
         }
       })

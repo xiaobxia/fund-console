@@ -153,6 +153,18 @@ export const constantRouterMap = [
         meta: { title: '季度线', icon: 'fas fa-tachometer-alt', noCache: true }
       }
     ]
+  },
+  {
+    path: '/fixChart',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/fixChart/index'),
+        name: 'FixChart',
+        meta: { title: '定投图', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
   }
 ]
 
