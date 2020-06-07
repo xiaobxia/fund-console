@@ -300,6 +300,11 @@ export default {
                 lineStyle: {
                   color: '#F56C6C'
                 }
+              }, {
+                yAxis: this.indexItem.relieveFixLine || 0,
+                lineStyle: {
+                  color: 'green'
+                }
               }]
             }
           }
