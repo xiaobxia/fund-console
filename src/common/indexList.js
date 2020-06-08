@@ -103,7 +103,7 @@ export default [
     topLine: 7.5,
     cutDownLine: 14,
     mix: false,
-    quarterHotLine: 10
+    quarterHotLine: 0
   },
   {
     key: 'shipin',
