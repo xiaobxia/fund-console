@@ -279,14 +279,9 @@ export default {
             markLine: {
               silent: true,
               data: [{
-                yAxis: this.indexItem.topLine,
+                yAxis: this.indexItem.quarterHotLine || 0,
                 lineStyle: {
-                  color: '#E6A23C'
-                }
-              }, {
-                yAxis: this.indexItem.cutDownLine,
-                lineStyle: {
-                  color: '#F56C6C'
+                  color: 'green'
                 }
               }]
             }
