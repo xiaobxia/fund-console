@@ -134,9 +134,11 @@ export default {
         const show = true
         const nowKline = recentNetValue[index]
         const netChangeRatioList = this.$getNetChangeRatioList(netChangeRatioAll, index)
+        const recentValueList = this.$getNetChangeRatioList(recentNetValue, index)
         const threeDay = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
         const date = nowKline['date']
         // const upValue = nowKline['close'] + (nowKline['close'] / 40)
+        const upValueBig = nowKline['close'] + (nowKline['close'] / 20)
         const downValue = nowKline['close'] - (nowKline['close'] / 100)
         if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
           if (show) {
@@ -190,6 +192,13 @@ export default {
         if (stockAnalysisUtil.countDown(netChangeRatioList, 9, 7).flag) {
           if (show) {
             points.push(this.createPoint(date, downValue, 'black'))
+          } else {
+            return false
+          }
+        }
+        if (stockAnalysisUtil.lowWake(recentValueList, indexRate * 2).flag) {
+          if (show) {
+            points.push(this.createPoint(date, upValueBig, 'black'))
           } else {
             return false
           }

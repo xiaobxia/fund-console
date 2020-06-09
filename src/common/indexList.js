@@ -14,7 +14,8 @@ export default [
     days: 1200,
     topLine: 15,
     cutDownLine: 30,
-    quarterHotLine: 15
+    quarterHotLine: 15,
+    relieveZ45Line: -6
   },
   {
     key: 'yiyao',
@@ -32,7 +33,8 @@ export default [
     topLine: 11,
     cutDownLine: 19,
     mix: false,
-    quarterHotLine: 10
+    quarterHotLine: 10,
+    relieveZ45Line: 0
   },
   {
     key: 'jisuanji',
@@ -50,7 +52,8 @@ export default [
     topLine: 20,
     cutDownLine: 30,
     mix: false,
-    quarterHotLine: 20
+    quarterHotLine: 20,
+    relieveZ45Line: -5
   },
   {
     key: 'dianzi',
@@ -68,7 +71,8 @@ export default [
     topLine: 20,
     cutDownLine: 40,
     mix: false,
-    quarterHotLine: 20
+    quarterHotLine: 20,
+    relieveZ45Line: 0
   },
   {
     key: 'wulin',
@@ -85,7 +89,8 @@ export default [
     days: 1200,
     topLine: 14,
     cutDownLine: 17,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   },
   {
     key: 'yinhang',
@@ -103,7 +108,8 @@ export default [
     topLine: 7.5,
     cutDownLine: 14,
     mix: false,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   },
   {
     key: 'shipin',
@@ -121,7 +127,8 @@ export default [
     topLine: 24,
     cutDownLine: 30,
     mix: false,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   },
   {
     key: 'jungong',
@@ -139,7 +146,8 @@ export default [
     topLine: 14,
     cutDownLine: 24,
     mix: false,
-    quarterHotLine: 15
+    quarterHotLine: 15,
+    relieveZ45Line: -9
   },
   {
     key: 'xinxi',
@@ -157,7 +165,8 @@ export default [
     topLine: 18,
     cutDownLine: 27,
     mix: false,
-    quarterHotLine: 20
+    quarterHotLine: 20,
+    relieveZ45Line: -6
   },
   {
     key: 'jijian',
@@ -174,7 +183,8 @@ export default [
     topLine: 10,
     cutDownLine: 20,
     mix: false,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   },
   {
     key: 'huanbao',
@@ -191,7 +201,8 @@ export default [
     topLine: 5.5,
     cutDownLine: 7,
     mix: false,
-    quarterHotLine: 10
+    quarterHotLine: 10,
+    relieveZ45Line: 0
   },
   {
     key: 'qiche',
@@ -208,7 +219,8 @@ export default [
     topLine: 5,
     cutDownLine: 7,
     mix: false,
-    quarterHotLine: 10
+    quarterHotLine: 10,
+    relieveZ45Line: -3.5
   },
   {
     key: 'yiqian',
@@ -225,7 +237,8 @@ export default [
     days: 1200,
     topLine: 7.5,
     cutDownLine: 15,
-    quarterHotLine: 10
+    quarterHotLine: 10,
+    relieveZ45Line: -6
   },
   {
     key: 'chuanmei',
@@ -243,7 +256,8 @@ export default [
     topLine: 12,
     cutDownLine: 15,
     mix: false,
-    quarterHotLine: 15
+    quarterHotLine: 15,
+    relieveZ45Line: -6
   },
   {
     key: 'zhengquan',
@@ -260,7 +274,8 @@ export default [
     topLine: 15,
     cutDownLine: 30,
     mix: false,
-    quarterHotLine: 25
+    quarterHotLine: 25,
+    relieveZ45Line: 0
   },
   {
     key: 'youse',
@@ -277,7 +292,8 @@ export default [
     topLine: 8.5,
     cutDownLine: 11,
     mix: false,
-    quarterHotLine: 9
+    quarterHotLine: 9,
+    relieveZ45Line: -4
   },
   {
     key: 'dichan',
@@ -295,7 +311,8 @@ export default [
     topLine: 15,
     cutDownLine: 20,
     mix: false,
-    quarterHotLine: 15
+    quarterHotLine: 15,
+    relieveZ45Line: 0
   },
   {
     key: 'yiliao',
@@ -313,7 +330,8 @@ export default [
     topLine: 30,
     cutDownLine: 30,
     mix: false,
-    quarterHotLine: 15
+    quarterHotLine: 15,
+    relieveZ45Line: -5
   },
   {
     key: 'shengwu',
@@ -331,7 +349,8 @@ export default [
     topLine: 30,
     cutDownLine: 30,
     mix: false,
-    quarterHotLine: 15
+    quarterHotLine: 15,
+    relieveZ45Line: -4
   },
   {
     key: 'wubai',
@@ -348,7 +367,8 @@ export default [
     days: 1200,
     topLine: 7.5,
     cutDownLine: 9,
-    quarterHotLine: 8
+    quarterHotLine: 8,
+    relieveZ45Line: -5
   },
   {
     key: 'gangtie',
@@ -365,7 +385,8 @@ export default [
     topLine: 7,
     cutDownLine: 7,
     mix: false,
-    quarterHotLine: 10
+    quarterHotLine: 10,
+    relieveZ45Line: 0
   },
   {
     key: 'meitan',
@@ -382,7 +403,8 @@ export default [
     topLine: 20,
     cutDownLine: 20,
     mix: false,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: -5
   },
   {
     key: 'baoxian',
@@ -400,7 +422,8 @@ export default [
     topLine: 20,
     cutDownLine: 35,
     mix: false,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   },
   {
     key: 'sanbai',
@@ -417,7 +440,8 @@ export default [
     days: 1200,
     topLine: 11,
     cutDownLine: 15,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   },
   {
     key: 'baijiu',
@@ -433,6 +457,7 @@ export default [
     days: 1200,
     topLine: 40,
     cutDownLine: 40,
-    quarterHotLine: 0
+    quarterHotLine: 0,
+    relieveZ45Line: 0
   }
 ]

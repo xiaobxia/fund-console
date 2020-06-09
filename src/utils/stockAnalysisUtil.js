@@ -1,3 +1,4 @@
+import numberUtil from './numberUtil'
 export default {
   // 根据20天线判断是否锁仓
   ifNoSell: function(averageList) {
@@ -144,6 +145,28 @@ export default {
         return {
           flag: true
         }
+      }
+    }
+    return {
+      flag: false
+    }
+  },
+  // 近几天最高点最低点
+  lowWake(recentList, rate) {
+    let max = recentList[0].high
+    let min = recentList[0].low
+    for (let i = 0; i < 6; i++) {
+      const item = recentList[i]
+      if (item.high > max) {
+        max = item.high
+      }
+      if (item.low < min) {
+        min = item.low
+      }
+    }
+    if (numberUtil.countDifferenceRate(max, min) <= (rate || 1.5)) {
+      return {
+        flag: true
       }
     }
     return {

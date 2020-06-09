@@ -64,6 +64,7 @@ export default {
     },
     initPage() {
       const indexItem = arrayUtil.findItem(indexList, 'key', this.indexKey)
+      this.indexItem = indexItem
       if (!indexItem) {
         return
       }
@@ -95,6 +96,7 @@ export default {
       const yData2 = []
       const yData3 = []
       const points = []
+      // 最近的在前面
       const netChangeRatioAll = []
       recentNetValue2.forEach((item) => {
         yData2.push(item)
@@ -156,9 +158,11 @@ export default {
         const show = true
         const nowKline = recentNetValue[index]
         const netChangeRatioList = this.$getNetChangeRatioList(netChangeRatioAll, index)
+        const recentValueList = this.$getNetChangeRatioList(recentNetValue, index)
         const threeDay = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
         const date = nowKline['date']
         const upValue = nowKline['close'] + (nowKline['close'] / 40)
+        const upValueBig = nowKline['close'] + (nowKline['close'] / 20)
         const downValue = nowKline['close'] - (nowKline['close'] / 100)
         if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
           if (show) {
@@ -223,6 +227,13 @@ export default {
             } else {
               return false
             }
+          }
+        }
+        if (stockAnalysisUtil.lowWake(recentValueList, indexRate * 2).flag) {
+          if (show) {
+            points.push(this.createPoint(date, upValueBig, 'black'))
+          } else {
+            return false
           }
         }
       })
@@ -311,6 +322,11 @@ export default {
               silent: true,
               data: [{
                 yAxis: this.indexItem.reduceLine,
+                lineStyle: {
+                  color: '#F56C6C'
+                }
+              }, {
+                yAxis: this.indexItem.relieveZ45Line || 0,
                 lineStyle: {
                   color: '#F56C6C'
                 }
