@@ -10,7 +10,7 @@
       </el-radio-group>
     </div>
     <el-button @click="printHanlder">打印</el-button>
-    <div id="BandChart-wrap">
+    <div id="BandChart-wrap" class="chart-wrap">
       <div :id="id" :style="{height:'600px',width: '100%'}"/>
     </div>
   </div>
@@ -149,7 +149,7 @@ export default {
       })
       this.chart.setOption({
         title: {
-          text: 'K线变化',
+          text: `波段-${this.indexItem.name}`,
           left: 'center',
           textStyle: {
             color: 'rgba(0, 0, 0, 0.85)',
@@ -206,5 +206,11 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
   .r-w {
     margin-bottom: 30px;
+  }
+  .chart-wrap {
+    position: relative;
+    .name {
+      text-align: center;
+    }
   }
 </style>

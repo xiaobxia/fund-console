@@ -149,7 +149,7 @@ export default {
       })
       this.chart.setOption({
         title: {
-          text: 'K线变化',
+          text: `定投-${this.indexItem.name}`,
           left: 'center',
           textStyle: {
             color: 'rgba(0, 0, 0, 0.85)',
