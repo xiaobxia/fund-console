@@ -52,7 +52,7 @@ export default {
     this.chart = null
   },
   methods: {
-    createPoint(date, value, color) {
+    createPoint(date, value, color, sign) {
       return {
         coord: [date, value],
         itemStyle: {
@@ -61,7 +61,17 @@ export default {
           }
         },
         label: {
-          show: false
+          show: true,
+          formatter: () => {
+            return `${sign}\n${moment(date).format('YYYY-MM-DD')}`
+          },
+          fontSize: 12,
+          color: color,
+          position: 'top'
+          // backgroundColor: '#fff',
+          // borderWidth: 1,
+          // borderColor: '#B6C5F3',
+          // padding: 10
         }
       }
     },
@@ -124,9 +134,9 @@ export default {
         const sign = this.getSign(item['date'], this.indexItem.key)
         if (sign) {
           if (sign.indexOf('加') !== -1) {
-            points.push(this.createPoint(item['date'], item['close'], 'red'))
+            points.push(this.createPoint(item['date'], item['close'], 'red', sign))
           } else if (sign.indexOf('减') !== -1) {
-            points.push(this.createPoint(item['date'], item['close'], 'green'))
+            points.push(this.createPoint(item['date'], item['close'], 'green', sign))
           }
         }
         netChangeRatioAll.push(item.netChangeRatio)

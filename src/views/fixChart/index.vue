@@ -52,7 +52,7 @@ export default {
     this.chart = null
   },
   methods: {
-    createPoint(date, value, color) {
+    createPoint(date, value, color, sign) {
       return {
         coord: [date, value],
         itemStyle: {
@@ -61,7 +61,17 @@ export default {
           }
         },
         label: {
-          show: false
+          show: true,
+          formatter: () => {
+            return `${moment(date).format('YYYY-MM-DD')}\n${sign}`
+          },
+          fontSize: 12,
+          color: color,
+          position: 'top'
+          // backgroundColor: '#fff',
+          // borderWidth: 1,
+          // borderColor: '#B6C5F3',
+          // padding: 10
         }
       }
     },
