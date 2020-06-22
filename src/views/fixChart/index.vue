@@ -11,7 +11,7 @@
     </div>
     <el-button @click="printHanlder">打印</el-button>
     <div id="FixChart-wrap">
-      <div :id="id" :style="{height:'600px',width: '100%'}"/>
+      <div :id="id" :style="{height:'400px',width: '100%'}"/>
     </div>
   </div>
 </template>
@@ -32,7 +32,8 @@ export default {
       chart: null,
       indexItem: null,
       id: 'FixChart',
-      signList: []
+      signList: [],
+      days: 40
     }
   },
   computed: {
@@ -69,7 +70,7 @@ export default {
         label: {
           show: true,
           formatter: () => {
-            return `${moment(date).format('YYYY-MM-DD')}\n定投:${sign}`
+            return `${moment(date).format('MM-DD')}\n定投:${sign}`
           },
           fontSize: 12,
           color: color,
@@ -83,7 +84,7 @@ export default {
     },
     querySign() {
       return this.$http.get('http://47.92.210.171:3051/fbsServer/signal/getSignalsByDays', {
-        days: 20
+        days: this.days
       }).then((res) => {
         this.signList = res.data || []
       })
@@ -97,7 +98,7 @@ export default {
       this.indexItem = indexItem
       this.$http.get('stock/getStockAllDongfang', {
         code: indexItem.code,
-        days: 20
+        days: this.days
       }).then((res) => {
         const list = []
         res.data.list.forEach((item) => {
@@ -172,7 +173,7 @@ export default {
             name: '点数',
             scale: true,
             splitLine: {
-              show: false
+              show: true
             }
           }
         ],
@@ -189,7 +190,7 @@ export default {
             markPoint: {
               data: points,
               symbol: 'circle',
-              symbolSize: 8
+              symbolSize: 10
             }
           }
         ]
