@@ -17,6 +17,7 @@
 import indexList from '@/common/indexList'
 import arrayUtil from '@/utils/arrayUtil'
 import echarts from 'echarts'
+import moment from 'moment'
 
 export default {
   name: 'BandChart',
@@ -27,7 +28,8 @@ export default {
       dataList: [],
       chart: null,
       indexItem: null,
-      id: 'BandChart'
+      id: 'BandChart',
+      signList: []
     }
   },
   computed: {
@@ -38,7 +40,9 @@ export default {
     }
   },
   mounted() {
-    this.initPage()
+    this.querySign().then(() => {
+      this.initPage()
+    })
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -60,6 +64,13 @@ export default {
           show: false
         }
       }
+    },
+    querySign() {
+      return this.$http.get('http://47.92.210.171:3051/fbsServer/signal/getSignalsByDays', {
+        days: 20
+      }).then((res) => {
+        this.signList = res.data || []
+      })
     },
     initPage() {
       const indexItem = arrayUtil.findItem(indexList, 'key', this.indexKey)
@@ -83,6 +94,22 @@ export default {
         this.initChart()
       })
     },
+    getSign(date, key) {
+      date = moment(date).format('YYYY-MM-DD')
+      for (let i = 0; i < this.signList.length; i++) {
+        const item = this.signList[i]
+        if (item.trade_date === date) {
+          const bandRecord = item.band_record || []
+          for (let j = 0; j < bandRecord.length; j++) {
+            const bandItem = bandRecord[j]
+            if (bandItem.key === key) {
+              return bandItem.flag
+            }
+          }
+        }
+      }
+      return ''
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const recentNetValue = this.dataList
@@ -94,6 +121,14 @@ export default {
       recentNetValue.forEach((item, index) => {
         xData.unshift(item['date'])
         yData.unshift(item['close'])
+        const sign = this.getSign(item['date'], this.indexItem.key)
+        if (sign) {
+          if (sign.indexOf('加') !== -1) {
+            points.push(this.createPoint(item['date'], item['close'], 'red'))
+          } else if (sign.indexOf('减') !== -1) {
+            points.push(this.createPoint(item['date'], item['close'], 'green'))
+          }
+        }
         netChangeRatioAll.push(item.netChangeRatio)
       })
       // const allLength = netChangeRatioAll.length
@@ -146,7 +181,7 @@ export default {
             markPoint: {
               data: points,
               symbol: 'circle',
-              symbolSize: 4
+              symbolSize: 8
             }
           }
         ]
