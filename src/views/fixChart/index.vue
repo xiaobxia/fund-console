@@ -115,11 +115,11 @@ export default {
       for (let i = 0; i < this.signList.length; i++) {
         const item = this.signList[i]
         if (item.trade_date === date) {
-          const bandRecord = item.band_record || []
-          for (let j = 0; j < bandRecord.length; j++) {
-            const bandItem = bandRecord[j]
-            if (bandItem.key === key) {
-              return bandItem.flag
+          const fixRecord = item.fix_record || []
+          for (let j = 0; j < fixRecord.length; j++) {
+            const fixItem = fixRecord[j]
+            if (fixItem.key === key) {
+              return fixItem.buy
             }
           }
         }
@@ -137,13 +137,9 @@ export default {
       recentNetValue.forEach((item, index) => {
         xData.unshift(item['date'])
         yData.unshift(item['close'])
-        const sign = this.getSign(item['date'], this.indexItem.key)
-        if (sign) {
-          if (sign.indexOf('加') !== -1) {
-            points.push(this.createPoint(item['date'], item['close'], 'red'))
-          } else if (sign.indexOf('减') !== -1) {
-            points.push(this.createPoint(item['date'], item['close'], 'green'))
-          }
+        const buy = this.getSign(item['date'], this.indexItem.key)
+        if (buy) {
+          points.push(this.createPoint(item['date'], item['close'], 'red', buy))
         }
         netChangeRatioAll.push(item.netChangeRatio)
       })
