@@ -9,7 +9,10 @@
         >{{ item.name }}</el-radio-button>
       </el-radio-group>
     </div>
-    <div :id="id" :style="{height:'600px',width: '100%'}"/>
+    <el-button @click="printHanlder">打印</el-button>
+    <div id="BandChart-wrap">
+      <div :id="id" :style="{height:'600px',width: '100%'}"/>
+    </div>
   </div>
 </template>
 
@@ -52,6 +55,9 @@ export default {
     this.chart = null
   },
   methods: {
+    printHanlder() {
+      this.$getDomImg('BandChart-wrap')
+    },
     createPoint(date, value, color, sign) {
       return {
         coord: [date, value],

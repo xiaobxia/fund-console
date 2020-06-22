@@ -9,7 +9,10 @@
         >{{ item.name }}</el-radio-button>
       </el-radio-group>
     </div>
-    <div :id="id" :style="{height:'600px',width: '100%'}"/>
+    <el-button @click="printHanlder">打印</el-button>
+    <div id="FixChart-wrap">
+      <div :id="id" :style="{height:'600px',width: '100%'}"/>
+    </div>
   </div>
 </template>
 
@@ -52,6 +55,9 @@ export default {
     this.chart = null
   },
   methods: {
+    printHanlder() {
+      this.$getDomImg('FixChart-wrap')
+    },
     createPoint(date, value, color, sign) {
       return {
         coord: [date, value],
@@ -63,7 +69,7 @@ export default {
         label: {
           show: true,
           formatter: () => {
-            return `${moment(date).format('YYYY-MM-DD')}\n${sign}`
+            return `${moment(date).format('YYYY-MM-DD')}\n定投:${sign}`
           },
           fontSize: 12,
           color: color,
