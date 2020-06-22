@@ -131,10 +131,6 @@ export default {
         }
         netChangeRatioAll.push(item.netChangeRatio)
       })
-      // const allLength = netChangeRatioAll.length
-      // 画点
-      netChangeRatioAll.forEach((item, index) => {
-      })
       this.chart.setOption({
         title: {
           text: 'K线变化',
