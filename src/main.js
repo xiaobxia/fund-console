@@ -21,6 +21,7 @@ import stringUtil from '@/utils/stringUtil.js'
 import fileUtil from '@/utils/fileUtil.js'
 
 import typeValue from '@/common/typeValue' // global filters
+import printUtil from '@/utils/printUtil.js'
 
 import * as filters from './filters' // global filters
 
@@ -54,6 +55,8 @@ registerUtil(stringUtil)
 registerUtil(fileUtil)
 // 常量格式化
 registerUtil(typeValue)
+// 打印工具
+registerUtil(printUtil)
 
 // 按钮级别鉴权
 Vue.prototype.$hasPermission = function(key) {
