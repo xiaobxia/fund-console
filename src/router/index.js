@@ -165,6 +165,18 @@ export const constantRouterMap = [
         meta: { title: '定投图', icon: 'fas fa-tachometer-alt', noCache: true }
       }
     ]
+  },
+  {
+    path: '/bandChart',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/bandChart/index'),
+        name: 'BandChart',
+        meta: { title: '波段图', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
   }
 ]
 
