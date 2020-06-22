@@ -9,7 +9,22 @@
         >{{ item.name }}</el-radio-button>
       </el-radio-group>
     </div>
-    <el-button @click="printHanlder">打印</el-button>
+    <div class="filter-container">
+      <div class="left-block">
+        <el-input
+          v-model="days"
+          style="width: 200px;margin-right: 10px"
+          suffix-icon="el-icon-search"
+          size="small"
+          placeholder="输入天数"
+        />
+        <el-button
+          type="primary"
+          size="small"
+          @click="createPage"
+        >查询</el-button>
+      </div>
+    </div>
     <div id="BandChart-wrap" class="chart-wrap">
       <div :id="id" :style="{height:'400px',width: '100%'}"/>
     </div>
@@ -44,9 +59,7 @@ export default {
     }
   },
   mounted() {
-    this.querySign().then(() => {
-      this.initPage()
-    })
+    this.createPage()
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -56,6 +69,11 @@ export default {
     this.chart = null
   },
   methods: {
+    createPage() {
+      this.querySign().then(() => {
+        this.initPage()
+      })
+    },
     printHanlder() {
       this.$getDomImg('BandChart-wrap')
     },
@@ -70,7 +88,7 @@ export default {
         label: {
           show: true,
           formatter: () => {
-            return `${sign}\n${moment(date).format('MM-DD')}`
+            return `${sign}\n${moment(date).format('M-DD')}`
           },
           fontSize: 12,
           color: color,
@@ -177,7 +195,10 @@ export default {
             name: '点数',
             scale: true,
             splitLine: {
-              show: true
+              show: true,
+              lineStyle: {
+                type: 'dashed'
+              }
             }
           }
         ],
@@ -209,7 +230,9 @@ export default {
     margin-bottom: 30px;
   }
   .chart-wrap {
+    padding-top: 10px;
     position: relative;
+    border: 1px solid #ddd;
     .name {
       text-align: center;
     }
