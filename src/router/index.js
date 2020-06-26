@@ -177,6 +177,18 @@ export const constantRouterMap = [
         meta: { title: '波段图', icon: 'fas fa-tachometer-alt', noCache: true }
       }
     ]
+  },
+  {
+    path: '/rateLine',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/rateLine/index'),
+        name: 'RateLine',
+        meta: { title: '波动率图', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
   }
 ]
 
