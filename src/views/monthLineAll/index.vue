@@ -291,6 +291,15 @@ export default {
               data: points,
               symbol: 'circle',
               symbolSize: 4
+            },
+            markLine: {
+              silent: true,
+              data: [{
+                yAxis: recentNetValue[0].close,
+                lineStyle: {
+                  color: '#aaa'
+                }
+              }]
             }
           },
           {
