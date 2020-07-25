@@ -14,7 +14,7 @@ export default [
     days: 1200,
     topLine: 15,
     cutDownLine: 30,
-    quarterHotLine: 15,
+    quarterHotLine: 20,
     relieveZ45Line: -6
   },
   {
@@ -89,7 +89,7 @@ export default [
     days: 1200,
     topLine: 14,
     cutDownLine: 17,
-    quarterHotLine: 0,
+    quarterHotLine: 20,
     relieveZ45Line: 0
   },
   {
@@ -108,7 +108,7 @@ export default [
     topLine: 7.5,
     cutDownLine: 14,
     mix: false,
-    quarterHotLine: 0,
+    quarterHotLine: 10,
     relieveZ45Line: 0
   },
   {
@@ -127,7 +127,7 @@ export default [
     topLine: 24,
     cutDownLine: 30,
     mix: false,
-    quarterHotLine: 0,
+    quarterHotLine: 30,
     relieveZ45Line: 0
   },
   {
@@ -146,7 +146,7 @@ export default [
     topLine: 14,
     cutDownLine: 24,
     mix: false,
-    quarterHotLine: 15,
+    quarterHotLine: 20,
     relieveZ45Line: -9
   },
   {
@@ -183,7 +183,7 @@ export default [
     topLine: 10,
     cutDownLine: 20,
     mix: false,
-    quarterHotLine: 0,
+    quarterHotLine: 13,
     relieveZ45Line: 0
   },
   {
@@ -403,7 +403,7 @@ export default [
     topLine: 20,
     cutDownLine: 20,
     mix: false,
-    quarterHotLine: 0,
+    quarterHotLine: 10,
     relieveZ45Line: -5
   },
   {
@@ -422,7 +422,7 @@ export default [
     topLine: 20,
     cutDownLine: 35,
     mix: false,
-    quarterHotLine: 0,
+    quarterHotLine: 18,
     relieveZ45Line: 0
   },
   {
@@ -440,7 +440,7 @@ export default [
     days: 1200,
     topLine: 11,
     cutDownLine: 15,
-    quarterHotLine: 0,
+    quarterHotLine: 15,
     relieveZ45Line: 0
   },
   {
