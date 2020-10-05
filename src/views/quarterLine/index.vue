@@ -299,12 +299,20 @@ export default {
             type: 'bar',
             markLine: {
               silent: true,
-              data: [{
-                yAxis: this.indexItem.quarterHotLine || 0,
-                lineStyle: {
-                  color: 'green'
+              data: [
+                {
+                  yAxis: this.indexItem.quarterHotLine || 0,
+                  lineStyle: {
+                    color: 'green'
+                  }
+                },
+                {
+                  yAxis: yData4[yData4.length - 1].value,
+                  lineStyle: {
+                    color: 'rgb(155,110,255)'
+                  }
                 }
-              }]
+              ]
             }
           }
         ]

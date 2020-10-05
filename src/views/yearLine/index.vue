@@ -302,17 +302,25 @@ export default {
             type: 'bar',
             markLine: {
               silent: true,
-              data: [{
-                yAxis: this.indexItem.topLine,
-                lineStyle: {
-                  color: '#E6A23C'
+              data: [
+                {
+                  yAxis: this.indexItem.topLine,
+                  lineStyle: {
+                    color: '#E6A23C'
+                  }
+                }, {
+                  yAxis: this.indexItem.cutDownLine,
+                  lineStyle: {
+                    color: '#F56C6C'
+                  }
+                },
+                {
+                  yAxis: yData4[yData4.length - 1].value,
+                  lineStyle: {
+                    color: 'rgb(155,110,255)'
+                  }
                 }
-              }, {
-                yAxis: this.indexItem.cutDownLine,
-                lineStyle: {
-                  color: '#F56C6C'
-                }
-              }]
+              ]
             }
           }
         ]

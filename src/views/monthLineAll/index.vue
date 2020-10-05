@@ -329,17 +329,25 @@ export default {
             type: 'bar',
             markLine: {
               silent: true,
-              data: [{
-                yAxis: this.indexItem.reduceLine,
-                lineStyle: {
-                  color: '#F56C6C'
+              data: [
+                {
+                  yAxis: this.indexItem.reduceLine,
+                  lineStyle: {
+                    color: '#F56C6C'
+                  }
+                }, {
+                  yAxis: this.indexItem.relieveZ45Line || 0,
+                  lineStyle: {
+                    color: '#F56C6C'
+                  }
+                },
+                {
+                  yAxis: yData4[yData4.length - 1].value,
+                  lineStyle: {
+                    color: 'rgb(155,110,255)'
+                  }
                 }
-              }, {
-                yAxis: this.indexItem.relieveZ45Line || 0,
-                lineStyle: {
-                  color: '#F56C6C'
-                }
-              }]
+              ]
             }
           }
         ]

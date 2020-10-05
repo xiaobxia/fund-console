@@ -299,22 +299,30 @@ export default {
             type: 'bar',
             markLine: {
               silent: true,
-              data: [{
-                yAxis: this.indexItem.downTrendLine,
-                lineStyle: {
-                  color: '#E6A23C'
+              data: [
+                {
+                  yAxis: this.indexItem.downTrendLine,
+                  lineStyle: {
+                    color: '#E6A23C'
+                  }
+                }, {
+                  yAxis: this.indexItem.fixLine,
+                  lineStyle: {
+                    color: '#F56C6C'
+                  }
+                }, {
+                  yAxis: this.indexItem.relieveFixLine || 0,
+                  lineStyle: {
+                    color: 'green'
+                  }
+                },
+                {
+                  yAxis: yData4[yData4.length - 1].value,
+                  lineStyle: {
+                    color: 'rgb(155,110,255)'
+                  }
                 }
-              }, {
-                yAxis: this.indexItem.fixLine,
-                lineStyle: {
-                  color: '#F56C6C'
-                }
-              }, {
-                yAxis: this.indexItem.relieveFixLine || 0,
-                lineStyle: {
-                  color: 'green'
-                }
-              }]
+              ]
             }
           }
         ]
