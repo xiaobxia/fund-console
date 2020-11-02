@@ -42,6 +42,31 @@ export default {
     }
     return false
   },
+  countRule(netChangeRatioList, rule) {
+    let rate = 0
+    for (let i = 0; i < rule.length; i++) {
+      if (rule[i]) {
+        // 涨
+        if (netChangeRatioList[i] <= 0) {
+          return {
+            flag: false
+          }
+        }
+      } else {
+        // 跌
+        if (netChangeRatioList[i] > 0) {
+          return {
+            flag: false
+          }
+        }
+      }
+      rate += netChangeRatioList[i]
+    }
+    return {
+      rate,
+      flag: true
+    }
+  },
   // 计算跌的数量
   countDown(netChangeRatioList, all, has) {
     let rate = 0
