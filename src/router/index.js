@@ -155,6 +155,30 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/weekLine',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/weekLine/index'),
+        name: 'QuarterLine',
+        meta: { title: '周线-局部', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/weekLineAll',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/weekLineAll/index'),
+        name: 'QuarterLineAll',
+        meta: { title: '周线', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/fixChart',
     component: Layout,
     children: [
