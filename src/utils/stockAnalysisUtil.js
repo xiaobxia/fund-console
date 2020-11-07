@@ -197,5 +197,17 @@ export default {
     return {
       flag: false
     }
+  },
+  // 变盘
+  countChangePan(netChangeRatioList, indexRate) {
+    const a = netChangeRatioList[0]
+    const b = netChangeRatioList[1]
+    const c = netChangeRatioList[2]
+    if (a < 0 && b > 0 && c < 0) {
+      if (a > -(0.3 * indexRate) && b < (0.3 * indexRate)) {
+        return true
+      }
+    }
+    return false
   }
 }

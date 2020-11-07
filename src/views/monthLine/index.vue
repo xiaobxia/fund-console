@@ -160,6 +160,9 @@ export default {
         const date = nowKline['date']
         const upValue = nowKline['close'] + (nowKline['close'] / 40)
         const downValue = nowKline['close'] - (nowKline['close'] / 100)
+        // if (stockAnalysisUtil.countChangePan(netChangeRatioList, indexRate)) {
+        //   points.push(this.createPoint(date, downValue, '#ff0000'))
+        // }
         if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
           if (show) {
             points.push(this.createPoint(date, downValue, '#ff0000'))
