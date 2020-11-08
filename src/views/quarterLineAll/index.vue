@@ -90,10 +90,12 @@ export default {
       // 均线
       const recentNetValue2 = this.$getAverageList(recentNetValue, 60)
       const recentNetValue3 = this.$getAverageList(recentNetValue, 250)
+      const recentNetValue4 = this.$getAverageList(recentNetValue, 120)
       const xData = []
       const yData = []
       const yData2 = []
       const yData3 = []
+      const yData4 = []
       const points = []
       const netChangeRatioAll = []
       recentNetValue2.forEach((item) => {
@@ -102,23 +104,39 @@ export default {
       recentNetValue3.forEach((item) => {
         yData3.push(item)
       })
+      recentNetValue4.forEach((item) => {
+        yData4.push(item)
+      })
       recentNetValue.forEach((item, index) => {
         xData.unshift(item['date'])
         yData.unshift(item['close'])
         netChangeRatioAll.push(item.netChangeRatio)
       })
       // 线差值
-      const yData4 = []
+      const yDataDiff = []
       yData.forEach((item, index) => {
-        const rate = this.$countDifferenceRate(item, yData2[index])
+        const rateQ = this.$countDifferenceRate(item, yData2[index])
+        // const rateY = this.$countDifferenceRate(item, yData3[index])
+        // const rateH = this.$countDifferenceRate(item, yData4[index])
         let color = '#fff'
-        if (rate >= 0) {
-          color = 'rgb(208, 153, 183)'
+        const blue = 'rgb(112, 220, 240)'
+        const red = 'rgb(208, 153, 183)'
+        // if (rateH > 0 && rateY > 0) {
+        //   if (rateQ < -5) {
+        //     color = red
+        //   } else {
+        //     color = blue
+        //   }
+        // } else {
+        //   color = blue
+        // }
+        if (rateQ > 0) {
+          color = red
         } else {
-          color = 'rgb(112, 220, 240)'
+          color = blue
         }
-        yData4.push({
-          value: rate,
+        yDataDiff.push({
+          value: rateQ,
           itemStyle: {
             color: color
           }
@@ -291,7 +309,7 @@ export default {
           },
           {
             name: '差值',
-            data: yData4,
+            data: yDataDiff,
             yAxisIndex: 1,
             type: 'bar',
             markLine: {
@@ -304,7 +322,7 @@ export default {
                   }
                 },
                 {
-                  yAxis: yData4[yData4.length - 1].value,
+                  yAxis: yDataDiff[yDataDiff.length - 1].value,
                   lineStyle: {
                     color: 'rgb(155,110,255)'
                   }
