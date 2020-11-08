@@ -9,6 +9,12 @@
         >{{ item.name }}</el-radio-button>
       </el-radio-group>
     </div>
+    <div>
+      <el-radio-group v-model="type" size="mini">
+        <el-radio-button :label="1">普通模式</el-radio-button>
+        <el-radio-button :label="2">见底模式</el-radio-button>
+      </el-radio-group>
+    </div>
     <div :id="id" :style="{height:'600px',width: '100%'}"/>
   </div>
 </template>
@@ -28,13 +34,17 @@ export default {
       dataList: [],
       chart: null,
       indexItem: null,
-      id: 'QuarterLineAll'
+      id: 'QuarterLineAll',
+      type: 1
     }
   },
   computed: {
   },
   watch: {
     indexKey() {
+      this.initPage()
+    },
+    type() {
       this.initPage()
     }
   },
@@ -116,24 +126,27 @@ export default {
       const yDataDiff = []
       yData.forEach((item, index) => {
         const rateQ = this.$countDifferenceRate(item, yData2[index])
-        // const rateY = this.$countDifferenceRate(item, yData3[index])
-        // const rateH = this.$countDifferenceRate(item, yData4[index])
+        const rateY = this.$countDifferenceRate(item, yData3[index])
+        const rateH = this.$countDifferenceRate(item, yData4[index])
         let color = '#fff'
         const blue = 'rgb(112, 220, 240)'
         const red = 'rgb(208, 153, 183)'
-        // if (rateH > 0 && rateY > 0) {
-        //   if (rateQ < -5) {
-        //     color = red
-        //   } else {
-        //     color = blue
-        //   }
-        // } else {
-        //   color = blue
-        // }
-        if (rateQ > 0) {
-          color = red
+        if (this.type === 1) {
+          if (rateQ > 0) {
+            color = red
+          } else {
+            color = blue
+          }
         } else {
-          color = blue
+          if (rateH > 0 && rateY > 0) {
+            if (rateQ < -5) {
+              color = red
+            } else {
+              color = blue
+            }
+          } else {
+            color = blue
+          }
         }
         yDataDiff.push({
           value: rateQ,
