@@ -91,8 +91,8 @@ export default {
       // 均线
       const monthList = this.$getAverageList(recentNetValue, 20)
       const quarterList = this.$getAverageList(recentNetValue, 60)
-      // const halfYearList = this.$getAverageList(recentNetValue, 120)
-      // const yearList = this.$getAverageList(recentNetValue, 250)
+      const halfYearList = this.$getAverageList(recentNetValue, 120)
+      const yearList = this.$getAverageList(recentNetValue, 250)
       const xData = []
       const yData = []
       const points = []
@@ -105,7 +105,12 @@ export default {
       })
       // 线差值
       const yData4 = []
+      const diffList = []
       yData.forEach((item, index) => {
+        const rateM = this.$countDifferenceRate(item, monthList[index])
+        const rateQ = this.$countDifferenceRate(item, quarterList[index])
+        const rateY = this.$countDifferenceRate(item, yearList[index])
+        const rateH = this.$countDifferenceRate(item, halfYearList[index])
         const day = 5
         const averageList = []
         if (index >= day) {
@@ -135,6 +140,13 @@ export default {
         if (diff < 0.2) {
           c = false
         }
+        diffList.push({
+          rateM,
+          rateQ,
+          rateY,
+          rateH,
+          noSell
+        })
         yData4.push({
           value: rate,
           itemStyle: {
@@ -151,6 +163,7 @@ export default {
         }
         const show = true
         const nowKline = recentNetValue[index]
+        const diffInfo = diffList[(diffList.length - 1) - index]
         const netChangeRatioList = this.$getNetChangeRatioList(netChangeRatioAll, index)
         const recentValueList = this.$getNetChangeRatioList(recentNetValue, index)
         const threeDay = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
@@ -158,6 +171,8 @@ export default {
         const upValue = nowKline['close'] + (nowKline['close'] / 40)
         const upValueBig = nowKline['close'] + (nowKline['close'] / 20)
         const downValue = nowKline['close'] - (nowKline['close'] / 100)
+        if (diffInfo.rateH < 0 && diffInfo.rateQ < 0 && diffInfo.noSell) {
+        }
         if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
           if (show) {
             points.push(this.createPoint(date, downValue, '#ff0000'))
