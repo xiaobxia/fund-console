@@ -89,21 +89,15 @@ export default {
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
-      const recentNetValue2 = this.$getAverageList(recentNetValue, 20)
-      const recentNetValue3 = this.$getAverageList(recentNetValue, 120)
+      const monthList = this.$getAverageList(recentNetValue, 20)
+      const quarterList = this.$getAverageList(recentNetValue, 60)
+      // const halfYearList = this.$getAverageList(recentNetValue, 120)
+      // const yearList = this.$getAverageList(recentNetValue, 250)
       const xData = []
       const yData = []
-      const yData2 = []
-      const yData3 = []
       const points = []
       // 最近的在前面
       const netChangeRatioAll = []
-      recentNetValue2.forEach((item) => {
-        yData2.push(item)
-      })
-      recentNetValue3.forEach((item) => {
-        yData3.push(item)
-      })
       recentNetValue.forEach((item, index) => {
         xData.unshift(item['date'])
         yData.unshift(item['close'])
@@ -117,11 +111,11 @@ export default {
         if (index >= day) {
           for (let i = day; i >= 0; i--) {
             const nowIndex = index - i
-            averageList.push(this.$countDifferenceRate(yData[nowIndex], yData2[nowIndex]))
+            averageList.push(this.$countDifferenceRate(yData[nowIndex], monthList[nowIndex]))
           }
         }
         const noSell = stockAnalysisUtil.ifNoSell(averageList)
-        const rate = this.$countDifferenceRate(item, yData2[index])
+        const rate = this.$countDifferenceRate(item, monthList[index])
         // 移动均线策略
         let now = 0
         let last = 0
@@ -283,7 +277,7 @@ export default {
             data: yData,
             type: 'line',
             lineStyle: {
-              color: '#1890ff'
+              color: '#909399'
             },
             smooth: false,
             symbol: 'none',
@@ -304,7 +298,7 @@ export default {
           },
           {
             name: '月线',
-            data: yData2,
+            data: monthList,
             type: 'line',
             lineStyle: {
               color: 'rgb(132, 7, 189)'
@@ -313,8 +307,8 @@ export default {
             symbol: 'none'
           },
           {
-            name: '半年线',
-            data: yData3,
+            name: '季度线',
+            data: quarterList,
             type: 'line',
             lineStyle: {
               color: '#a80'
