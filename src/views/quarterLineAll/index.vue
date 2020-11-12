@@ -98,25 +98,14 @@ export default {
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
-      const recentNetValue2 = this.$getAverageList(recentNetValue, 60)
-      const recentNetValue3 = this.$getAverageList(recentNetValue, 250)
-      const recentNetValue4 = this.$getAverageList(recentNetValue, 120)
+      // const monthList = this.$getAverageList(recentNetValue, 20)
+      const quarterList = this.$getAverageList(recentNetValue, 60)
+      const halfYearList = this.$getAverageList(recentNetValue, 120)
+      const yearList = this.$getAverageList(recentNetValue, 250)
       const xData = []
       const yData = []
-      const yData2 = []
-      const yData3 = []
-      const yData4 = []
       const points = []
       const netChangeRatioAll = []
-      recentNetValue2.forEach((item) => {
-        yData2.push(item)
-      })
-      recentNetValue3.forEach((item) => {
-        yData3.push(item)
-      })
-      recentNetValue4.forEach((item) => {
-        yData4.push(item)
-      })
       recentNetValue.forEach((item, index) => {
         xData.unshift(item['date'])
         yData.unshift(item['close'])
@@ -125,9 +114,9 @@ export default {
       // 线差值
       const yDataDiff = []
       yData.forEach((item, index) => {
-        const rateQ = this.$countDifferenceRate(item, yData2[index])
-        const rateY = this.$countDifferenceRate(item, yData3[index])
-        const rateH = this.$countDifferenceRate(item, yData4[index])
+        const rateQ = this.$countDifferenceRate(item, quarterList[index])
+        const rateY = this.$countDifferenceRate(item, yearList[index])
+        const rateH = this.$countDifferenceRate(item, halfYearList[index])
         let color = '#fff'
         const blue = 'rgb(112, 220, 240)'
         const red = 'rgb(208, 153, 183)'
@@ -281,7 +270,7 @@ export default {
             data: yData,
             type: 'line',
             lineStyle: {
-              color: '#1890ff'
+              color: '#909399'
             },
             smooth: false,
             symbol: 'none',
@@ -302,7 +291,7 @@ export default {
           },
           {
             name: '季度线',
-            data: yData2,
+            data: quarterList,
             type: 'line',
             lineStyle: {
               color: 'rgb(132, 7, 189)'
@@ -311,8 +300,18 @@ export default {
             symbol: 'none'
           },
           {
+            name: '半年线',
+            data: halfYearList,
+            type: 'line',
+            lineStyle: {
+              color: 'rgb(189, 7, 132)'
+            },
+            smooth: false,
+            symbol: 'none'
+          },
+          {
             name: '年线',
-            data: yData3,
+            data: yearList,
             type: 'line',
             lineStyle: {
               color: '#a80'

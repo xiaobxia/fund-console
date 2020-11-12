@@ -91,20 +91,14 @@ export default {
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
-      const recentNetValue2 = this.$getAverageList(recentNetValue, 250)
-      const recentNetValue3 = this.$getAverageList(recentNetValue, 60)
+      // const monthList = this.$getAverageList(recentNetValue, 20)
+      const quarterList = this.$getAverageList(recentNetValue, 60)
+      const halfYearList = this.$getAverageList(recentNetValue, 120)
+      const yearList = this.$getAverageList(recentNetValue, 250)
       const xData = []
       const yData = []
-      const yData2 = []
-      const yData3 = []
       const points = []
       const netChangeRatioAll = []
-      recentNetValue2.forEach((item) => {
-        yData2.push(item)
-      })
-      recentNetValue3.forEach((item) => {
-        yData3.push(item)
-      })
       recentNetValue.forEach((item, index) => {
         xData.unshift(item['date'])
         yData.unshift(item['close'])
@@ -113,7 +107,7 @@ export default {
       // 线差值
       const yData4 = []
       yData.forEach((item, index) => {
-        const rate = this.$countDifferenceRate(item, yData2[index])
+        const rate = this.$countDifferenceRate(item, yearList[index])
         let color = '#fff'
         if (rate >= 0) {
           color = 'rgb(208, 153, 183)'
@@ -244,7 +238,7 @@ export default {
             data: yData,
             type: 'line',
             lineStyle: {
-              color: '#1890ff'
+              color: '#909399'
             },
             smooth: false,
             symbol: 'none',
@@ -264,8 +258,8 @@ export default {
             }
           },
           {
-            name: '年线',
-            data: yData2,
+            name: '季度线',
+            data: quarterList,
             type: 'line',
             lineStyle: {
               color: 'rgb(132, 7, 189)'
@@ -275,7 +269,17 @@ export default {
           },
           {
             name: '半年线',
-            data: yData3,
+            data: halfYearList,
+            type: 'line',
+            lineStyle: {
+              color: 'rgb(189, 7, 132)'
+            },
+            smooth: false,
+            symbol: 'none'
+          },
+          {
+            name: '年线',
+            data: yearList,
             type: 'line',
             lineStyle: {
               color: '#a80'
