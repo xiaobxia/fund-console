@@ -172,6 +172,7 @@ export default {
         const upValueBig = nowKline['close'] + (nowKline['close'] / 20)
         const downValue = nowKline['close'] - (nowKline['close'] / 100)
         if (diffInfo.rateH < 0 && diffInfo.rateQ < 0 && diffInfo.noSell) {
+          // console.log()
         }
         if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
           if (show) {
