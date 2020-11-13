@@ -106,7 +106,11 @@ export default {
       })
       // 线差值
       const yData4 = []
+      const diffList = []
       yData.forEach((item, index) => {
+        const rateQ = this.$countDifferenceRate(item, quarterList[index])
+        const rateY = this.$countDifferenceRate(item, yearList[index])
+        const rateH = this.$countDifferenceRate(item, halfYearList[index])
         const rate = this.$countDifferenceRate(item, yearList[index])
         let color = '#fff'
         if (rate >= 0) {
@@ -114,6 +118,11 @@ export default {
         } else {
           color = 'rgb(112, 220, 240)'
         }
+        diffList.push({
+          rateQ,
+          rateY,
+          rateH
+        })
         yData4.push({
           value: rate,
           itemStyle: {
@@ -130,11 +139,15 @@ export default {
         }
         const show = true
         const nowKline = recentNetValue[index]
+        const diffInfo = diffList[(diffList.length - 1) - index]
         const netChangeRatioList = this.$getNetChangeRatioList(netChangeRatioAll, index)
         const threeDay = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
         const date = nowKline['date']
         // const upValue = nowKline['close'] + (nowKline['close'] / 40)
         const downValue = nowKline['close'] - (nowKline['close'] / 100)
+        if (diffInfo.rateH < 0 && diffInfo.rateQ < 0 && diffInfo.noSell) {
+          // console.log()
+        }
         if (threeDay.flag && threeDay.rate < -(3 * indexRate)) {
           if (show) {
             points.push(this.createPoint(date, downValue, '#ff0000'))
