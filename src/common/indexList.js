@@ -88,7 +88,7 @@ export default [
     mix: true,
     days: 1200,
     topLine: 14,
-    cutDownLine: 17,
+    cutDownLine: 15,
     quarterHotLine: 20,
     relieveZ45Line: 0
   },

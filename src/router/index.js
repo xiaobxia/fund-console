@@ -179,6 +179,30 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/weekDay',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/weekDay/index'),
+        name: 'WeekDay',
+        meta: { title: '周天统计', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/asPage',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/asPage/index'),
+        name: 'AsPage',
+        meta: { title: '分析页', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/fixChart',
     component: Layout,
     children: [

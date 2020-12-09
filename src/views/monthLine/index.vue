@@ -143,7 +143,11 @@ export default {
           rateQ,
           rateY,
           rateH,
-          noSell
+          noSell,
+          monthClose: monthList[index],
+          quarterClose: quarterList[index],
+          yearClose: yearList[index],
+          halfYearClose: halfYearList[index]
         })
         yData4.push({
           value: rate,

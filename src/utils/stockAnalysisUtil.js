@@ -116,14 +116,14 @@ export default {
   // 计算连跌0.2的三天
   countLowDown(netChangeRatioList) {
     if (
-      netChangeRatioList[0] < 0 &&
-      netChangeRatioList[1] < 0
-      // netChangeRatioList[2] < 0
+      netChangeRatioList[0] <= 0 &&
+      netChangeRatioList[1] <= 0
+      // netChangeRatioList[2] <= 0
     ) {
       if (
-        netChangeRatioList[0] >= -0.2 &&
-        netChangeRatioList[1] >= -0.2
-        // netChangeRatioList[2] >= -0.2
+        netChangeRatioList[0] >= -0.3 &&
+        netChangeRatioList[1] >= -0.3
+        // netChangeRatioList[2] >= -0.3
       ) {
         return {
           flag: true

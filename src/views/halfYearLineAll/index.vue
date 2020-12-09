@@ -88,7 +88,7 @@ export default {
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
-      // const monthList = this.$getAverageList(recentNetValue, 20)
+      const monthList = this.$getAverageList(recentNetValue, 20)
       const quarterList = this.$getAverageList(recentNetValue, 60)
       const halfYearList = this.$getAverageList(recentNetValue, 120)
       const yearList = this.$getAverageList(recentNetValue, 250)
@@ -293,6 +293,16 @@ export default {
             type: 'line',
             lineStyle: {
               color: '#a80'
+            },
+            smooth: false,
+            symbol: 'none'
+          },
+          {
+            name: '月线',
+            data: monthList,
+            type: 'line',
+            lineStyle: {
+              color: 'blue'
             },
             smooth: false,
             symbol: 'none'

@@ -20,7 +20,7 @@ import stockAnalysisUtil from '@/utils/stockAnalysisUtil'
 import echarts from 'echarts'
 
 export default {
-  name: 'MonthLineAll',
+  name: 'AsPage',
   data() {
     return {
       indexKey: 'chuangye',
