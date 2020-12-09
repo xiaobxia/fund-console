@@ -16,7 +16,7 @@
 <script>
 import indexList from '@/common/indexList'
 import arrayUtil from '@/utils/arrayUtil'
-import stockAnalysisUtil from '@/utils/stockAnalysisUtil'
+// import stockAnalysisUtil from '@/utils/stockAnalysisUtil'
 import echarts from 'echarts'
 import moment from 'moment'
 
@@ -24,7 +24,7 @@ export default {
   name: 'WeekDay',
   data() {
     return {
-      indexKey: 'chuangye',
+      indexKey: 'yiqian',
       indexList,
       dataList: [],
       chart: null,
@@ -87,6 +87,7 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const recentNetValue = this.dataList
+      const indexRate = this.indexItem.rate
       const xData = []
       const yData = []
       const map = {
@@ -96,6 +97,7 @@ export default {
         '4': [],
         '5': []
       }
+      // 目前来看周1的波动会很大
       recentNetValue.forEach((item, index) => {
         const day = moment(item['date']).day()
         map['' + day].push(item['netChangeRatio'])
@@ -104,17 +106,48 @@ export default {
         xData.push(key)
         const list = map[key]
         let count = 0
+        let rateSum = 0
+        let upSum = 0
+        let downCount = 0
+        let downSum = 0
+        let hUpCount = 0
+        let hDownCount = 0
         list.forEach((v) => {
+          rateSum += v
           if (v > 0) {
+            upSum += v
             count++
+            if (v > indexRate) {
+              hUpCount++
+            }
+          }
+          if (v < 0) {
+            downSum += v
+            downCount++
+            if (v < -indexRate) {
+              hDownCount++
+            }
           }
         })
-        console.log(list.length)
+        const infoMap = {
+          day: key,
+          all: list.length,
+          up: count,
+          hUpCount,
+          hUpRate: hUpCount / count,
+          rateSum: rateSum / list.length,
+          upSum: upSum / count,
+          downCount,
+          hDownCount,
+          hDownRate: hDownCount / downCount,
+          downSum: downSum / downCount
+        }
+        console.log(JSON.stringify(infoMap))
         yData.push(parseInt((count / list.length) * 100))
       }
       this.chart.setOption({
         title: {
-          text: 'K线变化',
+          text: '变化',
           left: 'center',
           textStyle: {
             color: 'rgba(0, 0, 0, 0.85)',
