@@ -1,9 +1,11 @@
 const Mock = require('mockjs')
 
 const role = require('./api/role')
+const stock = require('./api/stock')
 
 const mocks = [
-  ...role
+  ...role,
+  ...stock
 ]
 
 // for mock server

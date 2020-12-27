@@ -123,6 +123,33 @@ Vue.prototype.$getAverageRateList = function(netValue, day) {
   return list
 }
 
+function getAverageDiff(netValue, day, index) {
+  let start = index - day + 1
+  start = start < 0 ? 0 : start
+  let count = 0
+  for (let i = index; i >= start; i--) {
+    count += netValue[i]
+  }
+  // console.log(count)
+  // console.log((index + 1 - start))
+  // console.log(count)
+  // console.log(count / (index + 1 - start))
+  return numberUtil.keepTwoDecimals(count / (index + 1 - start))
+}
+
+Vue.prototype.$getAverageDiffList = function(netValue, day) {
+  const list = []
+  const newList = []
+  netValue.forEach((item) => {
+    newList.push(item)
+  })
+  newList.forEach((item, index) => {
+    const average = getAverageDiff(newList, day, index)
+    list.push(average)
+  })
+  return list
+}
+
 Vue.prototype.$getNetChangeRatioList = function(list, index) {
   const newList = []
   for (let i = 0; i < 10; i++) {

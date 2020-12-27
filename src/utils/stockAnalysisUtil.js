@@ -209,5 +209,108 @@ export default {
       }
     }
     return false
+  },
+  lowW(netChangeRatioList, indexRate) {
+    const a = netChangeRatioList[0]
+    const b = netChangeRatioList[1]
+    const c = netChangeRatioList[2]
+    if (a < 0 && b < 0 && c > 0) {
+      if (Math.abs(a) < 0.3 && Math.abs(b) < 0.3 && Math.abs(c) < 0.3) {
+        return true
+      }
+    }
+    return false
+  },
+  // -----波动研究
+  highRate(kline) {
+    return numberUtil.countDifferenceRate(kline.high, kline.preClose)
+  },
+  openRate(kline) {
+    return numberUtil.countDifferenceRate(kline.open, kline.preClose)
+  },
+  lowRate(kline) {
+    return numberUtil.countDifferenceRate(kline.low, kline.preClose)
+  },
+  highLowRate(kline) {
+    return numberUtil.countDifferenceRate(kline.high, kline.low)
+  },
+  highCloseRate(kline) {
+    return numberUtil.countDifferenceRate(kline.high, kline.close)
+  },
+  openHigh(kline, indexRate) {
+    if (this.openRate(kline) > indexRate) {
+      return true
+    }
+    return false
+  },
+  openLow(kline, indexRate) {
+    if (this.openRate(kline) < -indexRate) {
+      return true
+    }
+    return false
+  },
+  hdown(kline, indexRate) {
+    if (this.highRate(kline) > 3 * indexRate) {
+      if (kline.netChangeRatio < 0) {
+        return true
+      }
+    }
+    return false
+  },
+  hdown2(kline, indexRate) {
+    if (this.highCloseRate(kline) > 3 * indexRate) {
+      if (kline.netChangeRatio > 0) {
+        return true
+      }
+    }
+    return false
+  },
+  hdown3(kline, indexRate) {
+    if (this.highRate(kline) > 2 * indexRate) {
+      if (kline.netChangeRatio < 0) {
+        return true
+      }
+    }
+    return false
+  },
+  lowUp(kline, indexRate) {
+    if (this.lowRate(kline) < -(3 * indexRate)) {
+      if (kline.netChangeRatio > 0) {
+        return true
+      }
+    }
+    return false
+  },
+  lowUp2(kline, indexRate) {
+    if (this.lowRate(kline) < -(2 * indexRate)) {
+      if (kline.netChangeRatio > 0) {
+        return true
+      }
+    }
+    return false
+  },
+  openIsLow(kline, indexRate) {
+    if (kline.open <= kline.low) {
+      return true
+    }
+    return false
+  },
+  openIsHigh(kline, indexRate) {
+    if (kline.open >= kline.high) {
+      return true
+    }
+    return false
+  },
+  highLowPre(kline, indexRate) {
+    if (kline.high < kline.preClose) {
+      return true
+    }
+    return false
+  },
+  lwDay(kline, indexRate) {
+    if (this.highLowRate(kline) < (0.5 * indexRate)) {
+      return true
+    }
+    return false
   }
 }
