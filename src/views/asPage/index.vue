@@ -89,7 +89,7 @@ export default {
             ...item
           })
         })
-        this.dataList = list
+        this.dataList = list.slice(0, 1000)
         this.initChart()
       })
     },
@@ -174,11 +174,12 @@ export default {
       const recentNetValue = this.dataList
       // 均线
       // this.counRateAver(recentNetValue)
-      const tList = this.$getAverageList(recentNetValue, 10)
+      const tList = this.$getAverageList(recentNetValue, 5)
       const monthList = this.$getAverageList(recentNetValue, 20)
-      const month25List = this.$getAverageList(recentNetValue, 25)
+      const m25List = this.$getAverageList(recentNetValue, 25)
       const m30List = this.$getAverageList(recentNetValue, 30)
       const m40List = this.$getAverageList(recentNetValue, 40)
+      const m50List = this.$getAverageList(recentNetValue, 50)
       const quarterList = this.$getAverageList(recentNetValue, 60)
       const halfYearList = this.$getAverageList(recentNetValue, 120)
       const yearList = this.$getAverageList(recentNetValue, 250)
@@ -210,10 +211,22 @@ export default {
       const mqList = []
       const tqDiffList = []
       yData.forEach((item, index) => {
-        const rateQ = this.$countDifferenceRate(item, m40List[index])
-        tqDiffList.push(rateQ + 15)
+        const rateQ = this.$countDifferenceRate(item, quarterList[index])
+        tqDiffList.push(rateQ + 30)
       })
-      const qAVList = this.$getAverageDiffList(tqDiffList, 10)
+      const qAVList = this.$getAverageDiffList(tqDiffList, 20)
+      const tqDiffList2 = []
+      yData.forEach((item, index) => {
+        const rateQ = this.$countDifferenceRate(item, m50List[index])
+        tqDiffList2.push(rateQ + 30)
+      })
+      const qAVList2 = this.$getAverageDiffList(tqDiffList2, 20)
+      const aa = []
+      yData.forEach((item, index) => {
+        const rateMA = this.$countDifferenceRate(tqDiffList[index], qAVList[index])
+        aa.push(rateMA)
+      })
+      console.log('aa', aa)
       const monthUpDays = []
       let count = 0
       yData.forEach((item, index) => {
@@ -228,14 +241,16 @@ export default {
       yData.forEach((item, index) => {
         const rateT = this.$countDifferenceRate(item, tList[index])
         const rateM = this.$countDifferenceRate(item, monthList[index])
-        const rateM25 = this.$countDifferenceRate(item, month25List[index])
+        const rateM25 = this.$countDifferenceRate(item, m25List[index])
         const rateM30 = this.$countDifferenceRate(item, m30List[index])
         const rateM40 = this.$countDifferenceRate(item, m40List[index])
+        const rateM50 = this.$countDifferenceRate(item, m50List[index])
         const rateQ = this.$countDifferenceRate(item, quarterList[index])
         const rateY = this.$countDifferenceRate(item, yearList[index])
         const rateH = this.$countDifferenceRate(item, halfYearList[index])
         const rateMQ = this.$countDifferenceRate(mqDiffList[index], mqAver[index])
         const rateMA = this.$countDifferenceRate(tqDiffList[index], qAVList[index])
+        const rateMA2 = this.$countDifferenceRate(tqDiffList2[index], qAVList2[index])
         mqList.push(rateMQ)
         const day = 5
         const averageList = []
@@ -286,6 +301,8 @@ export default {
         // }
         const monthHalfYearDiff = this.$countDifferenceRate(monthList[index], halfYearList[index])
         const monthQuarterDiff = this.$countDifferenceRate(monthList[index], quarterList[index])
+        const quarterHalfYearDiff = this.$countDifferenceRate(quarterList[index], halfYearList[index])
+        const halfYeaYearDiff = this.$countDifferenceRate(halfYearList[index], yearList[index])
         diffList.push({
           rateT,
           rateM,
@@ -298,20 +315,38 @@ export default {
           rateM25,
           rateM30,
           rateM40,
+          rateM50,
           monthClose: monthList[index],
           quarterClose: quarterList[index],
           yearClose: yearList[index],
           halfYearClose: halfYearList[index],
           quarterYearDiff,
           monthHalfYearDiff,
+          monthQuarterDiff,
+          halfYeaYearDiff,
+          quarterHalfYearDiff,
           isBad,
           isTD3: tList[index] > m30List[index],
           monUpDays: monthUpDays[index]
         })
+        const upColor = 'rgba(208, 153, 183, 0.5)'
+        const downColor = 'rgba(112, 220, 240, 0.5)'
+        let color = ''
+        if (rateMA > 0) {
+          color = upColor
+          if (rateMA2 < 0) {
+            color = 'green'
+          }
+        } else {
+          color = downColor
+          if (rateMA2 > 0) {
+            color = 'red'
+          }
+        }
         yData4.push({
-          value: rateM40,
+          value: rateMA,
           itemStyle: {
-            color: rateM40 > 0 ? 'rgba(208, 153, 183, 0.5)' : 'rgba(112, 220, 240, 0.5)'
+            color: color
           }
         })
       })
@@ -400,8 +435,16 @@ export default {
           return stockAnalysisUtil.countUp(netChangeRatioList, day, day)
         }
         const cdate = nowKline.date
-        if (diffInfo.rateY < 0 && diffInfo.rateH < this.indexItem.fixLine) {
-          points.push(this.createPoint(date, cValue, '#000'))
+        if (diffInfo.rateMA > 0 && !diffInfo.noSell) {
+          if (netChangeRatioList[0] > 0) {
+            points.push(this.createPoint(date, cValue, 'green'))
+            if (diffInfo.rateM > 0) {
+              points.push(this.createPoint(date, cValue, '#000'))
+            }
+          }
+          // if (diffInfo.isBad) {
+          //   points.push(this.createPoint(date, cValue, '#000'))
+          // }
         }
         // if (netChangeRatioList[0] > 0) {
         //   points.push(this.createPoint(date, cValue, '#000'))
@@ -555,18 +598,18 @@ export default {
             }
           }
         ],
-        // dataZoom: [
-        //   {
-        //     show: true,
-        //     start: 70,
-        //     end: 100
-        //   },
-        //   {
-        //     type: 'inside',
-        //     start: 70,
-        //     end: 100
-        //   }
-        // ],
+        dataZoom: [
+          {
+            show: true,
+            start: 70,
+            end: 100
+          },
+          {
+            type: 'inside',
+            start: 70,
+            end: 100
+          }
+        ],
         // visualMap: {
         //   show: false,
         //   dimension: 0,
@@ -622,7 +665,7 @@ export default {
           },
           {
             name: '季度线',
-            data: quarterList,
+            data: tList,
             type: 'line',
             lineStyle: {
               color: 'rgba(170,136,0,0.5)'
