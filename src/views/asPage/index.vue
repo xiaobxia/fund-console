@@ -72,27 +72,6 @@ export default {
         label: labeConfig
       }
     },
-    initPage() {
-      const indexItem = arrayUtil.findItem(indexList, 'key', this.indexKey)
-      this.indexItem = indexItem
-      if (!indexItem) {
-        return
-      }
-      this.indexItem = indexItem
-      this.$http.get('/mock/stockKline', {
-        key: indexItem.key
-      }).then((res) => {
-        const list = []
-        res.data.newList.forEach((item) => {
-          list.unshift({
-            date: item.tradeTime,
-            ...item
-          })
-        })
-        this.dataList = list.slice(0, 1000)
-        this.initChart()
-      })
-    },
     counRateAver(recentNetValue) {
       const xData = []
       for (let j = 0; j < 7; j = j + 0.1) {
@@ -168,13 +147,34 @@ export default {
       console.log((sum5 / 2) / wList2.length)
       console.log(`rate:${sum4 / list2.length},wave:${(sum5 / 2) / wList2.length},`)
     },
+    initPage() {
+      const indexItem = arrayUtil.findItem(indexList, 'key', this.indexKey)
+      this.indexItem = indexItem
+      if (!indexItem) {
+        return
+      }
+      this.indexItem = indexItem
+      this.$http.get('/mock/stockKline', {
+        key: indexItem.key
+      }).then((res) => {
+        const list = []
+        res.data.newList.forEach((item) => {
+          list.unshift({
+            date: item.tradeTime,
+            ...item
+          })
+        })
+        this.dataList = list.slice(0, 1000)
+        this.initChart()
+      })
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
       // this.counRateAver(recentNetValue)
-      const tList = this.$getAverageList(recentNetValue, 5)
+      const m5List = this.$getAverageList(recentNetValue, 5)
       const monthList = this.$getAverageList(recentNetValue, 20)
       const m25List = this.$getAverageList(recentNetValue, 25)
       const m30List = this.$getAverageList(recentNetValue, 30)
@@ -218,9 +218,9 @@ export default {
       const tqDiffList2 = []
       yData.forEach((item, index) => {
         const rateQ = this.$countDifferenceRate(item, m50List[index])
-        tqDiffList2.push(rateQ + 30)
+        tqDiffList2.push(rateQ + 25)
       })
-      const qAVList2 = this.$getAverageDiffList(tqDiffList2, 20)
+      const qAVList2 = this.$getAverageDiffList(tqDiffList2, 17)
       const aa = []
       yData.forEach((item, index) => {
         const rateMA = this.$countDifferenceRate(tqDiffList[index], qAVList[index])
@@ -239,7 +239,7 @@ export default {
         monthUpDays.push(count)
       })
       yData.forEach((item, index) => {
-        const rateT = this.$countDifferenceRate(item, tList[index])
+        const rateT = this.$countDifferenceRate(item, m5List[index])
         const rateM = this.$countDifferenceRate(item, monthList[index])
         const rateM25 = this.$countDifferenceRate(item, m25List[index])
         const rateM30 = this.$countDifferenceRate(item, m30List[index])
@@ -326,7 +326,7 @@ export default {
           halfYeaYearDiff,
           quarterHalfYearDiff,
           isBad,
-          isTD3: tList[index] > m30List[index],
+          isTD3: m5List[index] > m30List[index],
           monUpDays: monthUpDays[index]
         })
         const upColor = 'rgba(208, 153, 183, 0.5)'
@@ -334,14 +334,14 @@ export default {
         let color = ''
         if (rateMA > 0) {
           color = upColor
-          if (rateMA2 < 0) {
-            color = 'green'
-          }
+          // if (rateMA2 < 0) {
+          //   color = 'green'
+          // }
         } else {
           color = downColor
-          if (rateMA2 > 0) {
-            color = 'red'
-          }
+          // if (rateMA2 > 0) {
+          //   color = 'red'
+          // }
         }
         yData4.push({
           value: rateMA,
@@ -436,12 +436,15 @@ export default {
         }
         const cdate = nowKline.date
         if (diffInfo.rateMA > 0 && !diffInfo.noSell) {
-          if (netChangeRatioList[0] > 0) {
-            points.push(this.createPoint(date, cValue, 'green'))
-            if (diffInfo.rateM > 0) {
-              points.push(this.createPoint(date, cValue, '#000'))
-            }
+          if (diffInfo.rateM > 0) {
+            points.push(this.createPoint(date, cValue, '#000'))
           }
+          // if (netChangeRatioList[0] > 0) {
+          //   points.push(this.createPoint(date, cValue, 'red'))
+          //   if (diffInfo.rateM > 0) {
+          //     points.push(this.createPoint(date, cValue, '#000'))
+          //   }
+          // }
           // if (diffInfo.isBad) {
           //   points.push(this.createPoint(date, cValue, '#000'))
           // }
@@ -616,18 +619,6 @@ export default {
         //   seriesIndex: 0,
         //   pieces: noSellLine
         // },
-        // dataZoom: [
-        //   {
-        //     show: true,
-        //     start: 70,
-        //     end: 100
-        //   },
-        //   {
-        //     type: 'inside',
-        //     start: 70,
-        //     end: 100
-        //   }
-        // ],
         series: [
           {
             name: 'K线',
@@ -665,7 +656,7 @@ export default {
           },
           {
             name: '季度线',
-            data: tList,
+            data: quarterList,
             type: 'line',
             lineStyle: {
               color: 'rgba(170,136,0,0.5)'
