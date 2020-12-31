@@ -175,6 +175,7 @@ export default {
       // 均线
       // this.counRateAver(recentNetValue)
       const m5List = this.$getAverageList(recentNetValue, 5)
+      const m10List = this.$getAverageList(recentNetValue, 30)
       const monthList = this.$getAverageList(recentNetValue, 20)
       const m25List = this.$getAverageList(recentNetValue, 25)
       const m30List = this.$getAverageList(recentNetValue, 30)
@@ -217,10 +218,10 @@ export default {
       const qAVList = this.$getAverageDiffList(tqDiffList, 20)
       const tqDiffList2 = []
       yData.forEach((item, index) => {
-        const rateQ = this.$countDifferenceRate(item, m50List[index])
-        tqDiffList2.push(rateQ + 25)
+        const rateQ = this.$countDifferenceRate(item, quarterList[index])
+        tqDiffList2.push(rateQ + 30)
       })
-      const qAVList2 = this.$getAverageDiffList(tqDiffList2, 17)
+      const qAVList2 = this.$getAverageDiffList(tqDiffList2, 30)
       const aa = []
       yData.forEach((item, index) => {
         const rateMA = this.$countDifferenceRate(tqDiffList[index], qAVList[index])
@@ -241,6 +242,7 @@ export default {
       yData.forEach((item, index) => {
         const rateT = this.$countDifferenceRate(item, m5List[index])
         const rateM = this.$countDifferenceRate(item, monthList[index])
+        const rateM10 = this.$countDifferenceRate(item, m10List[index])
         const rateM25 = this.$countDifferenceRate(item, m25List[index])
         const rateM30 = this.$countDifferenceRate(item, m30List[index])
         const rateM40 = this.$countDifferenceRate(item, m40List[index])
@@ -312,8 +314,10 @@ export default {
           noSell,
           rateMQ,
           rateMA,
+          rateMA2,
           rateM25,
           rateM30,
+          rateM10,
           rateM40,
           rateM50,
           monthClose: monthList[index],
@@ -435,31 +439,27 @@ export default {
           return stockAnalysisUtil.countUp(netChangeRatioList, day, day)
         }
         const cdate = nowKline.date
-        if (diffInfo.rateMA > 0 && !diffInfo.noSell) {
-          if (diffInfo.rateM > 0) {
-            points.push(this.createPoint(date, cValue, '#000'))
+        if (diffInfo.rateMA > 0 && diffInfo.rateMA2 < 0) {
+          points.push(this.createPoint(date, cValue, '#000'))
+          if (netChangeRatioList[0] < 0) {
+            // if (diffInfo.rateM10 > 0) {
+            //   points.push(this.createPoint(date, cValue, 'red'))
+            // } else {
+            //   points.push(this.createPoint(date, cValue, '#000'))
+            // }
+            // if (diffInfo.rateM > 0) {
+            //   points.push(this.createPoint(date, cValue, '#000'))
+            // }
           }
-          // if (netChangeRatioList[0] > 0) {
-          //   points.push(this.createPoint(date, cValue, 'red'))
-          //   if (diffInfo.rateM > 0) {
-          //     points.push(this.createPoint(date, cValue, '#000'))
-          //   }
-          // }
+          // points.push(this.createPoint(date, cValue, '#000'))
+
           // if (diffInfo.isBad) {
           //   points.push(this.createPoint(date, cValue, '#000'))
           // }
         }
-        // if (netChangeRatioList[0] > 0) {
-        //   points.push(this.createPoint(date, cValue, '#000'))
-        // }
-        // if (diffInfo.rateM < 0 && netChangeRatioList[0] < 0) {
-        //   points.push(this.createPoint(date, cValue, 'red'))
-
-        // }
-        // const info1 = stockAnalysisUtil.hdown2(nowKline, indexRate)
-        // if (info1) {
-        //   points.push(this.createPoint(date, downValue, '#000'))
-        // }
+        if (diffInfo.rateMA < 0 && diffInfo.rateMA2 > 0) {
+          points.push(this.createPoint(date, cValue, 'red'))
+        }
         // const info1 = stockAnalysisUtil.countDown(netChangeRatioList, 9, 8)
         // if (info1.flag) {
         //   if (info1.rate < -(5 * indexRate)) {
@@ -467,97 +467,18 @@ export default {
         //   }
         //   points.push(this.createPoint(date, cValue, '#000'))
         // }
-        // if (diffInfo.noSell) {
-        //   if (diffInfo.isBad) {
-        //     if (netChangeRatioList[0] < 0) {
-        //       points.push(this.createPoint(date, cValue, '#000'))
-        //     } else {
-        //
-        //     }
-        //   }
-        // }
-        // if (diffInfo.rateM30 < 0) {
-        //   points.push(this.createPoint(date, cValue, '#000'))
-        // }
         if (diffInfo.noSell) {
           if (netChangeRatioList[0] < 0) {
-            // points.push(this.createPoint(date, cValue, 'red'))
-            // if (diffInfo.monUpDays < 3) {
-            //   points.push(this.createPoint(date, cValue, '#000'))
-            // }
-            // if (!diffInfo.isTD3) {
-            //   points.push(this.createPoint(date, cValue, '#000'))
-            // }
-            // points.push(this.createPoint(date, cValue, 'red'))
-            // if (netChangeRatioList[0] > -indexRate) {
-            //   points.push(this.createPoint(date, cValue, '#000'))
-            // }
-            // points.push(this.createPoint(date, cValue, 'red'))
-            // if (diffInfo.rateT < 0) {
-            //   points.push(this.createPoint(date, cValue, '#000'))
-            // }
-            // points.push(this.createPoint(date, cValue, 'red'))
-            // if (diffInfo.rateMQ < 0 && diffInfo.rateQ > 0) {
-            // points.push(this.createPoint(date, cValue, 'red'))
-            // if (diffInfo.rateMQ < 0) {
-            //   points.push(this.createPoint(date, cValue, '#000'))
-            // }
-            // }
           }
           // 小策略都可以在不锁仓的情况下进行，锁仓的已经研究透了
           // TODO 卖出测试入口
-          // points.push(this.createPoint(date, downValue, 'blue'))
         } else {
           // TODO
           // 买入测试入口
           if (!(diffInfo.isBad && !isFix && diffInfo.rateM < 0) && !qH) {
-            // const info1 = stockAnalysisUtil.countDown(netChangeRatioList, 4, 4)
-            // if (info1.flag) {
-            //   points.push(this.createPoint(date, cValue, 'red'))
-            //   if (info1.rate < -(5 * indexRate)) {
-            //     points.push(this.createPoint(date, cValue, '#000'))
-            //   }
-            // }
-            // if (diffInfo.rateM < 0) {
-            //   const info1 = stockAnalysisUtil.countDown(netChangeRatioList, 3, 3)
-            //   if (info1.flag) {
-            //     points.push(this.createPoint(date, downValue, 'red'))
-            //   }
-            // }
-            // if (netChangeRatioList[0] < -(4 * indexRate)) {
-            //   points.push(this.createPoint(date, downValue, 'red'))
-            // }
             // 到了月下就只有大反了
             if (diffInfo.rateM > 0) {
-              // const info = stockAnalysisUtil.countRule(netChangeRatioList, [false, true, false])
-              // if (info.flag) {
-              //   points.push(this.createPoint(date, downValue, 'red'))
-              //   if (info.rate < -(indexRate * 2)) {
-              //     points.push(this.createPoint(date, downValue, '#000'))
-              //     // points.push(this.createPoint(date, downValue, '#000'))
-              //   }
-              //   // if (info.rate < -(indexRate * 5)) {
-              //   //   // points.push(this.createPoint(date, downValue, 'red'))
-              //   //   points.push(this.createPoint(date, downValue, '#000'))
-              //   // }
-              // }
-              // const info = stockAnalysisUtil.countDown(netChangeRatioList, 4, 3)
-              // if (info.flag) {
-              //   points.push(this.createPoint(date, downValue, 'red'))
-              //   // if (info.rate < -(indexRate * 2)) {
-              //   //   points.push(this.createPoint(date, downValue, '#000'))
-              //   //   // points.push(this.createPoint(date, downValue, '#000'))
-              //   // }
-              //   if (info.rate < -(indexRate * 3)) {
-              //     // points.push(this.createPoint(date, downValue, 'red'))
-              //     points.push(this.createPoint(date, downValue, '#000'))
-              //   }
-              // }
             }
-            // const twoDownInfo = stockAnalysisUtil.countDown(netChangeRatioList, 2, 2)
-            // if (twoDownInfo.rate < -(indexRate * 5)) {
-            //   return true
-            // }
           }
         }
       })
@@ -601,18 +522,18 @@ export default {
             }
           }
         ],
-        dataZoom: [
-          {
-            show: true,
-            start: 70,
-            end: 100
-          },
-          {
-            type: 'inside',
-            start: 70,
-            end: 100
-          }
-        ],
+        // dataZoom: [
+        //   {
+        //     show: true,
+        //     start: 70,
+        //     end: 100
+        //   },
+        //   {
+        //     type: 'inside',
+        //     start: 70,
+        //     end: 100
+        //   }
+        // ],
         // visualMap: {
         //   show: false,
         //   dimension: 0,

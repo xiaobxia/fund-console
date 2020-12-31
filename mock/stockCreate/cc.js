@@ -2,6 +2,12 @@ const axios = require('axios');
 const fs = require('fs-extra');
 const indexList = require('./indexList')
 
+function countDifferenceRate (numerator, denominator) {
+  denominator = denominator || 1
+  numerator = numerator || 1
+  return Math.round(1000000 * ((numerator - denominator) / denominator)) / 10000
+}
+
 function parseNumber(text) {
   text = text || ''
   return parseFloat(text || 0) || 0
@@ -13,7 +19,7 @@ function formatData(str) {
     close: parseNumber(data[2]),
     high: parseNumber(data[3]),
     low: parseNumber(data[4]),
-    netChangeRatio: parseNumber(data[7]),
+    // netChangeRatio: parseNumber(data[7]),
     open: parseNumber(data[1]),
     // 没有数据
     preClose: parseNumber(data[1]),
@@ -56,6 +62,7 @@ function qudata(key ,code) {
     newList.forEach((v, index)=>{
       if (index > 0) {
         v.preClose = newList[index -1].close
+        v.netChangeRatio = countDifferenceRate(v.close, v.preClose)
       }
     })
     logHas({
@@ -78,5 +85,3 @@ const timer = setInterval(()=>{
     clearInterval(timer)
   }
 }, 1000 * 10)
-
-
