@@ -459,5 +459,22 @@ export default [
     cutDownLine: 40,
     quarterHotLine: 0,
     relieveZ45Line: 0
+  },
+  {
+    key: 'chuangWL',
+    code: 'sz399673',
+    name: '创50',
+    threshold: 1.21,
+    rate: 1.0657060606060613,
+    wave: 0.9707331060606048,
+    fixLine: -23,
+    relieveFixLine: 4,
+    downTrendLine: -11,
+    mix: true,
+    days: 1200,
+    topLine: 40,
+    cutDownLine: 40,
+    quarterHotLine: 20,
+    relieveZ45Line: -6
   }
 ]

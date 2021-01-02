@@ -173,7 +173,7 @@ export default {
       const indexRate = this.indexItem.rate
       const recentNetValue = this.dataList
       // 均线
-      // this.counRateAver(recentNetValue)
+      this.counRateAver(recentNetValue)
       const m5List = this.$getAverageList(recentNetValue, 5)
       const m10List = this.$getAverageList(recentNetValue, 30)
       const monthList = this.$getAverageList(recentNetValue, 20)
