@@ -59,6 +59,18 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/netValue',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/netValue/index'),
+        name: 'NetValue',
+        meta: { title: '净值', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/yearLine',
     component: Layout,
     children: [
