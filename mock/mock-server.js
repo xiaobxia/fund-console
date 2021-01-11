@@ -1,6 +1,7 @@
 const chokidar = require('chokidar')
 const chalk = require('chalk')
 const path = require('path')
+const bodyParser = require('body-parser')
 
 const mockDir = path.join(process.cwd(), 'mock')
 
@@ -27,10 +28,10 @@ function unregisterRoutes() {
 }
 
 module.exports = app => {
-  // app.use(bodyParser.json())
-  // app.use(bodyParser.urlencoded({
-  //   extended: true
-  // }))
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }))
   const mockRoutes = registerRoutes(app)
   var mockRoutesLength = mockRoutes.mockRoutesLength
   var mockStartIndex = mockRoutes.mockStartIndex

@@ -15,5 +15,18 @@ module.exports = [
         }
       }
     }
+  },
+  {
+    url: '/upStockKlineAy',
+    type: 'post',
+    response: (req, res) => {
+      const query = req.body
+      console.log(query);
+      return {
+        code: 200,
+        data: {
+        }
+      }
+    }
   }
 ]

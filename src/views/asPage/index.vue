@@ -331,7 +331,8 @@ export default {
           quarterHalfYearDiff,
           isBad,
           isTD3: m5List[index] > m30List[index],
-          monUpDays: monthUpDays[index]
+          monUpDays: monthUpDays[index],
+          date: xData[index]
         })
         const upColor = 'rgba(208, 153, 183, 0.5)'
         const downColor = 'rgba(112, 220, 240, 0.5)'
@@ -367,6 +368,7 @@ export default {
       let noSellChangeIndex = 0
       let monthUpDay = 1
       let monthDownDay = 1
+      // this.$http.post('/mock/upStockKlineAy', diffList.slice(0, 1000))
       diffList.forEach((diffInfo, index) => {
         if (diffInfo.rateQ < 0) {
           qH = false
