@@ -105,20 +105,15 @@ export default {
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
-      const recentNetValue = this.dataList
       const xData = []
       const yData = []
+      const yData2 = []
       const points = []
       // 最近的在前面
-      const netChangeRatioAll = []
-      recentNetValue.forEach((item, index) => {
-        xData.unshift(item['date'])
-        yData.unshift(item['close'])
-        const buy = this.getSign(item['date'], this.indexItem.key)
-        if (buy) {
-          points.push(this.createPoint(item['date'], item['close'], 'red', buy))
-        }
-        netChangeRatioAll.push(item.netChangeRatio)
+      this.netValueList.forEach((item, index) => {
+        xData.push(item['net_value_date'])
+        yData.push(item['value'])
+        yData2.push(this.kLineList[index]['value'])
       })
       this.chart.setOption({
         title: {
