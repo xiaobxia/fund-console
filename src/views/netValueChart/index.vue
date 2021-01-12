@@ -166,7 +166,7 @@ export default {
             data: yData,
             type: 'line',
             lineStyle: {
-              color: '#1890ff'
+              color: '#409EFF'
             },
             smooth: false,
             symbol: 'none',
@@ -177,11 +177,11 @@ export default {
             }
           },
           {
-            name: '月线',
+            name: '沪深300',
             data: yData2,
             type: 'line',
             lineStyle: {
-              color: 'rgba(132, 7, 189, 0.5)'
+              color: '#909399'
             },
             smooth: false,
             symbol: 'none'
@@ -190,7 +190,10 @@ export default {
             name: '差值',
             data: yData3,
             yAxisIndex: 1,
-            type: 'bar'
+            type: 'bar',
+            itemStyle: {
+              color: 'rgba(230,162,60,0.5)'
+            }
           }
         ]
       })
