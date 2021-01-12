@@ -29,7 +29,7 @@
 import echarts from 'echarts'
 import moment from 'moment'
 
-const myStartDay = ''
+const myStartDay = '2020-01-01'
 
 export default {
   name: 'NetValue',
@@ -41,7 +41,9 @@ export default {
       id: 'netValueChart',
       signList: [],
       dateRangeList: [],
-      days: 40
+      days: 40,
+      netValueList: [],
+      kLineList: []
     }
   },
   computed: {
@@ -66,7 +68,7 @@ export default {
       Promise.all([
         this.queryNetValue(),
         this.queryLineBase()
-      ]).then(()=>{
+      ]).then(() => {
         this.initChart()
       })
     },
@@ -76,6 +78,13 @@ export default {
       return this.$http.get('userFund/getUserNetValuesByStartEnd', {
         start,
         end
+      }).then((res) => {
+        const list = res.data.list
+        const base = list[0].pre_net_value
+        list.forEach((item) => {
+          item.value = this.countDifferenceRate(item.net_value, base)
+        })
+        this.netValueList = list
       })
     },
     queryLineBase() {
@@ -83,6 +92,13 @@ export default {
       return this.$http.get('stock/getStockPriceDayKlineByStart', {
         code: 'sh000300',
         start: start
+      }).then((res) => {
+        const list = res.data
+        const base = list[0].preClose
+        list.forEach((item) => {
+          item.value = this.countDifferenceRate(item.close, base)
+        })
+        this.kLineList = list
       })
     },
     printHanlder() {

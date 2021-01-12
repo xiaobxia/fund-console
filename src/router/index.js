@@ -64,7 +64,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/netValue/index'),
+        component: () => import('@/views/netValueChart/index'),
         name: 'NetValue',
         meta: { title: '净值', icon: 'fas fa-tachometer-alt', noCache: true }
       }
