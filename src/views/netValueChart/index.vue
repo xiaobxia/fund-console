@@ -82,7 +82,7 @@ export default {
         const list = res.data.list
         const base = list[0].pre_net_value
         list.forEach((item) => {
-          item.value = this.countDifferenceRate(item.net_value, base)
+          item.value = this.$countDifferenceRate(item.net_value, base)
         })
         this.netValueList = list
       })
@@ -96,7 +96,7 @@ export default {
         const list = res.data
         const base = list[0].preClose
         list.forEach((item) => {
-          item.value = this.countDifferenceRate(item.close, base)
+          item.value = this.$countDifferenceRate(item.close, base)
         })
         this.kLineList = list
       })
@@ -108,11 +108,13 @@ export default {
       const xData = []
       const yData = []
       const yData2 = []
+      const yData3 = []
       const points = []
       // 最近的在前面
       this.netValueList.forEach((item, index) => {
         xData.push(item['net_value_date'])
         yData.push(item['value'])
+        yData3.push(item['position'])
         yData2.push(this.kLineList[index]['value'])
       })
       this.chart.setOption({
@@ -149,11 +151,18 @@ export default {
                 type: 'dashed'
               }
             }
+          },
+          {
+            type: 'value',
+            name: '仓位',
+            splitLine: {
+              show: false
+            }
           }
         ],
         series: [
           {
-            name: 'K线',
+            name: '净值',
             data: yData,
             type: 'line',
             lineStyle: {
@@ -166,6 +175,22 @@ export default {
               symbol: 'circle',
               symbolSize: 10
             }
+          },
+          {
+            name: '月线',
+            data: yData2,
+            type: 'line',
+            lineStyle: {
+              color: 'rgba(132, 7, 189, 0.5)'
+            },
+            smooth: false,
+            symbol: 'none'
+          },
+          {
+            name: '差值',
+            data: yData3,
+            yAxisIndex: 1,
+            type: 'bar'
           }
         ]
       })
