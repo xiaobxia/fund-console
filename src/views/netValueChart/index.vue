@@ -114,7 +114,12 @@ export default {
       this.netValueList.forEach((item, index) => {
         xData.push(item['net_value_date'])
         yData.push(item['value'])
-        yData3.push(item['position'])
+        yData3.push({
+          value: item['position'],
+          itemStyle: {
+            color: item['position'] > 100 ? 'rgba(230,162,60,0.7)' : 'rgba(230,162,60,0.4)'
+          }
+        })
         yData2.push(this.kLineList[index]['value'])
       })
       this.chart.setOption({
@@ -187,13 +192,24 @@ export default {
             symbol: 'none'
           },
           {
-            name: '差值',
+            name: '仓位',
             data: yData3,
             yAxisIndex: 1,
             type: 'bar',
-            itemStyle: {
-              color: 'rgba(230,162,60,0.5)'
+            markLine: {
+              silent: true,
+              data: [
+                {
+                  yAxis: 100,
+                  lineStyle: {
+                    color: '#F56C6C'
+                  }
+                }
+              ]
             }
+            // itemStyle: {
+            //   color: 'rgba(230,162,60,0.4)'
+            // }
           }
         ]
       })
