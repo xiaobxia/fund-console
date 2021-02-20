@@ -54,12 +54,12 @@ export default {
     },
     initPage() {
       this.$http.get('stock/getBtbKlines').then((res) => {
-        let list = []
+        const list = []
         res.data.forEach((item) => {
           item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
           list.push(item)
         })
-        list = list.slice(0, 200)
+        // list = list.slice(0, 300)
         list.reverse()
         this.dataList = list
         this.initChart()
@@ -83,33 +83,21 @@ export default {
       const shares = has.shares
       const cost = has.cost
       const sum = has.sum
+      let r = 0
       if (sellTime === 1) {
-        return {
-          has: {
-            shares: shares * (2 / 3),
-            cost: cost,
-            sum: sum * (2 / 3)
-          },
-          income: (close - cost) * shares * (1 / 3)
-        }
+        r = 2 / 3
       } else if (sellTime === 2) {
-        return {
-          has: {
-            shares: shares * (1 / 2),
-            cost: cost,
-            sum: sum * (1 / 2)
-          },
-          income: (close - cost) * shares * (1 / 2)
-        }
+        r = 1 / 2
       } else if (sellTime === 3) {
-        return {
-          has: {
-            shares: 0,
-            cost: 0,
-            sum: 0
-          },
-          income: (close - cost) * shares
-        }
+        r = 0
+      }
+      return {
+        has: {
+          shares: shares * r,
+          cost: cost,
+          sum: sum * r
+        },
+        sellIncome: (close - cost) * shares * (1 - r)
       }
     },
     initChart() {
@@ -146,10 +134,10 @@ export default {
         sum: 0
       }
       let sellTime2 = 0
-      let income2 = 0
+      let sellIncome2 = 0
       let maxSum2 = 0
       let hasIncome2 = 0
-      let maxLoss2 = 0
+      let maxLoss = 0
       const hasList = []
       yData.forEach((item, index) => {
         const netChangeRatio = netChangeRatioAll[index]
@@ -179,10 +167,9 @@ export default {
         // if (index === (yData.length - 1)) {
         //   hasIncome = (item - has.cost) * has.shares
         // }
-        let localIncome = 0
         // 策越2
         if (close5 > close10) {
-          if (close10 < close20) {
+          if (close5 < close20) {
             if (netChangeRatio < 0) {
               sellTime2 = 0
               has2 = this.countBuy(has2, buyMoney, item)
@@ -191,15 +178,16 @@ export default {
             sellTime2 = 0
             has2 = this.countBuy(has2, buyMoney, item)
           }
+          // sellTime2 = 0
+          // has2 = this.countBuy(has2, buyMoney, item)
         } else {
-          if (close10 > close20) {
+          if (close5 > close20) {
             if (netChangeRatio > 0) {
               sellTime2++
               if (sellTime2 <= 3) {
                 const ss = this.countSell(has2, sellTime2, item)
                 has2 = ss.has
-                income2 += ss.income
-                localIncome = ss.income
+                sellIncome2 += ss.sellIncome
               } else {
                 sellTime2 = 0
               }
@@ -209,26 +197,36 @@ export default {
             if (sellTime2 <= 3) {
               const ss = this.countSell(has2, sellTime2, item)
               has2 = ss.has
-              income2 += ss.income
-              localIncome = ss.income
+              sellIncome2 += ss.sellIncome
             } else {
               sellTime2 = 0
             }
           }
+          // sellTime2++
+          // if (sellTime2 <= 3) {
+          //   const ss = this.countSell(has2, sellTime2, item)
+          //   has2 = ss.has
+          //   sellIncome2 += ss.sellIncome
+          // } else {
+          //   sellTime2 = 0
+          // }
         }
-        if (has2.sum > maxSum2) {
-          maxSum2 = has2.sum
+        const hasSUm = has2.shares * item
+        if (hasSUm > maxSum2) {
+          maxSum2 = hasSUm
         }
+        const hasIn = (item - has2.cost) * has2.shares
         if (index === (yData.length - 1)) {
-          hasIncome2 = (item - has2.cost) * has2.shares
+          hasIncome2 = hasIn
         }
-        if (maxLoss2 > localIncome) {
-          maxLoss2 = localIncome
+        const incomeSum = sellIncome2 + hasIn
+        if (incomeSum < maxLoss) {
+          maxLoss = incomeSum
         }
         hasList.push({
-          ...has2,
-          income: localIncome,
-          date
+          date,
+          incomeSum,
+          ...has2
         })
       })
       // console.log('最大仓位', maxSum)
@@ -237,9 +235,9 @@ export default {
       // console.log('总收益', income + hasIncome)
       console.log('最大仓位2', maxSum2)
       console.log('持有收益2', hasIncome2)
-      console.log('了结收益2', income2)
-      console.log('总收益2', income2 + hasIncome2)
-      console.log('最大单笔亏损', maxLoss2)
+      console.log('了结收益2', sellIncome2)
+      console.log('总收益2', sellIncome2 + hasIncome2)
+      console.log('最大亏损2', maxLoss)
 
       console.log(hasList)
       this.chart.setOption({
