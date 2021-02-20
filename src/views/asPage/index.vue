@@ -164,7 +164,7 @@ export default {
             ...item
           })
         })
-        this.dataList = list.slice(0, 1000)
+        this.dataList = list
         this.initChart()
       })
     },
@@ -337,7 +337,7 @@ export default {
         const upColor = 'rgba(208, 153, 183, 0.5)'
         const downColor = 'rgba(112, 220, 240, 0.5)'
         let color = ''
-        if (rateMA > 0) {
+        if (rateM > 0) {
           color = upColor
           // if (rateMA2 < 0) {
           //   color = 'green'
@@ -349,7 +349,7 @@ export default {
           // }
         }
         yData4.push({
-          value: rateMA,
+          value: rateM,
           itemStyle: {
             color: color
           }
@@ -441,8 +441,23 @@ export default {
           return stockAnalysisUtil.countUp(netChangeRatioList, day, day)
         }
         const cdate = nowKline.date
-        if (diffInfo.rateMA > 0 && diffInfo.rateMA2 < 0) {
-          points.push(this.createPoint(date, cValue, '#000'))
+        // if (netChangeRatioList[0] > (6)) {
+        //   points.push(this.createPoint(date, cValue, 'red'))
+        //   if (netChangeRatioList[0] > (7)) {
+        //     points.push(this.createPoint(date, cValue, '#000'))
+        //   }
+        // }
+        // if (diffInfo.rateM > 10) {
+        //   if (diffInfo.rateM > 15) {
+        //     points.push(this.createPoint(date, cValue, '#000'))
+        //   } else {
+        //     points.push(this.createPoint(date, cValue, 'red'))
+        //   }
+        // }
+        if (diffInfo.rateMA < 0 && diffInfo.rateM > 0) {
+          if (!diffInfo.noSell) {
+            points.push(this.createPoint(date, cValue, '#000'))
+          }
           if (netChangeRatioList[0] < 0) {
             // if (diffInfo.rateM10 > 0) {
             //   points.push(this.createPoint(date, cValue, 'red'))
@@ -459,9 +474,9 @@ export default {
           //   points.push(this.createPoint(date, cValue, '#000'))
           // }
         }
-        if (diffInfo.rateMA < 0 && diffInfo.rateMA2 > 0) {
-          points.push(this.createPoint(date, cValue, 'red'))
-        }
+        // if (diffInfo.rateMA < 0 && diffInfo.rateMA2 > 0) {
+        //   points.push(this.createPoint(date, cValue, 'red'))
+        // }
         // const info1 = stockAnalysisUtil.countDown(netChangeRatioList, 9, 8)
         // if (info1.flag) {
         //   if (info1.rate < -(5 * indexRate)) {
@@ -536,12 +551,12 @@ export default {
         //     end: 100
         //   }
         // ],
-        // visualMap: {
-        //   show: false,
-        //   dimension: 0,
-        //   seriesIndex: 0,
-        //   pieces: noSellLine
-        // },
+        visualMap: {
+          show: false,
+          dimension: 0,
+          seriesIndex: 0,
+          pieces: noSellLine
+        },
         series: [
           {
             name: 'K线',
