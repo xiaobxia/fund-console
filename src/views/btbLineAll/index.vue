@@ -100,6 +100,18 @@ export default {
             type: 'cross'
           }
         },
+        dataZoom: [
+          {
+            show: true,
+            start: 70,
+            end: 100
+          },
+          {
+            type: 'inside',
+            start: 70,
+            end: 100
+          }
+        ],
         xAxis: {
           type: 'category',
           data: xData
@@ -118,7 +130,7 @@ export default {
             data: yData,
             type: 'line',
             lineStyle: {
-              color: '#909399'
+              color: '#409EFF'
             },
             smooth: false,
             symbol: 'none',
@@ -142,7 +154,7 @@ export default {
             data: list5,
             type: 'line',
             lineStyle: {
-              color: 'rgb(132, 7, 189)'
+              color: '#606266'
             },
             smooth: false,
             symbol: 'none'
@@ -152,7 +164,7 @@ export default {
             data: list10,
             type: 'line',
             lineStyle: {
-              color: '#a80'
+              color: '#909399'
             },
             smooth: false,
             symbol: 'none'
@@ -162,7 +174,7 @@ export default {
             data: list20,
             type: 'line',
             lineStyle: {
-              color: '#F56C6C'
+              color: '#C0C4CC'
             },
             smooth: false,
             symbol: 'none'
