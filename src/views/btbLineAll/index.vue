@@ -81,6 +81,15 @@ export default {
         yData.unshift(item['close'])
         netChangeRatioAll.push(item.netChangeRatio)
       })
+      yData.forEach((item, index) => {
+        const date = xData[index]
+        const close5 = list5[index]
+        const close10 = list10[index]
+        const close20 = list20[index]
+        const rate5 = this.$countDifferenceRate(item, close5)
+        const rate10 = this.$countDifferenceRate(item, close10)
+        const rateM20 = this.$countDifferenceRate(item, close20)
+      })
       this.chart.setOption({
         title: {
           text: 'K线变化',
