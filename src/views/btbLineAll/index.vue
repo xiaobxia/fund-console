@@ -117,129 +117,129 @@ export default {
         yData.unshift(item['close'])
         netChangeRatioAll.unshift(item.netChangeRatio)
       })
-      const buyMoney = 500
-      const has = {
-        shares: 0,
-        cost: 0,
-        sum: 0
-      }
-      const sellTime = 0
-      const income = 0
-      const maxSum = 0
-      const hasIncome = 0
+      // const buyMoney = 500
+      // const has = {
+      //   shares: 0,
+      //   cost: 0,
+      //   sum: 0
+      // }
+      // const sellTime = 0
+      // const income = 0
+      // const maxSum = 0
+      // const hasIncome = 0
+      //
+      // let has2 = {
+      //   shares: 0,
+      //   cost: 0,
+      //   sum: 0
+      // }
+      // let sellTime2 = 0
+      // let sellIncome2 = 0
+      // let maxSum2 = 0
+      // let hasIncome2 = 0
+      // let maxLoss = 0
+      // const hasList = []
+      // yData.forEach((item, index) => {
+      //   const netChangeRatio = netChangeRatioAll[index]
+      //   const date = xData[index]
+      //   const close5 = list5[index]
+      //   const close10 = list10[index]
+      //   const close20 = list20[index]
+      //   const rate5 = this.$countDifferenceRate(item, close5)
+      //   const rate10 = this.$countDifferenceRate(item, close10)
+      //   const rateM20 = this.$countDifferenceRate(item, close20)
+      //   // if (close5 > close10) {
+      //   //   sellTime = 0
+      //   //   has = this.countBuy(has, buyMoney, item)
+      //   // } else {
+      //   //   sellTime++
+      //   //   if (sellTime <= 3) {
+      //   //     has = this.countSell(has, sellTime, item)
+      //   //     income += has.income
+      //   //     has.income = 0
+      //   //   } else {
+      //   //     sellTime = 0
+      //   //   }
+      //   // }
+      //   // if (has.sum > maxSum) {
+      //   //   maxSum = has.sum
+      //   // }
+      //   // if (index === (yData.length - 1)) {
+      //   //   hasIncome = (item - has.cost) * has.shares
+      //   // }
+      //   // 策越2
+      //   if (close5 > close10) {
+      //     if (close5 < close20) {
+      //       if (netChangeRatio < 0) {
+      //         sellTime2 = 0
+      //         has2 = this.countBuy(has2, buyMoney, item)
+      //       }
+      //     } else {
+      //       sellTime2 = 0
+      //       has2 = this.countBuy(has2, buyMoney, item)
+      //     }
+      //     // sellTime2 = 0
+      //     // has2 = this.countBuy(has2, buyMoney, item)
+      //   } else {
+      //     if (close5 > close20) {
+      //       if (netChangeRatio > 0) {
+      //         sellTime2++
+      //         if (sellTime2 <= 3) {
+      //           const ss = this.countSell(has2, sellTime2, item)
+      //           has2 = ss.has
+      //           sellIncome2 += ss.sellIncome
+      //         } else {
+      //           sellTime2 = 0
+      //         }
+      //       }
+      //     } else {
+      //       sellTime2++
+      //       if (sellTime2 <= 3) {
+      //         const ss = this.countSell(has2, sellTime2, item)
+      //         has2 = ss.has
+      //         sellIncome2 += ss.sellIncome
+      //       } else {
+      //         sellTime2 = 0
+      //       }
+      //     }
+      //     // sellTime2++
+      //     // if (sellTime2 <= 3) {
+      //     //   const ss = this.countSell(has2, sellTime2, item)
+      //     //   has2 = ss.has
+      //     //   sellIncome2 += ss.sellIncome
+      //     // } else {
+      //     //   sellTime2 = 0
+      //     // }
+      //   }
+      //   const hasSUm = has2.shares * item
+      //   if (hasSUm > maxSum2) {
+      //     maxSum2 = hasSUm
+      //   }
+      //   const hasIn = (item - has2.cost) * has2.shares
+      //   if (index === (yData.length - 1)) {
+      //     hasIncome2 = hasIn
+      //   }
+      //   const incomeSum = sellIncome2 + hasIn
+      //   if (incomeSum < maxLoss) {
+      //     maxLoss = incomeSum
+      //   }
+      //   hasList.push({
+      //     date,
+      //     incomeSum,
+      //     ...has2
+      //   })
+      // })
+      // // console.log('最大仓位', maxSum)
+      // // console.log('持有收益', hasIncome)
+      // // console.log('了结收益', income)
+      // // console.log('总收益', income + hasIncome)
+      // console.log('最大仓位2', maxSum2)
+      // console.log('持有收益2', hasIncome2)
+      // console.log('了结收益2', sellIncome2)
+      // console.log('总收益2', sellIncome2 + hasIncome2)
+      // console.log('最大亏损2', maxLoss)
 
-      let has2 = {
-        shares: 0,
-        cost: 0,
-        sum: 0
-      }
-      let sellTime2 = 0
-      let sellIncome2 = 0
-      let maxSum2 = 0
-      let hasIncome2 = 0
-      let maxLoss = 0
-      const hasList = []
-      yData.forEach((item, index) => {
-        const netChangeRatio = netChangeRatioAll[index]
-        const date = xData[index]
-        const close5 = list5[index]
-        const close10 = list10[index]
-        const close20 = list20[index]
-        const rate5 = this.$countDifferenceRate(item, close5)
-        const rate10 = this.$countDifferenceRate(item, close10)
-        const rateM20 = this.$countDifferenceRate(item, close20)
-        // if (close5 > close10) {
-        //   sellTime = 0
-        //   has = this.countBuy(has, buyMoney, item)
-        // } else {
-        //   sellTime++
-        //   if (sellTime <= 3) {
-        //     has = this.countSell(has, sellTime, item)
-        //     income += has.income
-        //     has.income = 0
-        //   } else {
-        //     sellTime = 0
-        //   }
-        // }
-        // if (has.sum > maxSum) {
-        //   maxSum = has.sum
-        // }
-        // if (index === (yData.length - 1)) {
-        //   hasIncome = (item - has.cost) * has.shares
-        // }
-        // 策越2
-        if (close5 > close10) {
-          if (close5 < close20) {
-            if (netChangeRatio < 0) {
-              sellTime2 = 0
-              has2 = this.countBuy(has2, buyMoney, item)
-            }
-          } else {
-            sellTime2 = 0
-            has2 = this.countBuy(has2, buyMoney, item)
-          }
-          // sellTime2 = 0
-          // has2 = this.countBuy(has2, buyMoney, item)
-        } else {
-          if (close5 > close20) {
-            if (netChangeRatio > 0) {
-              sellTime2++
-              if (sellTime2 <= 3) {
-                const ss = this.countSell(has2, sellTime2, item)
-                has2 = ss.has
-                sellIncome2 += ss.sellIncome
-              } else {
-                sellTime2 = 0
-              }
-            }
-          } else {
-            sellTime2++
-            if (sellTime2 <= 3) {
-              const ss = this.countSell(has2, sellTime2, item)
-              has2 = ss.has
-              sellIncome2 += ss.sellIncome
-            } else {
-              sellTime2 = 0
-            }
-          }
-          // sellTime2++
-          // if (sellTime2 <= 3) {
-          //   const ss = this.countSell(has2, sellTime2, item)
-          //   has2 = ss.has
-          //   sellIncome2 += ss.sellIncome
-          // } else {
-          //   sellTime2 = 0
-          // }
-        }
-        const hasSUm = has2.shares * item
-        if (hasSUm > maxSum2) {
-          maxSum2 = hasSUm
-        }
-        const hasIn = (item - has2.cost) * has2.shares
-        if (index === (yData.length - 1)) {
-          hasIncome2 = hasIn
-        }
-        const incomeSum = sellIncome2 + hasIn
-        if (incomeSum < maxLoss) {
-          maxLoss = incomeSum
-        }
-        hasList.push({
-          date,
-          incomeSum,
-          ...has2
-        })
-      })
-      // console.log('最大仓位', maxSum)
-      // console.log('持有收益', hasIncome)
-      // console.log('了结收益', income)
-      // console.log('总收益', income + hasIncome)
-      console.log('最大仓位2', maxSum2)
-      console.log('持有收益2', hasIncome2)
-      console.log('了结收益2', sellIncome2)
-      console.log('总收益2', sellIncome2 + hasIncome2)
-      console.log('最大亏损2', maxLoss)
-
-      console.log(hasList)
+      // console.log(hasList)
       this.chart.setOption({
         title: {
           text: 'K线变化',
