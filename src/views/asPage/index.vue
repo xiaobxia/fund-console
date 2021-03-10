@@ -175,7 +175,7 @@ export default {
       // 均线
       this.counRateAver(recentNetValue)
       const m5List = this.$getAverageList(recentNetValue, 5)
-      const m10List = this.$getAverageList(recentNetValue, 30)
+      const m10List = this.$getAverageList(recentNetValue, 10)
       const monthList = this.$getAverageList(recentNetValue, 20)
       const m25List = this.$getAverageList(recentNetValue, 25)
       const m30List = this.$getAverageList(recentNetValue, 30)
@@ -455,9 +455,6 @@ export default {
         //   }
         // }
         if (diffInfo.rateMA < 0 && diffInfo.rateM > 0) {
-          if (!diffInfo.noSell) {
-            points.push(this.createPoint(date, cValue, '#000'))
-          }
           if (netChangeRatioList[0] < 0) {
             // if (diffInfo.rateM10 > 0) {
             //   points.push(this.createPoint(date, cValue, 'red'))

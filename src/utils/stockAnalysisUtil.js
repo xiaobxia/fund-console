@@ -312,5 +312,25 @@ export default {
       return true
     }
     return false
+  },
+  // 纠缠
+  tangleLine(line5, line10, line20, config) {
+    function countRange(c5, c10, c20) {
+      const list = [c5, c10, c20]
+      list.sort((a, b)=>{
+        return b-a
+      })
+      return numberUtil.countDifferenceRate(list[0], list[list.length - 1])
+    }
+    let flag = true
+    line5.forEach((item, index)=>{
+      if (index < (config.days - 1)) {
+        const rate = countRange(line5[index], line10[index], line20[index])
+        if (rate > config.rate) {
+          flag = false
+        }
+      }
+    })
+    return flag
   }
 }
