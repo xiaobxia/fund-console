@@ -27,6 +27,9 @@
         <el-col :span="6">
           <span>最大：{{ maxBack }}%</span>
         </el-col>
+        <el-col :span="6">
+          <span>跑赢：{{ runBetter }}%</span>
+        </el-col>
       </el-row>
     </div>
     <div id="NetValue-wrap" class="chart-wrap">
@@ -55,7 +58,8 @@ export default {
       netValueList: [],
       kLineList: [],
       nowBack: 0,
-      maxBack: 0
+      maxBack: 0,
+      runBetter: 0
     }
   },
   computed: {
@@ -218,6 +222,7 @@ export default {
         })
         yData2.push(this.kLineList[index]['value'])
       })
+      this.runBetter = (yData2[yData2.length - 1] - yData[yData.length - 1]).toFixed(2)
       const maxBackList = this.getMaxBack(this.netValueList)
       const maxD = maxBackList[0]
       points.push(this.createPoint(
