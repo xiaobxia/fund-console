@@ -219,6 +219,19 @@ export default {
         yData2.push(this.kLineList[index]['value'])
       })
       const maxBackList = this.getMaxBack(this.netValueList)
+      const maxD = maxBackList[0]
+      points.push(this.createPoint(
+        maxD.maxDate,
+        yData[maxD.maxIndex],
+        '#000',
+        '回撤高点'
+      ))
+      points.push(this.createPoint(
+        maxD.minDate,
+        yData[maxD.minIndex],
+        '#000',
+        '回撤低点'
+      ))
       this.chart.setOption({
         title: {
           text: `净值`,
@@ -262,17 +275,17 @@ export default {
             }
           }
         ],
-        visualMap: {
-          type: 'piecewise',
-          show: false,
-          dimension: 0,
-          seriesIndex: 0,
-          pieces: [{
-            gt: maxBackList[0].maxIndex,
-            lte: maxBackList[0].minIndex,
-            color: '#000'
-          }]
-        },
+        // visualMap: {
+        //   type: 'piecewise',
+        //   show: false,
+        //   dimension: 0,
+        //   seriesIndex: 0,
+        //   pieces: [{
+        //     gt: maxBackList[0].maxIndex,
+        //     lte: maxBackList[0].minIndex,
+        //     color: '#000'
+        //   }]
+        // },
         series: [
           {
             name: '净值',
@@ -286,9 +299,9 @@ export default {
             markPoint: {
               data: points,
               symbol: 'circle',
-              symbolSize: 10
-            },
-            areaStyle: {}
+              symbolSize: 6
+            }
+            // areaStyle: {}
           },
           {
             name: '沪深300',
