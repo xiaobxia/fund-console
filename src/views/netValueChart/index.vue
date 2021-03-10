@@ -19,6 +19,16 @@
         >查询</el-button>
       </div>
     </div>
+    <div>
+      <el-row>
+        <el-col :span="6">
+          <span>当前：{{ nowBack }}%</span>
+        </el-col>
+        <el-col :span="6">
+          <span>最大：{{ maxBack }}%</span>
+        </el-col>
+      </el-row>
+    </div>
     <div id="NetValue-wrap" class="chart-wrap">
       <div :id="id" :style="{height:'400px',width: '100%'}"/>
     </div>
@@ -43,7 +53,9 @@ export default {
       dateRangeList: [],
       days: 40,
       netValueList: [],
-      kLineList: []
+      kLineList: [],
+      nowBack: 0,
+      maxBack: 0
     }
   },
   computed: {
@@ -69,6 +81,11 @@ export default {
         this.queryNetValue(),
         this.queryLineBase()
       ]).then(() => {
+        const maxItem = this.getMaxItem()
+        const nowItem = this.netValueList[this.netValueList.length - 1]
+        this.nowBack = this.$countDifferenceRate(nowItem.net_value, maxItem.net_value)
+        const maxBackList = this.getMaxBack(this.netValueList)
+        this.maxBack = maxBackList[0].diff
         this.initChart()
       })
     },
@@ -103,42 +120,84 @@ export default {
     },
     printHanlder() {
     },
+    createPoint(date, value, color, label) {
+      let labeConfig = {
+        show: false
+      }
+      if (label) {
+        labeConfig = {
+          show: true,
+          formatter: label,
+          position: 'top'
+        }
+      }
+      return {
+        coord: [date, value],
+        itemStyle: {
+          normal: {
+            color: color
+          }
+        },
+        label: labeConfig
+      }
+    },
     getThenMin(netValueList, start, now) {
-      let min = {}
-      for (let i = start;i<netValueList.length;i++) {
+      let min = netValueList[start]
+      for (let i = start; i < netValueList.length; i++) {
         const item = netValueList[i]
         // 有新高
         if (item.net_value > now) {
-          return min
+          break
         }
         if (min.net_value) {
           if (item.net_value <= min.net_value) {
-            min = item
+            min = {
+              ...item,
+              index: i
+            }
           }
         } else {
-          min = item
+          min = {
+            ...item,
+            index: i
+          }
         }
       }
+      return min
     },
     getMaxBack(netValueList) {
       const list = []
-      netValueList.forEach((item, index)=>{
+      netValueList.forEach((item, index) => {
         const data = {
           minValue: 0,
           minDate: '',
+          minIndex: 0,
           maxValue: item.net_value,
-          maxDate: item.net_value_date
+          maxDate: item.net_value_date,
+          maxIndex: index
         }
         const min = this.getThenMin(netValueList, index, item.net_value)
         data.minValue = min.net_value
         data.minDate = min.net_value_date
-        data.diff = this.$countDifferenceRate(data.maxValue, data.minValue)
+        data.minIndex = min.index
+        data.diff = this.$countDifferenceRate(data.minValue, data.maxValue)
         list.push(data)
       })
-      list.sort((a, b)=>{
+      list.sort((a, b) => {
         return a.diff - b.diff
       })
       return list
+    },
+    getMaxItem() {
+      let data = {
+        net_value: 0
+      }
+      this.netValueList.forEach((item, index) => {
+        if (item.net_value > data.net_value) {
+          data = item
+        }
+      })
+      return data
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
@@ -159,6 +218,7 @@ export default {
         })
         yData2.push(this.kLineList[index]['value'])
       })
+      const maxBackList = this.getMaxBack(this.netValueList)
       this.chart.setOption({
         title: {
           text: `净值`,
@@ -202,6 +262,17 @@ export default {
             }
           }
         ],
+        visualMap: {
+          type: 'piecewise',
+          show: false,
+          dimension: 0,
+          seriesIndex: 0,
+          pieces: [{
+            gt: maxBackList[0].maxIndex,
+            lte: maxBackList[0].minIndex,
+            color: '#000'
+          }]
+        },
         series: [
           {
             name: '净值',
@@ -216,7 +287,8 @@ export default {
               data: points,
               symbol: 'circle',
               symbolSize: 10
-            }
+            },
+            areaStyle: {}
           },
           {
             name: '沪深300',
