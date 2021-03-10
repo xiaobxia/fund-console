@@ -599,6 +599,16 @@ export default {
             smooth: false,
             symbol: 'none'
           },
+          // {
+          //   name: '季度线',
+          //   data: quarterList,
+          //   type: 'line',
+          //   lineStyle: {
+          //     color: 'rgba(170,136,0,0.5)'
+          //   },
+          //   smooth: false,
+          //   symbol: 'none'
+          // },
           {
             name: '差值',
             data: yData4,

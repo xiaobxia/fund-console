@@ -103,6 +103,43 @@ export default {
     },
     printHanlder() {
     },
+    getThenMin(netValueList, start, now) {
+      let min = {}
+      for (let i = start;i<netValueList.length;i++) {
+        const item = netValueList[i]
+        // 有新高
+        if (item.net_value > now) {
+          return min
+        }
+        if (min.net_value) {
+          if (item.net_value <= min.net_value) {
+            min = item
+          }
+        } else {
+          min = item
+        }
+      }
+    },
+    getMaxBack(netValueList) {
+      const list = []
+      netValueList.forEach((item, index)=>{
+        const data = {
+          minValue: 0,
+          minDate: '',
+          maxValue: item.net_value,
+          maxDate: item.net_value_date
+        }
+        const min = this.getThenMin(netValueList, index, item.net_value)
+        data.minValue = min.net_value
+        data.minDate = min.net_value_date
+        data.diff = this.$countDifferenceRate(data.maxValue, data.minValue)
+        list.push(data)
+      })
+      list.sort((a, b)=>{
+        return a.diff - b.diff
+      })
+      return list
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const xData = []
