@@ -22,13 +22,13 @@
     <div>
       <el-row>
         <el-col :span="6">
-          <span>当前：{{ nowBack }}%</span>
+          <span>本次回撤：{{ nowBack }}%</span>
         </el-col>
         <el-col :span="6">
-          <span>最大：{{ maxBack }}%</span>
+          <span>最大回撤：{{ maxBack }}%</span>
         </el-col>
         <el-col :span="6">
-          <span>跑赢：{{ runBetter }}%</span>
+          <span>跑赢沪深300：{{ runBetter }}%</span>
         </el-col>
       </el-row>
     </div>
@@ -222,7 +222,7 @@ export default {
         })
         yData2.push(this.kLineList[index]['value'])
       })
-      this.runBetter = (yData2[yData2.length - 1] - yData[yData.length - 1]).toFixed(2)
+      this.runBetter = (yData[yData.length - 1] - yData2[yData2.length - 1]).toFixed(2)
       const maxBackList = this.getMaxBack(this.netValueList)
       const maxD = maxBackList[0]
       points.push(this.createPoint(
@@ -275,6 +275,7 @@ export default {
           {
             type: 'value',
             name: '仓位',
+            min: 0,
             splitLine: {
               show: false
             }

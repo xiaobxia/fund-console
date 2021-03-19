@@ -205,10 +205,10 @@ export default {
         mqDiffList.push(rate + 15)
         mqDiffListRaw.push(rate)
       })
-      console.log(mqDiffList)
-      console.log(mqDiffListRaw)
+      // console.log(mqDiffList)
+      // console.log(mqDiffListRaw)
       const mqAver = this.$getAverageDiffList(mqDiffList, 10)
-      console.log(mqAver)
+      // console.log(mqAver)
       const mqList = []
       const tqDiffList = []
       yData.forEach((item, index) => {
@@ -227,7 +227,7 @@ export default {
         const rateMA = this.$countDifferenceRate(tqDiffList[index], qAVList[index])
         aa.push(rateMA)
       })
-      console.log('aa', aa)
+      // console.log('aa', aa)
       const monthUpDays = []
       let count = 0
       yData.forEach((item, index) => {
@@ -241,8 +241,8 @@ export default {
       })
       yData.forEach((item, index) => {
         const rateT = this.$countDifferenceRate(item, m5List[index])
-        const rateM = this.$countDifferenceRate(item, monthList[index])
         const rateM10 = this.$countDifferenceRate(item, m10List[index])
+        const rateM = this.$countDifferenceRate(item, monthList[index])
         const rateM25 = this.$countDifferenceRate(item, m25List[index])
         const rateM30 = this.$countDifferenceRate(item, m30List[index])
         const rateM40 = this.$countDifferenceRate(item, m40List[index])
@@ -355,7 +355,7 @@ export default {
           }
         })
       })
-      console.log(mqList)
+      // console.log(mqList)
       const allLength = netChangeRatioAll.length
       let qH = false
       let isFix = false
@@ -441,6 +441,34 @@ export default {
           return stockAnalysisUtil.countUp(netChangeRatioList, day, day)
         }
         const cdate = nowKline.date
+        // if (index < netChangeRatioAll.length - 40) {
+        //   const end = index + 30
+        //   const m5l = m5List.slice(index, end)
+        //   const m10l = m10List.slice(index, end)
+        //   const m20l = monthList.slice(index, end)
+        //   // if (index === 10) {
+        //   //   console.log(m5l)
+        //   //   console.log(m10l)
+        //   //   console.log(m20l)
+        //   // }
+        //   const tbFlag = stockAnalysisUtil.tangleLine(
+        //     m5l,
+        //     m10l,
+        //     m20l,
+        //     { days: 3, rate: 0.66 }
+        //   )
+        //   if (tbFlag) {
+        //     // console.log(m5l)
+        //     // console.log(m10l)
+        //     // console.log(m20l)
+        //     points.push(this.createPoint(date, cValue, '#000'))
+        //   }
+        //   if (date === '2020-11-20') {
+        //     console.log(m5l)
+        //     console.log(m10l)
+        //     console.log(m20l)
+        //   }
+        // }
         // if (netChangeRatioList[0] > (6)) {
         //   points.push(this.createPoint(date, cValue, 'red'))
         //   if (netChangeRatioList[0] > (7)) {
@@ -536,18 +564,18 @@ export default {
             }
           }
         ],
-        // dataZoom: [
-        //   {
-        //     show: true,
-        //     start: 70,
-        //     end: 100
-        //   },
-        //   {
-        //     type: 'inside',
-        //     start: 70,
-        //     end: 100
-        //   }
-        // ],
+        dataZoom: [
+          {
+            show: true,
+            start: 90,
+            end: 100
+          },
+          {
+            type: 'inside',
+            start: 90,
+            end: 100
+          }
+        ],
         visualMap: {
           show: false,
           dimension: 0,
@@ -591,10 +619,20 @@ export default {
           },
           {
             name: '季度线',
-            data: quarterList,
+            data: m5List,
             type: 'line',
             lineStyle: {
               color: 'rgba(170,136,0,0.5)'
+            },
+            smooth: false,
+            symbol: 'none'
+          },
+          {
+            name: '季度线',
+            data: m10List,
+            type: 'line',
+            lineStyle: {
+              color: 'rgba(240,50,120,0.5)'
             },
             smooth: false,
             symbol: 'none'

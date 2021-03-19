@@ -324,7 +324,7 @@ export default {
     }
     let flag = true
     line5.forEach((item, index) => {
-      if (index < (config.days - 1)) {
+      if (index <= (config.days - 1)) {
         const rate = countRange(line5[index], line10[index], line20[index])
         if (rate > config.rate) {
           flag = false
