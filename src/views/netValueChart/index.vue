@@ -30,6 +30,9 @@
         <el-col :span="6">
           <span>跑赢沪深300：{{ runBetter }}%</span>
         </el-col>
+        <el-col :span="6">
+          <span>年化：{{ yearAR }}%</span>
+        </el-col>
       </el-row>
     </div>
     <div id="NetValue-wrap" class="chart-wrap">
@@ -43,6 +46,15 @@ import echarts from 'echarts'
 import moment from 'moment'
 
 const myStartDay = '2020-01-01'
+
+function yearRate(x, t) {
+  for (let i = -2; i < 2; i = i + 0.0001) {
+    const r = Math.pow(1 + i, t)
+    if (Math.abs(x - r) < 0.0001) {
+      return i
+    }
+  }
+}
 
 export default {
   name: 'NetValue',
@@ -59,7 +71,8 @@ export default {
       kLineList: [],
       nowBack: 0,
       maxBack: 0,
-      runBetter: 0
+      runBetter: 0,
+      yearAR: 0
     }
   },
   computed: {
@@ -105,6 +118,9 @@ export default {
         list.forEach((item) => {
           item.value = this.$countDifferenceRate(item.net_value, base)
         })
+        const allI = this.$countRate(list[list.length - 1].net_value, base)
+        // 年化收益
+        this.yearAR = ((yearRate(allI / 100, list.length / 244) || 0) * 100).toFixed(2)
         this.netValueList = list
       })
     },
