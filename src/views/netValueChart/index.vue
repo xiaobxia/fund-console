@@ -48,7 +48,7 @@ import moment from 'moment'
 const myStartDay = '2020-01-01'
 
 function yearRate(x, t) {
-  for (let i = -2; i < 2; i = i + 0.0001) {
+  for (let i = -2; i < 2; i = i + 0.0000001) {
     const r = Math.pow(1 + i, t)
     if (Math.abs(x - r) < 0.0001) {
       return i
