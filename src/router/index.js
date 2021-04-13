@@ -71,6 +71,25 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/signal',
+    component: Layout,
+    meta: { title: '信号集合', icon: 'fas fa-tachometer-alt', noCache: true },
+    children: [
+      {
+        path: 'jinian',
+        component: () => import('@/views/signal/jinian'),
+        name: 'jinian',
+        meta: { title: '风险区', icon: 'fas fa-tachometer-alt', noCache: true }
+      },
+      {
+        path: 'jiandi',
+        component: () => import('@/views/signal/jiandi'),
+        name: 'jiandi',
+        meta: { title: '见底', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/yearLine',
     component: Layout,
     meta: { title: '年线', icon: 'fas fa-tachometer-alt', noCache: true },
