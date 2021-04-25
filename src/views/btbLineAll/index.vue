@@ -385,18 +385,18 @@ export default {
             type: 'cross'
           }
         },
-        dataZoom: [
-          {
-            show: true,
-            start: 70,
-            end: 100
-          },
-          {
-            type: 'inside',
-            start: 70,
-            end: 100
-          }
-        ],
+        // dataZoom: [
+        //   {
+        //     show: true,
+        //     start: 70,
+        //     end: 100
+        //   },
+        //   {
+        //     type: 'inside',
+        //     start: 70,
+        //     end: 100
+        //   }
+        // ],
         xAxis: {
           type: 'category',
           data: xData
@@ -433,37 +433,37 @@ export default {
                 }
               }]
             }
-          },
-          {
-            name: '5日线',
-            data: list5,
-            type: 'line',
-            lineStyle: {
-              color: '#606266'
-            },
-            smooth: false,
-            symbol: 'none'
-          },
-          {
-            name: '10日线',
-            data: list10,
-            type: 'line',
-            lineStyle: {
-              color: '#909399'
-            },
-            smooth: false,
-            symbol: 'none'
-          },
-          {
-            name: '20日线',
-            data: list20,
-            type: 'line',
-            lineStyle: {
-              color: '#C0C4CC'
-            },
-            smooth: false,
-            symbol: 'none'
           }
+          // {
+          //   name: '5日线',
+          //   data: list5,
+          //   type: 'line',
+          //   lineStyle: {
+          //     color: '#606266'
+          //   },
+          //   smooth: false,
+          //   symbol: 'none'
+          // },
+          // {
+          //   name: '10日线',
+          //   data: list10,
+          //   type: 'line',
+          //   lineStyle: {
+          //     color: '#909399'
+          //   },
+          //   smooth: false,
+          //   symbol: 'none'
+          // },
+          // {
+          //   name: '20日线',
+          //   data: list20,
+          //   type: 'line',
+          //   lineStyle: {
+          //     color: '#C0C4CC'
+          //   },
+          //   smooth: false,
+          //   symbol: 'none'
+          // }
         ]
       })
     }
