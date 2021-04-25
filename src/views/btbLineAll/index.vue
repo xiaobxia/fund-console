@@ -100,6 +100,67 @@ export default {
         sellIncome: (close - cost) * shares * (1 - r)
       }
     },
+    countBuy2(has, close, buyT) {
+      // 之后要考虑进费率问题
+      // 买入金额
+      let money = 0
+      let resBuyTimes = has.buyTimes
+      // 次数到达
+      if (has.buyTimes !== buyT) {
+        // 买入金额
+        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
+        resBuyTimes++
+      }
+      // 份额
+      const shares = has.shares
+      const buShares = money / close
+      const resShares = shares + buShares
+      const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
+      // 持仓金额
+      const resPositionSum = resShares * close
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney - money,
+        buyTimes: resBuyTimes,
+        todayIncome: (has.shares * close) - has.positionSum,
+        sellTimes: 0,
+        flag: money > 0 ? '加仓' : ''
+      }
+    },
+    countSell2(has, close, sellT) {
+      // 卖出份额
+      let sellShares = 0
+      let resSellTimes = has.sellTimes
+      let resCostNetValue = 0
+      // 次数到达
+      if (has.sellTimes !== sellT) {
+        sellShares = (has.shares * (1 / (sellT - has.sellTimes)))
+        resCostNetValue = has.costNetValue
+        resSellTimes++
+      }
+      // 份额
+      // const shares = has.shares - sellShares
+      // const buShares = money / close
+      const resShares = has.shares - sellShares
+      // const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
+      // 持仓金额
+      const resPositionSum = resShares * close
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney + (close * sellShares),
+        buyTimes: 0,
+        todayIncome: (has.shares * close) - has.positionSum,
+        sellTimes: resSellTimes,
+        flag: sellShares > 0 ? '减仓' : ''
+      }
+    },
+    pMoney(val) {
+      return parseInt(parseFloat(val || 0) || 0)
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const recentNetValue = this.dataList
@@ -238,6 +299,71 @@ export default {
       // console.log('了结收益2', sellIncome2)
       // console.log('总收益2', sellIncome2 + hasIncome2)
       // console.log('最大亏损2', maxLoss)
+
+      let has2 = {
+        shares: 0,
+        costNetValue: 0,
+        positionSum: 0,
+        hasMoney: 5000,
+        buyTimes: 0,
+        todayIncome: 0,
+        sellTimes: 0,
+        flag: ''
+      }
+      const dayInfoList = []
+      yData.forEach((item, index) => {
+        const netChangeRatio = netChangeRatioAll[index]
+        const date = xData[index]
+        const close5 = list5[index]
+        const close10 = list10[index]
+        const close20 = list20[index]
+        const rate5 = this.$countDifferenceRate(item, close5)
+        const rate10 = this.$countDifferenceRate(item, close10)
+        const rateM20 = this.$countDifferenceRate(item, close20)
+        // 策略1
+        // if (close5 > close10) {
+        //   // 买入
+        //   has2 = this.countBuy2(has2, item, 3)
+        // } else {
+        //   has2 = this.countSell2(has2, item, 3)
+        // }
+        // 策略2
+        if (close5 > close10) {
+          // 买入
+          has2 = this.countBuy2(has2, item, 3)
+        } else {
+          has2 = this.countSell2(has2, item, 2)
+        }
+        // 策略三
+        // if (close5 > close10) {
+        //   // 买入
+        //   if (close5 < close20) {
+        //     if (netChangeRatio < 0) {
+        //       has2 = this.countBuy2(has2, item, 3)
+        //     }
+        //   } else {
+        //     has2 = this.countBuy2(has2, item, 3)
+        //   }
+        // } else {
+        //   if (close5 > close20) {
+        //     if (netChangeRatio > 0) {
+        //       has2 = this.countSell2(has2, item, 2)
+        //     }
+        //   } else {
+        //     has2 = this.countSell2(has2, item, 2)
+        //   }
+        // }
+        dayInfoList.push({
+          '总金额': this.pMoney(has2.positionSum + has2.hasMoney),
+          '点位': item,
+          '当日盈亏': this.pMoney(has2.todayIncome),
+          '持仓': this.pMoney(has2.positionSum),
+          '现金': this.pMoney(has2.hasMoney),
+          '操作': has2.flag,
+          ...has2
+        })
+      })
+      console.log('日志', dayInfoList)
 
       // console.log(hasList)
       this.chart.setOption({
