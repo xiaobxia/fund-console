@@ -129,6 +129,41 @@ export default {
         flag: money > 0 ? '加仓' : ''
       }
     },
+    // 好像和2没差距
+    countBuy3(has, close, buyT) {
+      const nowPosition = has.shares * close
+      const allMoney = nowPosition + has.hasMoney
+      // 之后要考虑进费率问题
+      // 买入金额
+      let money = 0
+      let resBuyTimes = has.buyTimes
+      // 次数到达
+      if (has.buyTimes !== buyT) {
+        // 买入金额
+        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
+        if (nowPosition > allMoney * ((has.buyTimes + 1) / 3)) {
+          money = 0
+        }
+        resBuyTimes++
+      }
+      // 份额
+      const shares = has.shares
+      const buShares = money / close
+      const resShares = shares + buShares
+      const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
+      // 持仓金额
+      const resPositionSum = resShares * close
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney - money,
+        buyTimes: resBuyTimes,
+        todayIncome: (has.shares * close) - has.positionSum,
+        sellTimes: 0,
+        flag: money > 0 ? '加仓' : ''
+      }
+    },
     countSell2(has, close, sellT) {
       // 卖出份额
       let sellShares = 0
@@ -299,12 +334,12 @@ export default {
       // console.log('了结收益2', sellIncome2)
       // console.log('总收益2', sellIncome2 + hasIncome2)
       // console.log('最大亏损2', maxLoss)
-
+      const benjin = 10000
       let has2 = {
         shares: 0,
         costNetValue: 0,
         positionSum: 0,
-        hasMoney: 5000,
+        hasMoney: benjin,
         buyTimes: 0,
         todayIncome: 0,
         sellTimes: 0,
@@ -364,12 +399,41 @@ export default {
           ...has2
         })
       })
-      console.log('日志', dayInfoList)
+      // let maxDown = 0
+      // let day = ''
+      // const maxList = []
+      // dayInfoList.forEach((v) => {
+      //   if (v.todayIncome < maxDown) {
+      //     maxDown = v.todayIncome
+      //     day = v['日期']
+      //   }
+      //   maxList.push({
+      //     todayIncome: v.todayIncome,
+      //     date: v['日期']
+      //   })
+      // })
+      // maxList.sort((a, b) => {
+      //   return a.todayIncome - b.todayIncome
+      // })
+      // console.log(maxDown)
+      // console.log(day)
+      // console.log('日志', dayInfoList)
+      // console.log('营收', maxList)
+
+      const yBase = yData[0]
+      const yData2 = []
+      yData.forEach((v) => {
+        yData2.push(this.$countDifferenceRate(v, yBase))
+      })
+      const yData3 = []
+      dayInfoList.forEach((v) => {
+        yData3.push(this.$countDifferenceRate(v['总金'], benjin))
+      })
 
       // console.log(hasList)
       this.chart.setOption({
         title: {
-          text: 'K线变化',
+          text: '线变化',
           left: 'center',
           textStyle: {
             color: 'rgba(0, 0, 0, 0.85)',
@@ -412,29 +476,49 @@ export default {
         },
         series: [
           {
-            name: 'K线',
-            data: yData,
+            name: '线',
+            data: yData2,
+            type: 'line',
+            lineStyle: {
+              color: '#909399'
+            },
+            smooth: false,
+            symbol: 'none'
+          },
+          {
+            name: '2线',
+            data: yData3,
             type: 'line',
             lineStyle: {
               color: '#409EFF'
             },
             smooth: false,
-            symbol: 'none',
-            markPoint: {
-              data: points,
-              symbol: 'circle',
-              symbolSize: 4
-            },
-            markLine: {
-              silent: true,
-              data: [{
-                yAxis: recentNetValue[0].close,
-                lineStyle: {
-                  color: '#aaa'
-                }
-              }]
-            }
+            symbol: 'none'
           }
+          // {
+          //   name: 'K线',
+          //   data: yData,
+          //   type: 'line',
+          //   lineStyle: {
+          //     color: '#409EFF'
+          //   },
+          //   smooth: false,
+          //   symbol: 'none',
+          //   markPoint: {
+          //     data: points,
+          //     symbol: 'circle',
+          //     symbolSize: 4
+          //   },
+          //   markLine: {
+          //     silent: true,
+          //     data: [{
+          //       yAxis: recentNetValue[0].close,
+          //       lineStyle: {
+          //         color: '#aaa'
+          //       }
+          //     }]
+          //   }
+          // }
           // {
           //   name: '5日线',
           //   data: list5,
