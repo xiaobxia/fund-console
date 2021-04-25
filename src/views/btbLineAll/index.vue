@@ -354,9 +354,10 @@ export default {
         //   }
         // }
         dayInfoList.push({
-          '总金额': this.pMoney(has2.positionSum + has2.hasMoney),
+          '总金': this.pMoney(has2.positionSum + has2.hasMoney),
           '点位': item,
-          '当日盈亏': this.pMoney(has2.todayIncome),
+          '日期': date,
+          '日盈亏': this.pMoney(has2.todayIncome),
           '持仓': this.pMoney(has2.positionSum),
           '现金': this.pMoney(has2.hasMoney),
           '操作': has2.flag,
