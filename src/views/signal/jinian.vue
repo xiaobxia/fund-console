@@ -169,6 +169,67 @@ export default {
         this.initChart()
       })
     },
+    countBuy2(has, close, buyT) {
+      // 之后要考虑进费率问题
+      // 买入金额
+      let money = 0
+      let resBuyTimes = has.buyTimes
+      // 次数到达
+      if (has.buyTimes !== buyT) {
+        // 买入金额
+        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
+        resBuyTimes++
+      }
+      // 份额
+      const shares = has.shares
+      const buShares = money / close
+      const resShares = shares + buShares
+      const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
+      // 持仓金额
+      const resPositionSum = resShares * close
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney - money,
+        buyTimes: resBuyTimes,
+        todayIncome: (has.shares * close) - has.positionSum,
+        sellTimes: 0,
+        flag: money > 0 ? '加仓' : ''
+      }
+    },
+    countSell2(has, close, sellT) {
+      // 卖出份额
+      let sellShares = 0
+      let resSellTimes = has.sellTimes
+      let resCostNetValue = 0
+      // 次数到达
+      if (has.sellTimes !== sellT) {
+        sellShares = (has.shares * (1 / (sellT - has.sellTimes)))
+        resCostNetValue = has.costNetValue
+        resSellTimes++
+      }
+      // 份额
+      // const shares = has.shares - sellShares
+      // const buShares = money / close
+      const resShares = has.shares - sellShares
+      // const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
+      // 持仓金额
+      const resPositionSum = resShares * close
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney + (close * sellShares),
+        buyTimes: 0,
+        todayIncome: (has.shares * close) - has.positionSum,
+        sellTimes: resSellTimes,
+        flag: sellShares > 0 ? '减仓' : ''
+      }
+    },
+    pMoney(val) {
+      return parseInt(parseFloat(val || 0) || 0)
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const indexRate = this.indexItem.rate
@@ -240,6 +301,18 @@ export default {
         }
         monthUpDays.push(count)
       })
+      const benjin = 10000
+      let has2 = {
+        shares: 0,
+        costNetValue: 0,
+        positionSum: 0,
+        hasMoney: benjin,
+        buyTimes: 0,
+        todayIncome: 0,
+        sellTimes: 0,
+        flag: ''
+      }
+      const dayInfoList = []
       yData.forEach((item, index) => {
         const rateT = this.$countDifferenceRate(item, m5List[index])
         const rateM10 = this.$countDifferenceRate(item, m10List[index])
@@ -355,7 +428,25 @@ export default {
             color: color
           }
         })
+        if (m5List[index] > m10List[index]) {
+          // 买入
+          has2 = this.countBuy2(has2, item, 3)
+        } else {
+          has2 = this.countSell2(has2, item, 2)
+        }
+        dayInfoList.push({
+          '总金': this.pMoney(has2.positionSum + has2.hasMoney),
+          '点位': item,
+          '日期': xData[index],
+          '日盈亏': this.pMoney(has2.todayIncome),
+          '持仓': this.pMoney(has2.positionSum),
+          '现金': this.pMoney(has2.hasMoney),
+          '操作': has2.flag,
+          ...has2
+        })
       })
+      // 并不适用，基本不挣钱
+      console.log('日志', dayInfoList)
       // console.log(mqList)
       const allLength = netChangeRatioAll.length
       let qH = false
