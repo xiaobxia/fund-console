@@ -176,10 +176,7 @@ export default {
         resSellTimes++
       }
       // 份额
-      // const shares = has.shares - sellShares
-      // const buShares = money / close
       const resShares = has.shares - sellShares
-      // const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
       // 持仓金额
       const resPositionSum = resShares * close
       return {
@@ -195,6 +192,60 @@ export default {
     },
     pMoney(val) {
       return parseInt(parseFloat(val || 0) || 0)
+    },
+    countBuyKong(has, close, buyT) {
+      // 买空金额
+      let money = 0
+      let resBuyTimes = has.buyTimes
+      // 次数到达
+      if (has.buyTimes !== buyT) {
+        // 买空金额
+        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
+        resBuyTimes++
+      }
+      // 份额
+      const shares = has.shares
+      const buShares = money / close
+      const resShares = shares + buShares
+      const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
+      // 持仓金额
+      const resPositionSum = (resShares * resCostNetValue) * (resCostNetValue / close)
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney - money,
+        buyTimes: resBuyTimes,
+        todayIncome: ((has.shares * has.costNetValue) * (has.costNetValue / close)) - has.positionSum,
+        sellTimes: 0,
+        flag: money > 0 ? '买空' : ''
+      }
+    },
+    countSellKong(has, close, sellT) {
+      // 卖出份额
+      let sellShares = 0
+      let resSellTimes = has.sellTimes
+      let resCostNetValue = 0
+      // 次数到达
+      if (has.sellTimes !== sellT) {
+        sellShares = (has.shares * (1 / (sellT - has.sellTimes)))
+        resCostNetValue = has.costNetValue
+        resSellTimes++
+      }
+      // 份额
+      const resShares = has.shares - sellShares
+      // 持仓金额
+      const resPositionSum = (resShares * has.costNetValue) * (has.costNetValue / close)
+      return {
+        shares: resShares,
+        costNetValue: resCostNetValue,
+        positionSum: resPositionSum,
+        hasMoney: has.hasMoney + ((sellShares * has.costNetValue) * (has.costNetValue / close)),
+        buyTimes: 0,
+        todayIncome: ((has.shares * has.costNetValue) * (has.costNetValue / close)) - has.positionSum,
+        sellTimes: resSellTimes,
+        flag: sellShares > 0 ? '平空' : ''
+      }
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
@@ -363,12 +414,12 @@ export default {
         //   has2 = this.countSell2(has2, item, 3)
         // }
         // 策略2
-        if (close5 > close10) {
-          // 买入
-          has2 = this.countBuy2(has2, item, 3)
-        } else {
-          has2 = this.countSell2(has2, item, 2)
-        }
+        // if (close5 > close10) {
+        //   // 买入
+        //   has2 = this.countBuy2(has2, item, 3)
+        // } else {
+        //   has2 = this.countSell2(has2, item, 2)
+        // }
         // 策略三
         // if (close5 > close10) {
         //   // 买入
@@ -388,6 +439,13 @@ export default {
         //     has2 = this.countSell2(has2, item, 2)
         //   }
         // }
+        // 空单
+        if (close5 < close10) {
+          // 买入
+          has2 = this.countBuyKong(has2, item, 2)
+        } else {
+          has2 = this.countSellKong(has2, item, 1)
+        }
         dayInfoList.push({
           '总金': this.pMoney(has2.positionSum + has2.hasMoney),
           '点位': item,
@@ -417,7 +475,7 @@ export default {
       // })
       // console.log(maxDown)
       // console.log(day)
-      // console.log('日志', dayInfoList)
+      console.log('日志', dayInfoList)
       // console.log('营收', maxList)
 
       const yBase = yData[0]
