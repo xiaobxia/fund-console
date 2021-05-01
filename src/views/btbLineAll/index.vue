@@ -53,7 +53,7 @@ export default {
       }
     },
     initPage() {
-      this.$http.get('stock/getBtbKlines').then((res) => {
+      this.$http.get('stock/getETHKlines').then((res) => {
         const list = []
         res.data.forEach((item) => {
           item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
@@ -121,6 +121,7 @@ export default {
       return {
         shares: resShares,
         costNetValue: resCostNetValue,
+        positionCost: resShares * resCostNetValue,
         positionSum: resPositionSum,
         hasMoney: has.hasMoney - money,
         buyTimes: resBuyTimes,
@@ -182,6 +183,7 @@ export default {
       return {
         shares: resShares,
         costNetValue: resCostNetValue,
+        positionCost: resShares * resCostNetValue,
         positionSum: resPositionSum,
         hasMoney: has.hasMoney + (close * sellShares),
         buyTimes: 0,
@@ -259,9 +261,11 @@ export default {
       const points = []
       // 最近的在前面
       const netChangeRatioAll = []
+      const openList = []
       recentNetValue.forEach((item, index) => {
         xData.unshift(moment(item['tradeDate']).format('YYYY-MM-DD'))
         yData.unshift(item['close'])
+        openList.unshift(item['open'])
         netChangeRatioAll.unshift(item.netChangeRatio)
       })
       // const buyMoney = 500
@@ -397,6 +401,7 @@ export default {
         flag: ''
       }
       const dayInfoList = []
+      const kBase = yData[0]
       yData.forEach((item, index) => {
         const netChangeRatio = netChangeRatioAll[index]
         const date = xData[index]
@@ -406,6 +411,7 @@ export default {
         const rate5 = this.$countDifferenceRate(item, close5)
         const rate10 = this.$countDifferenceRate(item, close10)
         const rateM20 = this.$countDifferenceRate(item, close20)
+        const open = openList[index]
         // 策略1
         // if (close5 > close10) {
         //   // 买入
@@ -414,12 +420,12 @@ export default {
         //   has2 = this.countSell2(has2, item, 3)
         // }
         // 策略2
-        // if (close5 > close10) {
-        //   // 买入
-        //   has2 = this.countBuy2(has2, item, 3)
-        // } else {
-        //   has2 = this.countSell2(has2, item, 2)
-        // }
+        if (close5 > close10) {
+          // 买入
+          has2 = this.countBuy2(has2, open, 3)
+        } else {
+          has2 = this.countSell2(has2, item, 2)
+        }
         // 策略三
         // if (close5 > close10) {
         //   // 买入
@@ -440,44 +446,61 @@ export default {
         //   }
         // }
         // 空单
-        if (close5 < close10) {
-          // 买入
-          has2 = this.countBuyKong(has2, item, 2)
-        } else {
-          has2 = this.countSellKong(has2, item, 1)
-        }
+        // if (close5 < close10) {
+        //   // 买入
+        //   has2 = this.countBuyKong(has2, item, 2)
+        // } else {
+        //   has2 = this.countSellKong(has2, item, 1)
+        // }
         dayInfoList.push({
           '总金': this.pMoney(has2.positionSum + has2.hasMoney),
           '点位': item,
           '日期': date,
           '日盈亏': this.pMoney(has2.todayIncome),
+          '持仓盈亏率': this.$countDifferenceRate(has2.positionSum, has2.positionCost),
           '持仓': this.pMoney(has2.positionSum),
           '现金': this.pMoney(has2.hasMoney),
           '操作': has2.flag,
+          // '总金收益': this.$countDifferenceRate(this.pMoney(has2.positionSum + has2.hasMoney), benjin) + '%',
+          // '点位收益': this.$countDifferenceRate(item, kBase) + '%',
           ...has2
         })
       })
-      // let maxDown = 0
+      let maxDown = 0
       // let day = ''
       // const maxList = []
-      // dayInfoList.forEach((v) => {
-      //   if (v.todayIncome < maxDown) {
-      //     maxDown = v.todayIncome
-      //     day = v['日期']
-      //   }
-      //   maxList.push({
-      //     todayIncome: v.todayIncome,
-      //     date: v['日期']
-      //   })
-      // })
+      dayInfoList.forEach((v) => {
+        if (v['持仓盈亏率'] < maxDown) {
+          maxDown = v['持仓盈亏率']
+        }
+        // maxList.push({
+        //   todayIncome: v.todayIncome,
+        //   date: v['日期']
+        // })
+      })
       // maxList.sort((a, b) => {
       //   return a.todayIncome - b.todayIncome
       // })
-      // console.log(maxDown)
       // console.log(day)
+      let addDay = 0
+      let downDay = 0
+      let kongDay = 0
+      dayInfoList.forEach((v) => {
+        if (v.flag === '减仓') {
+          downDay++
+        }
+        if (v.flag === '加仓') {
+          addDay++
+        }
+        if (v['持仓'] === 0) {
+          kongDay++
+        }
+      })
       console.log('日志', dayInfoList)
-      // console.log('营收', maxList)
-
+      console.log('持仓亏损极限', maxDown)
+      console.log('加仓天数', addDay)
+      console.log('减仓天数', downDay)
+      console.log('空仓天数', kongDay)
       const yBase = yData[0]
       const yData2 = []
       yData.forEach((v) => {
