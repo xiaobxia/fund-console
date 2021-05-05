@@ -332,7 +332,9 @@ export default {
           isBad,
           isTD3: m5List[index] > m30List[index],
           monUpDays: monthUpDays[index],
-          date: xData[index]
+          date: xData[index],
+          close5: m5List[index],
+          close10: m10List[index]
         })
         const upColor = 'rgba(208, 153, 183, 0.5)'
         const downColor = 'rgba(112, 220, 240, 0.5)'
@@ -441,6 +443,11 @@ export default {
           return stockAnalysisUtil.countUp(netChangeRatioList, day, day)
         }
         const cdate = nowKline.date
+        if (diffInfo.close5 > diffInfo.close10) {
+          if (!diffInfo.noSell) {
+            points.push(this.createPoint(date, cValue, '#000'))
+          }
+        }
         // if (index < netChangeRatioAll.length - 40) {
         //   const end = index + 30
         //   const m5l = m5List.slice(index, end)

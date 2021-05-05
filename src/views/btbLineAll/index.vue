@@ -52,19 +52,6 @@ export default {
         }
       }
     },
-    initPage() {
-      this.$http.get('stock/getETHKlines').then((res) => {
-        const list = []
-        res.data.forEach((item) => {
-          item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
-          list.push(item)
-        })
-        // list = list.slice(0, 300)
-        list.reverse()
-        this.dataList = list
-        this.initChart()
-      })
-    },
     countBuy(has, money, close) {
       // 之后要考虑进费率问题
       const shares = has.shares
@@ -249,6 +236,21 @@ export default {
         flag: sellShares > 0 ? '平空' : ''
       }
     },
+    initPage() {
+      this.$http.get('stock/getBIKlines', {
+        name: 'BTC'
+      }).then((res) => {
+        const list = []
+        res.data.forEach((item) => {
+          item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
+          list.push(item)
+        })
+        // list = list.slice(0, 300)
+        // list.reverse()
+        this.dataList = list
+        this.initChart()
+      })
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       const recentNetValue = this.dataList
@@ -402,6 +404,7 @@ export default {
       }
       const dayInfoList = []
       const kBase = yData[0]
+      // const points = []
       yData.forEach((item, index) => {
         const netChangeRatio = netChangeRatioAll[index]
         const date = xData[index]
@@ -420,12 +423,41 @@ export default {
         //   has2 = this.countSell2(has2, item, 3)
         // }
         // 策略2
+        // if (close5 > close10) {
+        //   // 买入
+        //   has2 = this.countBuy2(has2, open, 1)
+        // } else {
+        //   has2 = this.countSell2(has2, item, 2)
+        // }
+        // 买入最好策略
+        // if (close5 > close10) {
+        //   // 买入
+        //   has2 = this.countBuy2(has2, open, 1)
+        // } else {
+        //   has2 = this.countSell2(has2, item, 2)
+        // }
+        // TODO 最好的
         if (close5 > close10) {
           // 买入
-          has2 = this.countBuy2(has2, open, 3)
+          // if (close5 > close20) {
+          //   has2 = this.countBuy2(has2, open, 1)
+          // } else {
+          //   has2 = this.countBuy2(has2, open, 2)
+          // }
+          has2 = this.countBuy2(has2, open, 1)
         } else {
-          has2 = this.countSell2(has2, item, 2)
+          if (close5 > close20) {
+            has2 = this.countSell2(has2, item, 2)
+          } else {
+            has2 = this.countSell2(has2, open, 1)
+          }
         }
+        // if (close5 > close10) {
+        //   // 买入
+        //   has2 = this.countBuy2(has2, open, 1)
+        // } else {
+        //   has2 = this.countSell2(has2, item, 2)
+        // }
         // 策略三
         // if (close5 > close10) {
         //   // 买入
@@ -445,12 +477,12 @@ export default {
         //     has2 = this.countSell2(has2, item, 2)
         //   }
         // }
-        // 空单
+        // 空单（目前最好策略）
         // if (close5 < close10) {
         //   // 买入
-        //   has2 = this.countBuyKong(has2, item, 2)
+        //   has2 = this.countBuyKong(has2, item, 1)
         // } else {
-        //   has2 = this.countSellKong(has2, item, 1)
+        //   has2 = this.countSellKong(has2, open, 2)
         // }
         dayInfoList.push({
           '总金': this.pMoney(has2.positionSum + has2.hasMoney),
@@ -501,6 +533,7 @@ export default {
       console.log('加仓天数', addDay)
       console.log('减仓天数', downDay)
       console.log('空仓天数', kongDay)
+      // console.log(points)
       const yBase = yData[0]
       const yData2 = []
       yData.forEach((v) => {
@@ -508,9 +541,15 @@ export default {
       })
       const yData3 = []
       dayInfoList.forEach((v) => {
-        yData3.push(this.$countDifferenceRate(v['总金'], benjin))
+        const r = this.$countDifferenceRate(v['总金'], benjin)
+        yData3.push(r)
+        if (v.flag === '减仓') {
+          points.push(this.createPoint(v['日期'], r, 'green'))
+        }
+        if (v.flag === '加仓') {
+          points.push(this.createPoint(v['日期'], r, 'red'))
+        }
       })
-
       // console.log(hasList)
       this.chart.setOption({
         title: {
@@ -564,10 +603,15 @@ export default {
               color: '#909399'
             },
             smooth: false,
-            symbol: 'none'
+            symbol: 'none',
+            markPoint: {
+              data: points,
+              symbol: 'circle',
+              symbolSize: 4
+            }
           },
           {
-            name: '2线',
+            name: '净值线',
             data: yData3,
             type: 'line',
             lineStyle: {
