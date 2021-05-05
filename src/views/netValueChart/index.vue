@@ -281,6 +281,7 @@ export default {
             type: 'value',
             name: '点数',
             scale: true,
+            interval: 5,
             splitLine: {
               show: true,
               lineStyle: {
@@ -292,6 +293,7 @@ export default {
             type: 'value',
             name: '仓位',
             min: 0,
+            interval: 10,
             splitLine: {
               show: false
             }
