@@ -93,10 +93,15 @@ export default {
       let money = 0
       let resBuyTimes = has.buyTimes
       // 次数到达
-      if (has.buyTimes !== buyT) {
-        // 买入金额
-        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
-        resBuyTimes++
+      if (has.lastBuyTimes && has.lastBuyTimes !== buyT) {
+        money = (has.hasMoney * (1 / (buyT)))
+        resBuyTimes = 1
+      } else {
+        if (has.buyTimes !== buyT) {
+          // 买入金额
+          money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
+          resBuyTimes++
+        }
       }
       // 份额
       const shares = has.shares
@@ -112,8 +117,10 @@ export default {
         positionSum: resPositionSum,
         hasMoney: has.hasMoney - money,
         buyTimes: resBuyTimes,
+        lastBuyTimes: buyT,
         todayIncome: (has.shares * close) - has.positionSum,
         sellTimes: 0,
+        lastSellTimes: 0,
         flag: money > 0 ? '加仓' : ''
       }
     },
@@ -157,11 +164,19 @@ export default {
       let sellShares = 0
       let resSellTimes = has.sellTimes
       let resCostNetValue = 0
-      // 次数到达
-      if (has.sellTimes !== sellT) {
-        sellShares = (has.shares * (1 / (sellT - has.sellTimes)))
+      // 上一次和这次一样
+      if (has.lastSellTimes && has.lastSellTimes !== sellT) {
+        // 次数变了
+        sellShares = (has.shares * (1 / (sellT)))
         resCostNetValue = has.costNetValue
-        resSellTimes++
+        resSellTimes = 1
+      } else {
+        // 次数到达
+        if (has.sellTimes !== sellT) {
+          sellShares = (has.shares * (1 / (sellT - has.sellTimes)))
+          resCostNetValue = has.costNetValue
+          resSellTimes++
+        }
       }
       // 份额
       const resShares = has.shares - sellShares
@@ -174,8 +189,10 @@ export default {
         positionSum: resPositionSum,
         hasMoney: has.hasMoney + (close * sellShares),
         buyTimes: 0,
+        lastBuyTimes: 0,
         todayIncome: (has.shares * close) - has.positionSum,
         sellTimes: resSellTimes,
+        lastSellTimes: sellT,
         flag: sellShares > 0 ? '减仓' : ''
       }
     },
@@ -246,7 +263,7 @@ export default {
           list.push(item)
         })
         // list = list.slice(0, 300)
-        // list.reverse()
+        list.reverse()
         this.dataList = list
         this.initChart()
       })
@@ -400,7 +417,9 @@ export default {
         buyTimes: 0,
         todayIncome: 0,
         sellTimes: 0,
-        flag: ''
+        flag: '',
+        lastSellTimes: 0,
+        lastBuyTimes: 0
       }
       const dayInfoList = []
       const kBase = yData[0]
@@ -439,13 +458,16 @@ export default {
         // TODO 最好的
         if (close5 > close10) {
           // 买入
-          // if (close5 > close20) {
-          //   has2 = this.countBuy2(has2, open, 1)
-          // } else {
-          //   has2 = this.countBuy2(has2, open, 2)
-          // }
-          has2 = this.countBuy2(has2, open, 1)
+          // 下降时，好像都是open好
+          if (close5 > close20) {
+            has2 = this.countBuy2(has2, open, 1)
+          } else {
+            has2 = this.countBuy2(has2, item, 2)
+          }
+          // has2 = this.countBuy2(has2, open, 1)
         } else {
+          // has2 = this.countSell2(has2, item, 2)
+          // 都是close好
           if (close5 > close20) {
             has2 = this.countSell2(has2, item, 2)
           } else {
