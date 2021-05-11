@@ -71,6 +71,25 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/btb',
+    component: Layout,
+    meta: { title: '数字货币', icon: 'fas fa-tachometer-alt', noCache: true },
+    children: [
+      {
+        path: 'indexList',
+        component: () => import('@/views/btb/indexList'),
+        name: 'indexList',
+        meta: { title: '币种', icon: 'fas fa-tachometer-alt', noCache: true }
+      },
+      {
+        path: 'recordList',
+        component: () => import('@/views/btb/recordList'),
+        name: 'recordList',
+        meta: { title: '交易记录', icon: 'fas fa-tachometer-alt', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/signal',
     component: Layout,
     meta: { title: '信号集合', icon: 'fas fa-tachometer-alt', noCache: true },

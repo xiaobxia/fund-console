@@ -22,6 +22,7 @@ import fileUtil from '@/utils/fileUtil.js'
 
 import typeValue from '@/common/typeValue' // global filters
 import printUtil from '@/utils/printUtil.js'
+import moment from 'moment'
 
 import * as filters from './filters' // global filters
 
@@ -84,7 +85,7 @@ function getAverage(netValue, day, index) {
   for (let i = index; i >= start; i--) {
     count += netValue[i]['close']
   }
-  return numberUtil.keepTwoDecimals(count / (index + 1 - start))
+  return numberUtil.keepBtbDecimals(count / (index + 1 - start))
 }
 
 function getAverageRate(netValue, day, index) {
@@ -121,6 +122,14 @@ Vue.prototype.$getAverageRateList = function(netValue, day) {
     list.push(average)
   })
   return list
+}
+
+Vue.prototype.$formatToDateTime = function(time) {
+  return moment(time).format('YYYY-MM-DD HH:mm:ss')
+}
+
+Vue.prototype.$parseValue = function(value) {
+  return parseFloat(value || 0) || 0
 }
 
 function getAverageDiff(netValue, day, index) {

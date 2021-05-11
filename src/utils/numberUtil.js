@@ -60,6 +60,9 @@ const numberUtil = {
   },
   formatMoney(number) {
     return formatNum(this.toTwoDecimals(number))
+  },
+  keepBtbDecimals: function(number) {
+    return (parseFloat(number || 0) || 0).toFixed(8)
   }
 }
 

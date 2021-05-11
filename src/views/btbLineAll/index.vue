@@ -255,7 +255,7 @@ export default {
     },
     initPage() {
       this.$http.get('stock/getBIKlines', {
-        name: 'BTC'
+        name: 'EOS'
       }).then((res) => {
         const list = []
         res.data.forEach((item) => {
@@ -468,10 +468,11 @@ export default {
         } else {
           // has2 = this.countSell2(has2, item, 2)
           // 都是close好
+          // 卖出只能用收盘价
           if (close5 > close20) {
             has2 = this.countSell2(has2, item, 2)
           } else {
-            has2 = this.countSell2(has2, open, 1)
+            has2 = this.countSell2(has2, item, 1)
           }
         }
         // if (close5 > close10) {
