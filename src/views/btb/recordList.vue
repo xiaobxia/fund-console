@@ -34,7 +34,6 @@
         width="55"/>
       <el-table-column
         align="center"
-        min-width="150"
         label="编码">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
@@ -42,7 +41,6 @@
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
         label="名称">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -50,48 +48,49 @@
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
-        label="状态">
+        label="标志">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 1" type="success">开启</el-tag>
-          <el-tag v-else type="danger">禁用</el-tag>
+          <el-tag v-if="scope.row.flag === 0" type="success">买入</el-tag>
+          <el-tag v-else type="danger">卖出</el-tag>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
-        label="初始usdt">
+        label="数量">
         <template slot-scope="scope">
-          <span>{{ scope.row.usdt }}</span>
+          <span>{{ scope.row.number }}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
-        label="所剩usdt">
+        label="成本价(usdt)">
         <template slot-scope="scope">
-          <span>{{ scope.row.now_usdt }}</span>
+          <span>{{ scope.row.buy_cost_usdt }}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
-        label="总收益(usdt)">
+        label="卖出价(usdt)">
         <template slot-scope="scope">
-          <span>{{ scope.row.total_income_usdt }}</span>
+          <span>{{ scope.row.sell_value_usdt }}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
-        label="总手续费(usdt)">
+        label="收益(usdt)">
         <template slot-scope="scope">
-          <span>{{ scope.row.total_charge_usdt }}</span>
+          <span>{{ scope.row.income_usdt }}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        min-width="150"
+        label="手续费(usdt)">
+        <template slot-scope="scope">
+          <span>{{ scope.row.charge_usdt }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
         label="时间">
         <template slot-scope="scope">
           <span>{{ $formatToDateTime(scope.row.create_at) }}</span>
@@ -164,7 +163,7 @@ export default {
     },
     queryList() {
       this.tableLoading = true
-      this.$http.get('btbIndex/getBtbIndexByPage', {
+      this.$http.get('btbIndex/getBtbRecordByPage', {
         current: this.current,
         pageSize: this.size,
         ...this.searchForm

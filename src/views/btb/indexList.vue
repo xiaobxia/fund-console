@@ -103,6 +103,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="addNew(scope.row)">编辑</el-button>
+          <el-button type="text" @click="deleteRow(scope.row)">删除</el-button>
           <el-button type="text" @click="addUsdt(scope.row)">增加usdt</el-button>
         </template>
       </el-table-column>
@@ -193,8 +194,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.post('fbsServer/infoFlow/deleteRecord', {
-          info_id: row.id
+        this.$http.post('btbIndex/deleteBtbIndex', {
+          _id: row._id
         }).then(({ message }) => {
           this.$message.success('成功')
           this.reQueryList()
