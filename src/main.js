@@ -111,6 +111,33 @@ Vue.prototype.$getAverageList = function(netValue, day) {
   return list
 }
 
+function getAverageTO(netValue, day, index) {
+  let start = index - day + 1
+  start = start < 0 ? 0 : start
+  let count = 0
+  for (let i = index; i >= start; i--) {
+    if (i === index) {
+      count += netValue[i]['open']
+    } else {
+      count += netValue[i]['close']
+    }
+  }
+  return numberUtil.keepBtbDecimals(count / (index + 1 - start))
+}
+
+Vue.prototype.$getAverageListTO = function(netValue, day) {
+  const list = []
+  const newList = []
+  netValue.forEach((item) => {
+    newList.unshift(item)
+  })
+  newList.forEach((item, index) => {
+    const average = getAverageTO(newList, day, index)
+    list.push(average)
+  })
+  return list
+}
+
 Vue.prototype.$getAverageRateList = function(netValue, day) {
   const list = []
   const newList = []

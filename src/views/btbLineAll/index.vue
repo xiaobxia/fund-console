@@ -8,6 +8,7 @@
 import indexList from '@/common/indexList'
 import echarts from 'echarts'
 import moment from 'moment'
+import macd from '@/utils/macd'
 
 export default {
   name: 'BtbLineAll',
@@ -18,7 +19,8 @@ export default {
       dataList: [],
       chart: null,
       indexItem: null,
-      id: 'BtbLineAll'
+      id: 'BtbLineAll',
+      macdList: []
     }
   },
   computed: {
@@ -50,41 +52,6 @@ export default {
         label: {
           show: false
         }
-      }
-    },
-    countBuy(has, money, close) {
-      // 之后要考虑进费率问题
-      const shares = has.shares
-      const sum = has.sum
-      const buShares = money / close
-      const resShares = shares + buShares
-      const resMoney = sum + money
-      const resCost = resMoney / (resShares || 1)
-      return {
-        shares: resShares,
-        cost: resCost,
-        sum: resMoney
-      }
-    },
-    countSell(has, sellTime, close) {
-      const shares = has.shares
-      const cost = has.cost
-      const sum = has.sum
-      let r = 0
-      if (sellTime === 1) {
-        r = 2 / 3
-      } else if (sellTime === 2) {
-        r = 1 / 2
-      } else if (sellTime === 3) {
-        r = 0
-      }
-      return {
-        has: {
-          shares: shares * r,
-          cost: cost,
-          sum: sum * r
-        },
-        sellIncome: (close - cost) * shares * (1 - r)
       }
     },
     countBuy2(has, close, buyT) {
@@ -121,41 +88,6 @@ export default {
         todayIncome: (has.shares * close) - has.positionSum,
         sellTimes: 0,
         lastSellTimes: 0,
-        flag: money > 0 ? '加仓' : ''
-      }
-    },
-    // 好像和2没差距
-    countBuy3(has, close, buyT) {
-      const nowPosition = has.shares * close
-      const allMoney = nowPosition + has.hasMoney
-      // 之后要考虑进费率问题
-      // 买入金额
-      let money = 0
-      let resBuyTimes = has.buyTimes
-      // 次数到达
-      if (has.buyTimes !== buyT) {
-        // 买入金额
-        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
-        if (nowPosition > allMoney * ((has.buyTimes + 1) / 3)) {
-          money = 0
-        }
-        resBuyTimes++
-      }
-      // 份额
-      const shares = has.shares
-      const buShares = money / close
-      const resShares = shares + buShares
-      const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
-      // 持仓金额
-      const resPositionSum = resShares * close
-      return {
-        shares: resShares,
-        costNetValue: resCostNetValue,
-        positionSum: resPositionSum,
-        hasMoney: has.hasMoney - money,
-        buyTimes: resBuyTimes,
-        todayIncome: (has.shares * close) - has.positionSum,
-        sellTimes: 0,
         flag: money > 0 ? '加仓' : ''
       }
     },
@@ -199,74 +131,42 @@ export default {
     pMoney(val) {
       return parseInt(parseFloat(val || 0) || 0)
     },
-    countBuyKong(has, close, buyT) {
-      // 买空金额
-      let money = 0
-      let resBuyTimes = has.buyTimes
-      // 次数到达
-      if (has.buyTimes !== buyT) {
-        // 买空金额
-        money = (has.hasMoney * (1 / (buyT - has.buyTimes)))
-        resBuyTimes++
-      }
-      // 份额
-      const shares = has.shares
-      const buShares = money / close
-      const resShares = shares + buShares
-      const resCostNetValue = (has.shares * has.costNetValue + money) / (resShares || 1)
-      // 持仓金额
-      const resPositionSum = (resShares * resCostNetValue) * (resCostNetValue / close)
-      return {
-        shares: resShares,
-        costNetValue: resCostNetValue,
-        positionSum: resPositionSum,
-        hasMoney: has.hasMoney - money,
-        buyTimes: resBuyTimes,
-        todayIncome: ((has.shares * has.costNetValue) * (has.costNetValue / close)) - has.positionSum,
-        sellTimes: 0,
-        flag: money > 0 ? '买空' : ''
-      }
-    },
-    countSellKong(has, close, sellT) {
-      // 卖出份额
-      let sellShares = 0
-      let resSellTimes = has.sellTimes
-      let resCostNetValue = 0
-      // 次数到达
-      if (has.sellTimes !== sellT) {
-        sellShares = (has.shares * (1 / (sellT - has.sellTimes)))
-        resCostNetValue = has.costNetValue
-        resSellTimes++
-      }
-      // 份额
-      const resShares = has.shares - sellShares
-      // 持仓金额
-      const resPositionSum = (resShares * has.costNetValue) * (has.costNetValue / close)
-      return {
-        shares: resShares,
-        costNetValue: resCostNetValue,
-        positionSum: resPositionSum,
-        hasMoney: has.hasMoney + ((sellShares * has.costNetValue) * (has.costNetValue / close)),
-        buyTimes: 0,
-        todayIncome: ((has.shares * has.costNetValue) * (has.costNetValue / close)) - has.positionSum,
-        sellTimes: resSellTimes,
-        flag: sellShares > 0 ? '平空' : ''
-      }
-    },
     initPage() {
-      this.$http.get('stock/getBIKlines', {
-        name: 'EOS'
+      this.$http.get('stock/getBIBTKlines', {
+        name: 'SHIB',
+        interval: '1h'
       }).then((res) => {
         const list = []
+        const closeList = []
         res.data.forEach((item) => {
           item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
           list.push(item)
+          closeList.push(item.close)
         })
+        this.macdList = macd.macd_data(list)
+        console.log('dddd', macd.getMacdDownDiff(this.macdList, list))
         // list = list.slice(0, 300)
         list.reverse()
         this.dataList = list
         this.initChart()
       })
+    },
+    checkF(list, index, fList) {
+      let c = true
+      const len = fList.length
+      fList.forEach((f, i) => {
+        const l = list[index - (len - i)]
+        if (f) {
+          if (l < 0) {
+            c = false
+          }
+        } else {
+          if (l > 0) {
+            c = false
+          }
+        }
+      })
+      return c
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
@@ -275,6 +175,10 @@ export default {
       const list5 = this.$getAverageList(recentNetValue, 5)
       const list10 = this.$getAverageList(recentNetValue, 10)
       const list20 = this.$getAverageList(recentNetValue, 20)
+      const list5to = this.$getAverageListTO(recentNetValue, 5)
+      const list10to = this.$getAverageListTO(recentNetValue, 10)
+      const list20to = this.$getAverageListTO(recentNetValue, 20)
+
       const xData = []
       const yData = []
       const points = []
@@ -282,132 +186,11 @@ export default {
       const netChangeRatioAll = []
       const openList = []
       recentNetValue.forEach((item, index) => {
-        xData.unshift(moment(item['tradeDate']).format('YYYY-MM-DD'))
+        xData.unshift(moment(item['tradeDate']).format('YYYY-MM-DD HH:mm:ss'))
         yData.unshift(item['close'])
         openList.unshift(item['open'])
         netChangeRatioAll.unshift(item.netChangeRatio)
       })
-      // const buyMoney = 500
-      // const has = {
-      //   shares: 0,
-      //   cost: 0,
-      //   sum: 0
-      // }
-      // const sellTime = 0
-      // const income = 0
-      // const maxSum = 0
-      // const hasIncome = 0
-      //
-      // let has2 = {
-      //   shares: 0,
-      //   cost: 0,
-      //   sum: 0
-      // }
-      // let sellTime2 = 0
-      // let sellIncome2 = 0
-      // let maxSum2 = 0
-      // let hasIncome2 = 0
-      // let maxLoss = 0
-      // const hasList = []
-      // yData.forEach((item, index) => {
-      //   const netChangeRatio = netChangeRatioAll[index]
-      //   const date = xData[index]
-      //   const close5 = list5[index]
-      //   const close10 = list10[index]
-      //   const close20 = list20[index]
-      //   const rate5 = this.$countDifferenceRate(item, close5)
-      //   const rate10 = this.$countDifferenceRate(item, close10)
-      //   const rateM20 = this.$countDifferenceRate(item, close20)
-      //   // if (close5 > close10) {
-      //   //   sellTime = 0
-      //   //   has = this.countBuy(has, buyMoney, item)
-      //   // } else {
-      //   //   sellTime++
-      //   //   if (sellTime <= 3) {
-      //   //     has = this.countSell(has, sellTime, item)
-      //   //     income += has.income
-      //   //     has.income = 0
-      //   //   } else {
-      //   //     sellTime = 0
-      //   //   }
-      //   // }
-      //   // if (has.sum > maxSum) {
-      //   //   maxSum = has.sum
-      //   // }
-      //   // if (index === (yData.length - 1)) {
-      //   //   hasIncome = (item - has.cost) * has.shares
-      //   // }
-      //   // 策越2
-      //   if (close5 > close10) {
-      //     if (close5 < close20) {
-      //       if (netChangeRatio < 0) {
-      //         sellTime2 = 0
-      //         has2 = this.countBuy(has2, buyMoney, item)
-      //       }
-      //     } else {
-      //       sellTime2 = 0
-      //       has2 = this.countBuy(has2, buyMoney, item)
-      //     }
-      //     // sellTime2 = 0
-      //     // has2 = this.countBuy(has2, buyMoney, item)
-      //   } else {
-      //     if (close5 > close20) {
-      //       if (netChangeRatio > 0) {
-      //         sellTime2++
-      //         if (sellTime2 <= 3) {
-      //           const ss = this.countSell(has2, sellTime2, item)
-      //           has2 = ss.has
-      //           sellIncome2 += ss.sellIncome
-      //         } else {
-      //           sellTime2 = 0
-      //         }
-      //       }
-      //     } else {
-      //       sellTime2++
-      //       if (sellTime2 <= 3) {
-      //         const ss = this.countSell(has2, sellTime2, item)
-      //         has2 = ss.has
-      //         sellIncome2 += ss.sellIncome
-      //       } else {
-      //         sellTime2 = 0
-      //       }
-      //     }
-      //     // sellTime2++
-      //     // if (sellTime2 <= 3) {
-      //     //   const ss = this.countSell(has2, sellTime2, item)
-      //     //   has2 = ss.has
-      //     //   sellIncome2 += ss.sellIncome
-      //     // } else {
-      //     //   sellTime2 = 0
-      //     // }
-      //   }
-      //   const hasSUm = has2.shares * item
-      //   if (hasSUm > maxSum2) {
-      //     maxSum2 = hasSUm
-      //   }
-      //   const hasIn = (item - has2.cost) * has2.shares
-      //   if (index === (yData.length - 1)) {
-      //     hasIncome2 = hasIn
-      //   }
-      //   const incomeSum = sellIncome2 + hasIn
-      //   if (incomeSum < maxLoss) {
-      //     maxLoss = incomeSum
-      //   }
-      //   hasList.push({
-      //     date,
-      //     incomeSum,
-      //     ...has2
-      //   })
-      // })
-      // // console.log('最大仓位', maxSum)
-      // // console.log('持有收益', hasIncome)
-      // // console.log('了结收益', income)
-      // // console.log('总收益', income + hasIncome)
-      // console.log('最大仓位2', maxSum2)
-      // console.log('持有收益2', hasIncome2)
-      // console.log('了结收益2', sellIncome2)
-      // console.log('总收益2', sellIncome2 + hasIncome2)
-      // console.log('最大亏损2', maxLoss)
       const benjin = 10000
       let has2 = {
         shares: 0,
@@ -424,89 +207,193 @@ export default {
       const dayInfoList = []
       const kBase = yData[0]
       // const points = []
+      const diff5to10List = []
+      list5.forEach((v, i) => {
+        diff5to10List.push(v - list10[i])
+      })
+      const macdInfoList = []
+      let upOpen = 0
+      const upDiffList = []
+      let downOpen = 0
+      const downDiffList = []
       yData.forEach((item, index) => {
         const netChangeRatio = netChangeRatioAll[index]
         const date = xData[index]
         const close5 = list5[index]
         const close10 = list10[index]
         const close20 = list20[index]
+        const open5 = list5to[index]
+        const open10 = list10to[index]
+        const open20 = list20to[index]
         const rate5 = this.$countDifferenceRate(item, close5)
         const rate10 = this.$countDifferenceRate(item, close10)
         const rateM20 = this.$countDifferenceRate(item, close20)
         const open = openList[index]
-        // 策略1
-        // if (close5 > close10) {
-        //   // 买入
-        //   has2 = this.countBuy2(has2, item, 3)
-        // } else {
-        //   has2 = this.countSell2(has2, item, 3)
-        // }
-        // 策略2
-        // if (close5 > close10) {
-        //   // 买入
-        //   has2 = this.countBuy2(has2, open, 1)
-        // } else {
-        //   has2 = this.countSell2(has2, item, 2)
-        // }
-        // 买入最好策略
-        // if (close5 > close10) {
-        //   // 买入
-        //   has2 = this.countBuy2(has2, open, 1)
-        // } else {
-        //   has2 = this.countSell2(has2, item, 2)
-        // }
-        // TODO 最好的
-        if (close5 > close10) {
-          // 买入
-          // 下降时，好像都是open好
-          if (close5 > close20) {
-            has2 = this.countBuy2(has2, open, 1)
-          } else {
-            has2 = this.countBuy2(has2, item, 2)
+        const macdVal = this.macdList[index]
+        const macdValLast = this.macdList[index - 1]
+        const diff5to10Val = diff5to10List[index]
+        const diff5to10ValLast = diff5to10List[index - 1]
+
+        if (index > 2) {
+          if (macdVal > 0 && macdValLast < 0) {
+            upOpen = open
           }
-          // has2 = this.countBuy2(has2, open, 1)
-        } else {
-          // has2 = this.countSell2(has2, item, 2)
-          // 都是close好
-          // 卖出只能用收盘价
-          if (close5 > close20) {
-            has2 = this.countSell2(has2, item, 2)
-          } else {
-            has2 = this.countSell2(has2, item, 1)
+          if (macdVal < 0 && macdValLast > 0) {
+            if (upOpen) {
+              upDiffList.push(this.$countDifferenceRate(item, upOpen))
+              upOpen = 0
+            }
           }
         }
-        // if (close5 > close10) {
+
+        if (index > 2) {
+          if (macdVal < 0 && macdValLast > 0) {
+            downOpen = open
+          }
+          if (macdVal > 0 && macdValLast < 0) {
+            if (downOpen) {
+              downDiffList.push(this.$countDifferenceRate(item, downOpen))
+              downOpen = 0
+            }
+          }
+        }
+
+        let ismacdValToUp = false
+        let ismacdValToDown = false
+        let buyTwo = false
+        let sellTwo = false
+        if (index > 4) {
+          if (macdVal > 0) {
+            if (macdValLast > 0) {
+              buyTwo = true
+              ismacdValToUp = this.checkF(this.macdList, index, [false, false, true])
+            } else {
+              ismacdValToUp = this.checkF(this.macdList, index, [false, false])
+            }
+          } else {
+            if (macdValLast < 0) {
+              sellTwo = true
+              ismacdValToDown = this.checkF(this.macdList, index, [true, true, false])
+            } else {
+              ismacdValToDown = this.checkF(this.macdList, index, [true, true])
+            }
+          }
+        }
+
+        let isDiff5to10ValToUp = false
+        let isDiff5to10ValToDown = false
+        if (index > 4) {
+          if (diff5to10Val > 0) {
+            if (diff5to10ValLast > 0) {
+              buyTwo = true
+              isDiff5to10ValToUp = this.checkF(diff5to10List, index, [false, false, true])
+            } else {
+              isDiff5to10ValToUp = this.checkF(diff5to10List, index, [false, false])
+            }
+          } else {
+            if (diff5to10ValLast < 0) {
+              sellTwo = true
+              isDiff5to10ValToDown = this.checkF(diff5to10List, index, [true, true, false])
+            } else {
+              isDiff5to10ValToDown = this.checkF(diff5to10List, index, [true, true])
+            }
+          }
+        }
+        macdInfoList.push({
+          ismacdValToUp,
+          ismacdValToDown,
+          isDiff5to10ValToUp,
+          isDiff5to10ValToDown,
+          date
+        })
+        // let isDone = ''
+        // if (open5 > open10) {
         //   // 买入
-        //   has2 = this.countBuy2(has2, open, 1)
-        // } else {
-        //   has2 = this.countSell2(has2, item, 2)
-        // }
-        // 策略三
-        // if (close5 > close10) {
-        //   // 买入
-        //   if (close5 < close20) {
-        //     if (netChangeRatio < 0) {
-        //       has2 = this.countBuy2(has2, item, 3)
-        //     }
-        //   } else {
-        //     has2 = this.countBuy2(has2, item, 3)
+        //   // 下降时，好像都是open好
+        //   if (open5 > open20) {
+        //     has2 = this.countBuy2(has2, open, 1)
+        //     isDone = 'buy'
         //   }
+        //   // has2 = this.countBuy2(has2, open, 1)
         // } else {
-        //   if (close5 > close20) {
-        //     if (netChangeRatio > 0) {
+        //   // has2 = this.countSell2(has2, item, 2)
+        //   // 都是close好
+        //   // 卖出只能用收盘价
+        //   if (open5 > open20) {
+        //   } else {
+        //     has2 = this.countSell2(has2, open, 1)
+        //     isDone = 'sell'
+        //   }
+        // }
+        // if (close5 > close10) {
+        //   // 买入
+        //   // 下降时，好像都是open好
+        //   if (isDone !== 'buy') {
+        //     if (close5 > close20) {
+        //       has2 = this.countBuy2(has2, item, 1)
+        //     } else {
+        //       has2 = this.countBuy2(has2, item, 2)
+        //     }
+        //   }
+        //   // has2 = this.countBuy2(has2, open, 1)
+        // } else {
+        //   // has2 = this.countSell2(has2, item, 2)
+        //   // 都是close好
+        //   // 卖出只能用收盘价
+        //   if (isDone !== 'sell') {
+        //     if (close5 > close20) {
         //       has2 = this.countSell2(has2, item, 2)
+        //     } else {
+        //       has2 = this.countSell2(has2, item, 1)
         //     }
-        //   } else {
-        //     has2 = this.countSell2(has2, item, 2)
         //   }
         // }
-        // 空单（目前最好策略）
-        // if (close5 < close10) {
+        // // TODO 最好的
+        // if (close5 > close20) {
         //   // 买入
-        //   has2 = this.countBuyKong(has2, item, 1)
+        //   // 下降时，好像都是open好
+        //   if (close5 > close20) {
+        //     has2 = this.countBuy2(has2, item, 1)
+        //   } else {
+        //     has2 = this.countBuy2(has2, item, 2)
+        //   }
+        //   // has2 = this.countBuy2(has2, open, 1)
         // } else {
-        //   has2 = this.countSellKong(has2, open, 2)
+        //   // has2 = this.countSell2(has2, item, 2)
+        //   // 都是close好
+        //   // 卖出只能用收盘价
+        //   if (close5 > close20) {
+        //     has2 = this.countSell2(has2, item, 2)
+        //   } else {
+        //     has2 = this.countSell2(has2, item, 1)
+        //   }
         // }
+        // TODO 牺牲了收益但是回测控制更好
+        let done = false
+        if (ismacdValToUp || isDiff5to10ValToUp) {
+          const price = buyTwo ? open : item
+          // const price = item
+          if (close5 > close20) {
+            has2 = this.countBuy2(has2, price, 1)
+          } else {
+            has2 = this.countBuy2(has2, price, 2)
+          }
+          done = true
+          // 买入
+        }
+        if (ismacdValToDown || isDiff5to10ValToDown) {
+          const price = sellTwo ? open : item
+          // const price = item
+          if (close5 > close20) {
+            has2 = this.countSell2(has2, price, 2)
+          } else {
+            has2 = this.countSell2(has2, price, 1)
+          }
+          done = true
+        }
+        if (!done) {
+          has2.flag = ''
+        }
         dayInfoList.push({
           '总金': this.pMoney(has2.positionSum + has2.hasMoney),
           '点位': item,
@@ -521,6 +408,16 @@ export default {
           ...has2
         })
       })
+
+      upDiffList.sort((a, b) => {
+        return a - b
+      })
+      downDiffList.sort((a, b) => {
+        return a - b
+      })
+      console.log('upDiffList', upDiffList)
+      console.log('downDiffList', downDiffList)
+      console.log(macdInfoList)
       let maxDown = 0
       // let day = ''
       // const maxList = []

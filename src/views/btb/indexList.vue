@@ -63,30 +63,25 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="初始usdt">
+        label="占比">
         <template slot-scope="scope">
-          <span>{{ scope.row.usdt }}</span>
+          <span>{{ scope.row.proportion }}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        label="所剩usdt">
+        label="买状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.now_usdt }}</span>
+          <el-tag v-if="scope.row.buy_status === 1" type="success">开启</el-tag>
+          <el-tag v-else type="danger">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        label="总收益(usdt)">
+        label="卖状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.total_income_usdt }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="总手续费(usdt)">
-        <template slot-scope="scope">
-          <span>{{ scope.row.total_charge_usdt }}</span>
+          <el-tag v-if="scope.row.sell_status === 1" type="success">开启</el-tag>
+          <el-tag v-else type="danger">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -104,7 +99,7 @@
         <template slot-scope="scope">
           <el-button type="text" @click="addNew(scope.row)">编辑</el-button>
           <el-button type="text" @click="deleteRow(scope.row)">删除</el-button>
-          <el-button type="text" @click="addUsdt(scope.row)">增加usdt</el-button>
+          <!--<el-button type="text" @click="addUsdt(scope.row)">增加usdt</el-button>-->
         </template>
       </el-table-column>
     </el-table>

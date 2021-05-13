@@ -33,15 +33,21 @@
           <el-radio :label="1">启用</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="usdt初始数量" prop="usdt">
-        <el-input
-          v-model="form.usdt"
-          maxlength="200"
-          placeholder="请输入内容"/>
+      <el-form-item label="买策略" prop="buy_status">
+        <el-radio-group v-model="form.buy_status">
+          <el-radio :label="0">禁用</el-radio>
+          <el-radio :label="1">启用</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="form._id" label="剩余usdt数量" prop="now_usdt">
+      <el-form-item label="卖策略" prop="sell_status">
+        <el-radio-group v-model="form.sell_status">
+          <el-radio :label="0">禁用</el-radio>
+          <el-radio :label="1">启用</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="占比" prop="proportion">
         <el-input
-          v-model="form.now_usdt"
+          v-model="form.proportion"
           maxlength="200"
           placeholder="请输入内容"/>
       </el-form-item>
@@ -61,7 +67,9 @@ function createForm(tar) {
     usdt: '',
     now_usdt: '',
     frequency: '',
-    status: 0
+    status: 0,
+    buy_status: 0,
+    sell_status: 0
   }
   if (tar) {
     raw = Object.assign(raw, tar)
@@ -85,7 +93,7 @@ export default {
         frequency: [
           { required: true, message: '必填', trigger: 'change' }
         ],
-        usdt: [
+        proportion: [
           { required: true, message: '必填', trigger: 'blur' }
         ]
       },

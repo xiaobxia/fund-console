@@ -63,13 +63,6 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="成本价(usdt)">
-        <template slot-scope="scope">
-          <span>{{ scope.row.buy_cost_usdt }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
         label="卖出价(usdt)">
         <template slot-scope="scope">
           <span>{{ scope.row.sell_value_usdt }}</span>
@@ -77,31 +70,9 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="收益(usdt)">
-        <template slot-scope="scope">
-          <span>{{ scope.row.income_usdt }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="手续费(usdt)">
-        <template slot-scope="scope">
-          <span>{{ scope.row.charge_usdt }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
         label="时间">
         <template slot-scope="scope">
           <span>{{ $formatToDateTime(scope.row.create_at) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        min-width="100"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" @click="addNew(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
