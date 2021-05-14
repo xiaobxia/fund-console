@@ -51,6 +51,30 @@
           maxlength="200"
           placeholder="请输入内容"/>
       </el-form-item>
+      <el-form-item label="条件买策略" prop="condition_buy_status">
+        <el-radio-group v-model="form.condition_buy_status">
+          <el-radio :label="0">禁用</el-radio>
+          <el-radio :label="1">启用</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="条件买数量" prop="condition_buy_number">
+        <el-radio-group v-model="form.condition_buy_number">
+          <el-radio :label="0.5">1/2</el-radio>
+          <el-radio :label="1">1</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="条件卖策略" prop="condition_sell_status">
+        <el-radio-group v-model="form.condition_sell_status">
+          <el-radio :label="0">禁用</el-radio>
+          <el-radio :label="1">启用</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="条件卖数量" prop="condition_sell_number">
+        <el-radio-group v-model="form.condition_sell_number">
+          <el-radio :label="0.5">1/2</el-radio>
+          <el-radio :label="1">1</el-radio>
+        </el-radio-group>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取消</el-button>
@@ -69,7 +93,11 @@ function createForm(tar) {
     frequency: '',
     status: 0,
     buy_status: 0,
-    sell_status: 0
+    sell_status: 0,
+    condition_buy_status: 0,
+    condition_sell_status: 0,
+    condition_buy_number: 1,
+    condition_sell_number: 1
   }
   if (tar) {
     raw = Object.assign(raw, tar)

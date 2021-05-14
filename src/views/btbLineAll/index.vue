@@ -20,7 +20,8 @@ export default {
       chart: null,
       indexItem: null,
       id: 'BtbLineAll',
-      macdList: []
+      macdList: [],
+      maxLine: 0
     }
   },
   computed: {
@@ -131,26 +132,6 @@ export default {
     pMoney(val) {
       return parseInt(parseFloat(val || 0) || 0)
     },
-    initPage() {
-      this.$http.get('stock/getBIBTKlines', {
-        name: 'SHIB',
-        interval: '1h'
-      }).then((res) => {
-        const list = []
-        const closeList = []
-        res.data.forEach((item) => {
-          item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
-          list.push(item)
-          closeList.push(item.close)
-        })
-        this.macdList = macd.macd_data(list)
-        console.log('dddd', macd.getMacdDownDiff(this.macdList, list))
-        // list = list.slice(0, 300)
-        list.reverse()
-        this.dataList = list
-        this.initChart()
-      })
-    },
     checkF(list, index, fList) {
       let c = true
       const len = fList.length
@@ -167,6 +148,35 @@ export default {
         }
       })
       return c
+    },
+    initPage() {
+      this.$http.get('stock/getBIBTKlines', {
+        name: 'DOGE',
+        interval: '1h'
+      }).then((res) => {
+        const list = []
+        const closeList = []
+        res.data.forEach((item) => {
+          item.netChangeRatio = this.$countDifferenceRate(item.close, item.open)
+          list.push(item)
+          closeList.push(item.close)
+        })
+        this.macdList = macd.macd_data(list)
+        const newMacdList = []
+        this.macdList.forEach((v) => {
+          newMacdList.push(Math.abs(v))
+        })
+        newMacdList.sort((a, b) => {
+          return b - a
+        })
+        this.maxLine = newMacdList[9]
+        console.log('newMacdList', newMacdList)
+        console.log('dddd', macd.getMacdDownDiff(this.macdList, list))
+        // list = list.slice(0, 300)
+        list.reverse()
+        this.dataList = list
+        this.initChart()
+      })
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
@@ -233,6 +243,9 @@ export default {
         const macdValLast = this.macdList[index - 1]
         const diff5to10Val = diff5to10List[index]
         const diff5to10ValLast = diff5to10List[index - 1]
+        if (Math.abs(macdVal) > this.maxLine) {
+          points.push(this.createPoint(date, item, macdVal > 0 ? 'green' : 'red'))
+        }
 
         if (index > 2) {
           if (macdVal > 0 && macdValLast < 0) {
@@ -409,6 +422,8 @@ export default {
         })
       })
 
+      console.log(points)
+
       upDiffList.sort((a, b) => {
         return a - b
       })
@@ -464,10 +479,10 @@ export default {
         const r = this.$countDifferenceRate(v['总金'], benjin)
         yData3.push(r)
         if (v.flag === '减仓') {
-          points.push(this.createPoint(v['日期'], r, 'green'))
+          // points.push(this.createPoint(v['日期'], r, 'green'))
         }
         if (v.flag === '加仓') {
-          points.push(this.createPoint(v['日期'], r, 'red'))
+          // points.push(this.createPoint(v['日期'], r, 'red'))
         }
       })
       // console.log(hasList)
@@ -517,7 +532,7 @@ export default {
         series: [
           {
             name: '线',
-            data: yData2,
+            data: yData,
             type: 'line',
             lineStyle: {
               color: '#909399'
@@ -529,71 +544,7 @@ export default {
               symbol: 'circle',
               symbolSize: 4
             }
-          },
-          {
-            name: '净值线',
-            data: yData3,
-            type: 'line',
-            lineStyle: {
-              color: '#409EFF'
-            },
-            smooth: false,
-            symbol: 'none'
           }
-          // {
-          //   name: 'K线',
-          //   data: yData,
-          //   type: 'line',
-          //   lineStyle: {
-          //     color: '#409EFF'
-          //   },
-          //   smooth: false,
-          //   symbol: 'none',
-          //   markPoint: {
-          //     data: points,
-          //     symbol: 'circle',
-          //     symbolSize: 4
-          //   },
-          //   markLine: {
-          //     silent: true,
-          //     data: [{
-          //       yAxis: recentNetValue[0].close,
-          //       lineStyle: {
-          //         color: '#aaa'
-          //       }
-          //     }]
-          //   }
-          // }
-          // {
-          //   name: '5日线',
-          //   data: list5,
-          //   type: 'line',
-          //   lineStyle: {
-          //     color: '#606266'
-          //   },
-          //   smooth: false,
-          //   symbol: 'none'
-          // },
-          // {
-          //   name: '10日线',
-          //   data: list10,
-          //   type: 'line',
-          //   lineStyle: {
-          //     color: '#909399'
-          //   },
-          //   smooth: false,
-          //   symbol: 'none'
-          // },
-          // {
-          //   name: '20日线',
-          //   data: list20,
-          //   type: 'line',
-          //   lineStyle: {
-          //     color: '#C0C4CC'
-          //   },
-          //   smooth: false,
-          //   symbol: 'none'
-          // }
         ]
       })
     }
