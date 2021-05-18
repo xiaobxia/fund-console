@@ -63,6 +63,13 @@
       </el-table-column>
       <el-table-column
         align="center"
+        label="买入价(usdt)">
+        <template slot-scope="scope">
+          <span>{{ scope.row.buy_value_usdt }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
         label="卖出价(usdt)">
         <template slot-scope="scope">
           <span>{{ scope.row.sell_value_usdt }}</span>
