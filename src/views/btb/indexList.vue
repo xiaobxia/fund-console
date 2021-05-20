@@ -41,20 +41,6 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="名称">
-        <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="频率">
-        <template slot-scope="scope">
-          <span>{{ scope.row.frequency === 'H' ? '小时' : '天' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
         label="状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 1" type="success">开启</el-tag>
@@ -82,6 +68,36 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.sell_status === 1" type="success">开启</el-tag>
           <el-tag v-else type="danger">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="订单买">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.condition_buy_status === 1" type="success">开启</el-tag>
+          <el-tag v-else type="danger">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="订单买数量">
+        <template slot-scope="scope">
+          <span>{{ scope.row.condition_buy_number }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="订单卖">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.condition_sell_status === 1" type="success">开启</el-tag>
+          <el-tag v-else type="danger">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="订单卖数量">
+        <template slot-scope="scope">
+          <span>{{ scope.row.condition_sell_number }}</span>
         </template>
       </el-table-column>
       <el-table-column
